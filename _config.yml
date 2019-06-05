@@ -1,9 +1,8 @@
 # Site settings
 title: Farbs - Penetration Tester, Hacking Enthusiast
 description: "Farbs' Official Site!"
-baseurl: "/" # for test: remove string '/space-jekyll-template' to ''
-url: "http://defarbs.github.io" # for test: remove string 'http://victorvoid.github.io' to '' but in production: 'https://yourusername.github.io'
-
+baseurl: "/" 
+url: "http://defarbs.github.io"
 # User settings
 username: Farbs
 user_title: Farbs - Penetration Tester
