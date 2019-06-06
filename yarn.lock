@@ -1930,6 +1930,12 @@ js-yaml@~3.6.0:
     argparse "^1.0.7"
     esprima "^2.6.0"
 
+js-yaml@^3.13.1:
+  version "3.13.1"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^2.6.0"
+
 jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
