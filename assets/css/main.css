@@ -381,10 +381,10 @@ a.slideButton,
 	cursor: pointer;
 	padding: .313rem;
 	border-radius: .188rem;
-	background: #fff;
+	background: #403554;
 	width: 2.5rem;
 	height: 2.5rem;
-	fill: #54456e;
+	fill: #fff;
 }
 
 .icon-search {
