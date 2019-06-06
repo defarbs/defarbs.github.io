@@ -1,7 +1,9 @@
 html {
-	font-family: sans-serif;
+    font-family: sans-serif;
+    background: #5d4d7a
 	-ms-text-size-adjust: 100%;
-	-webkit-text-size-adjust: 100%
+    -webkit-text-size-adjust: 100%
+    
 }
 
 body {
@@ -893,14 +895,14 @@ body.search-overlay:after {
 
 html,
 body {
-	height: 100%
+    height: 100%
 }
 
 .header-site,
 .header-post,
 .page-header {
 	background: #5d4d7a;
-	height: 100%;
+	height: 90%;
 }
 
 .header-site .content,
