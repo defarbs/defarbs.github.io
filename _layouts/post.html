@@ -17,20 +17,10 @@
             <article role="article" id="scroll" class="post-content" itemprop="articleBody">
                 {{ content }}
             </article>
-
+            {% include footer.html %}
             {% include share.html %}
             {% include comments.html %}
             {% include scripts.html %}
         </section>
     </body>
-<style>
-    footer {
-        position: inherit;
-        bottom: 0;
-        width: 100%;
-        background: #5d4d7a;
-        padding: 1.563rem 0;
-        clear: both;
-    }
-</style>
 </html>
