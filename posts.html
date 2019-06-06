@@ -1,16 +1,28 @@
 ---
-layout: compress
+layout: minimal
+title: "Posts"
+permalink: /posts/index.html
+description: "Take a look at my posts..."
 ---
 
-<!DOCTYPE html>
-<html lang="pt-br">
-    {% include head.html %}
-    <body>
-        <div class="page_posts">
-        {% include svg-icons.html %}
-        {% include header-post.html %}
-        {% include tree-posts.html %}
-        </div>
-        {% include scripts.html %}
-    </body>
-</html>
+<h2>Posts</h2>
+{% for tag in site.categories %}
+  <span class="tag-title" id="{{ tag[0] | slugify }}">{{ tag[0] | capitalize }}</span>
+  <ul class="post-list">
+    {% assign pages_list = tag[1] %}
+    {% for post in pages_list reversed %}
+      {% if post.title != null %}
+      {% if group == null or group == post.group %}
+      <li>
+          <a title="Post's my title" href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}
+              <span class="entry-date">
+              <time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%B %d, %Y" }}</time>
+          </a>
+      </li>
+      {% endif %}
+      {% endif %}
+    {% endfor %}
+    {% assign pages_list = nil %}
+    {% assign group = nil %}
+  </ul>
+{% endfor %}
