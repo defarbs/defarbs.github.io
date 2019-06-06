@@ -46,6 +46,10 @@ links:
       new_tab: true
       url: http://www.twitter.com/auxFarbs
       key_trigger: t
+    - title: hackthebox
+      new_tab: true
+      url: https://www.hackthebox.eu/profile/39047
+      key_trigger: h
     - title: search
       url: ""
       key_trigger: s #WARNING: search only works with "s"
