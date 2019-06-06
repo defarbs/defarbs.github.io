@@ -1,8 +1,8 @@
 # Site settings
-title: Farbs - Penetration Tester, Hacking Enthusiast
+title: >:D
 description: "Farbs' Official Site!"
 baseurl: "/" 
-url: "http://defarbs.github.io"
+url: "http://defarbs.github.io/"
 # User settings
 username: Farbs
 user_title: Farbs - Penetration Tester
@@ -43,6 +43,7 @@ links:
       new_tab: true
       key_trigger: g
     - title: twitter
+      new_tab: true
       url: http://www.twitter.com/auxFarbs
       key_trigger: t
     - title: search
