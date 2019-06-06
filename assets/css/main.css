@@ -1881,12 +1881,18 @@ pre span {
 }
 
 footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 	background: #5d4d7a;
 	padding: 1.563rem 0;
 	clear: both;
 }
 
 footer p {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 300;
 	font-style: normal;
