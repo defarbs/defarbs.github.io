@@ -4,8 +4,8 @@ description: "Farbs' Official Site!"
 baseurl: "" 
 url: ""
 # User settings
-username: Farbs
-user_title: Farbs - Penetration Tester
+username: farbs
+user_title: farbs - Penetration Tester
 email: drewefarber@gmail.com
 twitter_username: auxFarbs
 github_username:  defarbs
