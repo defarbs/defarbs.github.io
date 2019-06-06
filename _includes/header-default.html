@@ -5,13 +5,17 @@
             <img alt="My photo" src="https://mir-s3-cdn-cf.behance.net/user/115/2001027.53b72c812d01e.png">
         </div>
         <style>
-            h1 {
-                align-content: center;
+            .header-site .site-title {
+                padding-top: 15px;
+                color: white;
+                text-align: center;
+                font-weight: bold;
+                padding-left: 4px;
             }
         </style>
-        <h1>
+        <div class="header-site">
             <span class="site-title">[{{site.username}}]</span>
-        </h1>
+        </div>
 
         <div class="icons-home">
             <a aria-label="Send email" title="Send me an e-mail" href="mailto:{{site.email}}">

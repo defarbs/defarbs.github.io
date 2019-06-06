@@ -4,7 +4,7 @@ title: "Posts"
 permalink: /posts/
 description: "Take a look at my posts..."
 ---
-
+{% include header-post.html %}
 <h2>Posts</h2>
 {% for tag in site.categories %}
   <span class="tag-title" id="{{ tag[0] | slugify }}">{{ tag[0] | capitalize }}</span>
