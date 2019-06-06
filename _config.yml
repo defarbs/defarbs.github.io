@@ -1,7 +1,7 @@
 # Site settings
 title: ">:D"
 description: "Farbs' Official Site!"
-baseurl: "/" 
+baseurl: "" 
 url: "http://defarbs.github.io/"
 # User settings
 username: Farbs
