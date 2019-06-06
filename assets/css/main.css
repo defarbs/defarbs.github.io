@@ -999,7 +999,8 @@ body {
 	.header-site .site-title {
 		letter-spacing: 16px;
 		margin-bottom: 0;
-		font-size: 1.25rem
+        font-size: 1.25rem;
+        line-height: 2.5;
 	}
 }
 
