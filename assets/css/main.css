@@ -1051,7 +1051,7 @@ body {
 	font-weight: 300;
 }
 
-@media only screen and (min-width:37.5rem) {
+/*@media only screen and (min-width:37.5rem) {
 	.page-header h1 {
 		font-size: 1.875rem
 	}
@@ -1100,7 +1100,7 @@ body {
 	bottom: 0;
 	background-color: #c06a64
 }
-
+*/
 .post-item {
 	text-align: left;
 	padding: .313rem 1.25rem;
