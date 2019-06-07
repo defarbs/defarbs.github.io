@@ -38,7 +38,7 @@
             <p>Recent posts:</p>
              {% for post in site.posts limit:3%}
                 <li>
-                    <a title="Show my recent posts!" href="{{ post.url | prepend: site.baseurl }}">
+                    <a title="Wow, a recent post!" href="{{ post.url | prepend: site.baseurl }}">
                         <h2 class="post-title" itemprop="name">{{ post.title }}</h2>
                     </a>
                 </li>
