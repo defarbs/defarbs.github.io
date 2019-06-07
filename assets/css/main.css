@@ -1020,16 +1020,6 @@ body {
 	height: 62px;
 }
 
-@media only screen and (min-width:90.625rem) {
-	.header-post {
-		background: transparent
-	}
-	.header-post #open {
-		position: fixed;
-		background: transparent
-	}
-}
-
 .header-post p {
 	margin: 0;
 	padding-top: 23px;
