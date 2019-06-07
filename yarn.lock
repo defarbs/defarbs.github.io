@@ -266,6 +266,13 @@ braces@^1.8.2:
     preserve "^0.2.0"
     repeat-element "^1.1.2"
 
+braces@^2.3.1:
+  version "2.3.1"
+  dependencies:
+    expand-range "^1.8.1"
+    preserve "^0.2.0"
+    repeat-element "^1.1.2"
+
 browser-sync-client@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/browser-sync-client/-/browser-sync-client-1.0.2.tgz#cf1523b51d3822e7a0f5bdf339529305489a86ad"
