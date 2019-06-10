@@ -1890,3 +1890,8 @@ footer p {
     margin: 0;
     padding-bottom: 13px;
 }
+
+.help-image {
+	max-width: 65%;
+	max-height: 65%;
+}
