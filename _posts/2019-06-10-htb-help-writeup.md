@@ -2,7 +2,7 @@
 layout: post
 title:  "Hack The Box: { Help } Writeup"
 image: ''
-date:   2019-06-10 00:02:45
+date:   2019-06-10 00:02:52
 tags:
 - hackthebox
 - helpdeskz
@@ -21,7 +21,7 @@ The "Help" machine on Hack The Box (created by cymtrick) is a 20 point Linux mac
 
 ### Nmap Scan
 
-{% highlight javascript%}
+{% highlight javascript %}
 
 Starting Nmap 7.70 ( https://nmap.org ) at 2019-03-05 16:49 EST
 Nmap scan report for 10.10.10.121
