@@ -54,10 +54,5 @@ links:
       url: ""
       key_trigger: s #WARNING: search only works with "s"
 
-# projects in header index
-projects:
-  - name:
-    url: 
-
 # exclude my node related stuff
 exclude: ['package.json', 'src', 'node_modules']
