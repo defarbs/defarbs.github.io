@@ -607,7 +607,7 @@ aside nav ul a {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 300;
 	font-style: normal;
-	color: #b3b3b1;
+	color: lightgray;
 }
 
 aside nav ul a:hover {
