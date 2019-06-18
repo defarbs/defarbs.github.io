@@ -1615,8 +1615,8 @@ pre code {
 	padding-bottom: 20px;
 	padding-top: 20px;
 	color: lightgray;
-	border-radius: 20px 20px 20px 20px;
-	box-shadow: 0px 0px 10px .25px #7f5393;
+	border-radius: 5px 5px 5px 5px;
+	/*box-shadow: 0px 0px 10px .25px #7f5393;*/
 	overflow: auto;
 }
 
