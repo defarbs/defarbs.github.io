@@ -1609,12 +1609,14 @@ pre code:after {
 pre code {
 	background-color: #262626;
 	border: 1px solid black;
-  	display: block;
+	display: block;
 	padding-left: 20px;
 	padding-right: 20px;
 	padding-bottom: 20px;
 	padding-top: 20px;
 	color: lightgray;
+	border-radius: 20px 20px 20px 20px;
+	box-shadow: 0px 0px 10px .25px #7f5393;
 }
 
 @media only screen and (max-width:37.5rem) {
