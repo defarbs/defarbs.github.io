@@ -1257,7 +1257,7 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 300;
 	font-style: normal;
-	font-size: 1.125rem;
+	font-size: 1.2rem;
 	line-height: 2;
 	letter-spacing: .01rem;
 }
@@ -1272,7 +1272,7 @@ body {
 	.post-content ol,
 	.post-content .tags,
 	.post-content iframe {
-		font-size: 1.25rem
+		font-size: 1.2rem
 	}
 }
 
