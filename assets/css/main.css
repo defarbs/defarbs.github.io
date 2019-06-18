@@ -1583,7 +1583,7 @@ pre {
 	}
 }
 
-pre code {
+/*pre code {
 	*zoom: 1;
 	width: auto;
 	max-width: 50rem;
@@ -1604,6 +1604,13 @@ pre code:after {
 
 pre code:after {
 	clear: both
+}
+*/
+pre code {
+	background-color: #eee;
+  	border: 1px solid #999;
+  	display: block;
+  	padding: 20px;
 }
 
 @media only screen and (max-width:37.5rem) {
