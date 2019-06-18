@@ -1607,8 +1607,7 @@ pre code:after {
 }
 */
 pre code {
-	background-color: #eee;
-  	border: 1px solid #999;
+	background-color: #2f2f33;
   	display: block;
   	padding: 20px;
 }
