@@ -1645,6 +1645,7 @@ pre span {
   	display: block;
 	padding-left: 20px;
 	padding-right: 20px;
+	margin: auto;
 }
 
 .highlight .hll {
