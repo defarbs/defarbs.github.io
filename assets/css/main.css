@@ -1646,6 +1646,7 @@ pre span {
 	padding-left: 20px;
 	padding-right: 20px;
 	margin: auto;
+	max-width: 70rem;
 }
 
 .highlight .hll {
