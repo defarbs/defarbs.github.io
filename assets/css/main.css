@@ -1637,8 +1637,6 @@ pre span {
 */
 
 .highlight {
-	background-color: #2f2f33;
-  	border: 1px solid #999;
   	display: block;
   	padding: 20px;
 }
