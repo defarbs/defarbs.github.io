@@ -1617,6 +1617,7 @@ pre code {
 	color: lightgray;
 	border-radius: 20px 20px 20px 20px;
 	box-shadow: 0px 0px 10px .25px #7f5393;
+	overflow: auto;
 }
 
 @media only screen and (max-width:37.5rem) {
