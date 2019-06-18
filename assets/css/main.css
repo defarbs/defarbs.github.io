@@ -1624,7 +1624,7 @@ pre span {
 	font-family: 'Monaco', 'Consolas', 'Menlo', monospace
 }
 
-.highlight {
+/*.highlight {
 	white-space: pre;
 	overflow: auto;
 	word-wrap: normal;
@@ -1634,6 +1634,14 @@ pre span {
 	color: #c1c2c3;
 	margin: 0;
 	margin-bottom: 30px
+}
+*/
+
+.highlight {
+	background-color: #2f2f33;
+  	border: 1px solid #999;
+  	display: block;
+  	padding: 20px;
 }
 
 .highlight .hll {
