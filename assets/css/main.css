@@ -1544,10 +1544,10 @@ table td {
 	}
 }
 
-.post-list a {
+.post-list a { /* .post-list adjusted for tags */
 	display: block;
 	border-bottom: 1px solid #dadada;
-	padding: .625rem 0;
+	padding: .225rem 0;
 	text-decoration: none;
 	transition: all .5s;
 }
