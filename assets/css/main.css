@@ -1244,6 +1244,14 @@ body {
 
 .post-content p {
 	font-size: .95rem;
+	max-width: 50rem;
+	padding: 0 1.25rem;
+	margin: 0 auto 1.875rem;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-style: normal;
+	line-height: 2;
+	letter-spacing: .01rem;
 }
 .post-content h1,
 .post-content h2,
