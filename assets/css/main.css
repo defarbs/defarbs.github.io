@@ -340,7 +340,8 @@ h4 {
 *,
 *:before,
 *:after {
-	box-sizing: border-box
+	box-sizing: border-box;
+	text-decoration: none;
 }
 
 body {
