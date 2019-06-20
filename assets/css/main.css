@@ -341,7 +341,7 @@ h4 {
 *:before,
 *:after {
 	box-sizing: border-box;
-	text-decoration: none;
+	text-decoration: none; /* hides underline for header href */
 }
 
 body {
