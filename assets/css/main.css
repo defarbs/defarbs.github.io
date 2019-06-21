@@ -1028,6 +1028,8 @@ body {
 	color: #fff
 }
 
+/* header post is not the same as img header */
+
 .page-header {
 	height: 62px;
 }
