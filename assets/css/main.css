@@ -1538,7 +1538,7 @@ table td {
 }
 
 .tag-title:after {
-	clear: both
+	clear: both;
 }
 
 @media only screen and (max-width:37.5rem) {
