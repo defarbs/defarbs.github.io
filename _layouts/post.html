@@ -23,6 +23,11 @@
         }
         /*nobody needs the dumb scrollbar corner*/  
         ::-webkit-scrollbar-corner { display: none; height: 0px; width: 0px; }
+        /*scrollbar move and hover color changer*/
+        .scroller::-webkit-scrollbar-thumb:horizontal:hover,
+        .scroller::-webkit-scrollbar-thumb:vertical:hover { background: #ab67ab; }
+        .scroller::-webkit-scrollbar-thumb:horizontal:active,
+        .scroller::-webkit-scrollbar-thumb:vertical:active { background: #ab67ab; }
         </style>
     {% include head.html %}
     <body>
