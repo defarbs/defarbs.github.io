@@ -589,6 +589,7 @@ aside #topmenu ul li span {
 	}
 }
 
+/*fixes mobile menu issue*/
 @media only screen and (max-width:37.5rem) {
 	aside nav ul {
 		padding: 10px 0 0 10px;
