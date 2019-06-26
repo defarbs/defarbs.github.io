@@ -784,16 +784,29 @@ body.search-overlay:after {
 	padding-left: 10%;
 }
 
+/* original .search-wrapper syntax */
+/*
 .search-wrapper *zoom 1:after, 
 .search-wrapper *zoom 1:before {
 	display: table;
 	line-height: 0;
 	content: ""
 }
+*/
 
+/*new .search-wrapper syntax*/
 
-.search-wrapper *zoom 1:after {
-	clear: both
+.search-wrapper:after,
+.search-wrapper:before {
+	display: table;
+	line-height: 0;
+	content: "";
+	*zoom:1;
+}
+
+.search-wrapper:after {
+	clear: both;
+	*zoom:1;
 }
 
 .search-wrapper:before,
