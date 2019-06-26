@@ -36,7 +36,7 @@ description: "Take a look at my posts..."
       {% if post.title != null %}
       {% if group == null or group == post.group %}
       <li>
-          <a title="Post's my title" href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}
+          <a title="Wow, a post title!" href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}
               <span class="entry-date">
               <time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%B %d, %Y" }}</time>
           </a>
