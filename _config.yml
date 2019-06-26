@@ -54,5 +54,5 @@ links:
       url: ""
       key_trigger: s #WARNING: search only works with "s"
 
-# exclude my node related stuff
+# exclude node related stuff
 exclude: ['package.json', 'src', 'node_modules']
