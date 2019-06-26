@@ -1,8 +1,8 @@
 html {
     font-family: sans-serif;
-    background: #5d4d7a
+    background: #5d4d7a;
 	-ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%
+    -webkit-text-size-adjust: 100%;
     
 }
 
@@ -784,12 +784,13 @@ body.search-overlay:after {
 	padding-left: 10%;
 }
 
-.search-wrapper *zoom 1:after,
+.search-wrapper *zoom 1:after, 
 .search-wrapper *zoom 1:before {
 	display: table;
 	line-height: 0;
 	content: ""
 }
+
 
 .search-wrapper *zoom 1:after {
 	clear: both
