@@ -592,7 +592,7 @@ aside #topmenu ul li span {
 aside nav ul {
 	padding: 10px 0 0 10px;
 	float: left;
-	margin-bottom: 15px;
+	margin-bottom: 15px; /*safeguard for small mobile screens.*/
 	margin-right: 50px; /*safeguard for mobile issue. is usually 80px*/
 }
 
