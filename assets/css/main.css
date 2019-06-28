@@ -121,7 +121,7 @@ kbd,
 pre,
 samp {
 	font-family: monospace, monospace;
-	font-size: .95em
+	font-size: .9rem
 }
 
 button,
@@ -1694,7 +1694,7 @@ pre span {
 	padding-left: 20px;
 	padding-right: 20px;
 	margin: auto;
-	max-width: 65rem;
+	max-width: 62rem;
 }
 
 .highlight .hll {
