@@ -952,7 +952,7 @@ body {
 	list-style-type: none
 }
 
-#df {
+.header-site .site-title .df {
 	position: relative;
 	margin: 0 auto;
 	width: 130px;
@@ -960,7 +960,7 @@ body {
 	border-radius: 100%
 }
 
-#df img {
+.header-site .site-title .df.img.top {
 	position: absolute;
 	left: 0;
 	width: 130px;
@@ -972,7 +972,7 @@ body {
   	transition: opacity .25s ease-in-out;
 }
 
-#df img.top:hover {
+.header-site .site-title .df.img.top:hover {
 	opacity:0;
 }
 
