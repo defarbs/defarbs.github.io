@@ -952,7 +952,7 @@ body {
 	list-style-type: none
 }
 
-.header-site .df {
+/*.header-site .df {
 	position: relative;
 	margin: 0 auto;
 	width: 130px;
@@ -975,6 +975,7 @@ body {
 .header-site .df.img.top:hover {
 	opacity:0;
 }
+*/
 
 .header-site .recent {
 	*zoom: 1;
