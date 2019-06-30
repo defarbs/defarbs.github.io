@@ -966,10 +966,10 @@ body {
 	width: 130px;
 	height: 130px;
 	border-radius: 100%;
-	-webkit-transition: opacity .5s ease-in-out;
-  	-moz-transition: opacity .5s ease-in-out;
-  	-o-transition: opacity .5s ease-in-out;
-  	transition: opacity .5s ease-in-out;
+	-webkit-transition: opacity .25s ease-in-out;
+  	-moz-transition: opacity .25s ease-in-out;
+  	-o-transition: opacity .25s ease-in-out;
+  	transition: opacity .25s ease-in-out;
 }
 
 #df img.top:hover {
