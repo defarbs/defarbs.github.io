@@ -952,10 +952,24 @@ body {
 	list-style-type: none
 }
 
-.header-site .person img {
+#df {
 	width: 130px;
 	height: 130px;
 	border-radius: 100%
+}
+
+#df img {
+	width: 130px;
+	height: 130px;
+	border-radius: 100%;
+	-webkit-transition: opacity .5s ease-in-out;
+  	-moz-transition: opacity .5s ease-in-out;
+  	-o-transition: opacity .5s ease-in-out;
+  	transition: opacity .5s ease-in-out;
+}
+
+#df img.top:hover {
+	opacity:0;
 }
 
 .header-site .recent {
