@@ -953,12 +953,16 @@ body {
 }
 
 #df {
+	position: relative;
+	margin: 0 auto;
 	width: 130px;
 	height: 130px;
 	border-radius: 100%
 }
 
 #df img {
+	position: absolute;
+	left: 0;
 	width: 130px;
 	height: 130px;
 	border-radius: 100%;
