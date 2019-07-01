@@ -953,10 +953,35 @@ body {
 }
 
 .header-site .df img {
+	border: 0;
+	width: 143px;
+	height: 143px;
+}
+
+/*.header-site .df {
+	position: relative;
+	margin: 0 auto;
 	width: 130px;
 	height: 130px;
 	border-radius: 100%
 }
+
+.header-site .df img.top {
+	position: absolute;
+	left: 0;
+	width: 130px;
+	height: 130px;
+	border-radius: 100%;
+	-webkit-transition: opacity .25s ease-in-out;
+  	-moz-transition: opacity .25s ease-in-out;
+  	-o-transition: opacity .25s ease-in-out;
+  	transition: opacity .25s ease-in-out;
+}
+
+.header-site .df img.top:hover {
+	opacity:0;
+}
+*/
 
 .header-site .recent {
 	*zoom: 1;
