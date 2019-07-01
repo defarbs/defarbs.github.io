@@ -958,7 +958,9 @@ body {
 	height: 143px;
 }
 
-/*.header-site .df {
+/* start here for front img */
+
+.header-site .df {
 	position: relative;
 	margin: 0 auto;
 	width: 130px;
@@ -968,7 +970,6 @@ body {
 
 .header-site .df img.top {
 	position: absolute;
-	left: 0;
 	width: 130px;
 	height: 130px;
 	border-radius: 100%;
@@ -981,7 +982,6 @@ body {
 .header-site .df img.top:hover {
 	opacity:0;
 }
-*/
 
 .header-site .recent {
 	*zoom: 1;
