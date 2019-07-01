@@ -1047,6 +1047,7 @@ img.top:hover {
 	-moz-font-variant-ligatures: none;
 	font-variant-ligatures: none;
 	letter-spacing: 9px;
+	padding-left: 20px;
 }
 
 @media only screen and (min-width:37.5rem) {
