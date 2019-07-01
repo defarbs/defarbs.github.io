@@ -1702,6 +1702,10 @@ pre span {
 	font-family: 'Monaco', 'Consolas', 'Menlo', monospace
 }
 
+span.site-title {
+	padding-left: 20px;
+}
+
 /*.highlight {
 	white-space: pre;
 	overflow: auto;
