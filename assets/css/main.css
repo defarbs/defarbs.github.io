@@ -1029,7 +1029,7 @@ img.top:hover {
 }
 
 .header-site .recent a h2:hover {
-	transition:.5s; /* creates seemless mouse hover with color */
+	transition: .5s ease-in-out; /* creates seemless mouse hover with color */
 	background: rgba(135, 116, 169, 0.42)
 }
 
