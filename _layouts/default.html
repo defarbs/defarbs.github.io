@@ -28,4 +28,11 @@ layout: compress
         {% include scripts.html %}
     </body>
     {% include footer.html %}
+    <script>
+        var message = "Please check back soon... :)";
+        var original = document.title;
+        
+        window.onblur = function () { document.title = message; }
+        window.onfocus = function () { document.title = original; }
+      </script>
 </html>
