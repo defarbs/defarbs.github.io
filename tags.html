@@ -4,6 +4,13 @@ title: "@defarbs - Tags"
 permalink: /tags/
 description: "Observe my beautiful tags."
 ---
+<script>
+  var message = "Please check back soon... :)";
+  var original = document.title;
+  
+  window.onblur = function () { document.title = message; }
+  window.onfocus = function () { document.title = original; }
+</script>
 <style>
     /*change the thinkness of the scrollbar here*/
     ::-webkit-scrollbar {
