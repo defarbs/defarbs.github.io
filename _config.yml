@@ -39,12 +39,12 @@ links:
       key_trigger: 4
   section_2:
     - title: github
-      url: http://www.github.com/defarbs
+      url: https://www.github.com/defarbs
       new_tab: true
       key_trigger: g
     - title: twitter
       new_tab: true
-      url: http://www.twitter.com/auxFarbs
+      url: https://www.twitter.com/auxFarbs
       key_trigger: t
     - title: hackthebox
       new_tab: true

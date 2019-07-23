@@ -33,7 +33,7 @@
     <body>
         {% include svg-icons.html %}
         {% include header-post.html %}
-        <section class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        <section class="post" itemscope itemtype="https://schema.org/BlogPosting">
             {% if page.date %}
                 <div class="time">
                     <time itemprop="datePublished" datetime="{{ page.date }}">{{ page.date | date_to_string }}</time>
