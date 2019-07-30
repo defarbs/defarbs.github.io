@@ -109,7 +109,7 @@ var Zepto = function() {
             "z-index": 1,
             zoom: 1
         },
-        Z = /^\s*<(\w+|!)[^>]*>/,+
+        Z = /^\s*<(\w+|!)[^>]*>/,
         _ = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
         D = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
         $ = /^(?:body|html)$/i,
