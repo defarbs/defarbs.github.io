@@ -165,6 +165,6 @@ bob:*:1001:1001::/home/bob:/bin/ksh
 nfsuser:*:1002:1002::/home/nfsuser:/usr/sbin/authpf
 ```
 
-Well, well, well... It would appear we have three different users here. They are `charlie`, `bob`, and `nfsuser`. Immediately, `nfsuser` appeared interesting to me given the naming convention. The username `nfsuser` can easily be attribute to an `nfs share!` Now, this is great and all, but I still don't know how to access these users, nor am I able to add my own `ssh` keys..
+Well, well, well... It would appear we have three different users here. They are `charlie`, `bob`, and `nfsuser`. Immediately, `nfsuser` appears interesting to me given the naming convention. The username `nfsuser` can easily be attribute to an `nfs share!` Now, this is great and all, but I still don't know how to access these users, nor am I able to add my own `ssh` keys..
 <p><br></p>
 
