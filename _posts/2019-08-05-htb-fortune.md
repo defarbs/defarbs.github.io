@@ -123,7 +123,6 @@ db=fortunes; id
 ```
 
 And the response:
-
 ```
 HTTP/1.1 200 OK
 Connection: close
