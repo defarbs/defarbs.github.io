@@ -86,7 +86,7 @@ Here's what I discovered upon navigating to `http://10.10.10.127/` in my browser
 
 Hmm... 
 
-Let's try capturing a request with `Burp Suite!`
+Let's try capturing a request with `Burp Suite`!
 
 ```
 POST /select HTTP/1.1
