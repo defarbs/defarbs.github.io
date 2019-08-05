@@ -123,7 +123,8 @@ db=fortunes; id
 
 And the response:
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 200 OK
+```
+HTTP/1.1 200 OK
 Connection: close
 Content-Type: text/html; charset=utf-8
 Date: Wed, 24 Jul 2019 12:27:19
@@ -144,6 +145,6 @@ uid=512(_fortune) gid=512(_fortune) groups=512(_fortune)
 </pre><p>
 <p>Try <a href='/'>again</a>!</p>
 </body>
-</code></pre></div></div>
+```
 
 Nice! We have code execution. Let's have a look around to see what else we can find.
