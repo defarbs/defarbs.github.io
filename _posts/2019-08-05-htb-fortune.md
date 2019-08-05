@@ -103,7 +103,7 @@ db=fortunes
 
 The `db` variable looks pretty spicy! 🌶️
 
-After running `wfuzz`, I discovered I could append a semi colon (;) and execute commands on the box, like so:
+After running `wfuzz`, I discovered I could append a semi colon (;) to `db` and execute commands on the box, like so:
 
 ```
 POST /select HTTP/1.1
