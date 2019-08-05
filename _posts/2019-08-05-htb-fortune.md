@@ -38,15 +38,17 @@ categories:
 
 <img src="/assets/img/writeups/HTB-FORTUNE/HTB-FORTUNE-BADGE.PNG" class="fortune-img" alt="Hack The Box - Fortune">
 
+<p><br></p>
+### TL;DR 
+There might not necessarily be anything "new" in this box if you've done all of the previous ones, but it's my absolute personal favorite. Thank you so much <a href="https://www.hackthebox.eu/home/users/profile/46317">AuxSarge</a> for creating it. I was so sad when it retired! 😢
+<p><br></p>
+
 ### Overview
 
 The `Fortune` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/46317">AuxSarge</a>) is a retired 50 point OpenBSD machine with some pretty interesting parts to it. If you have completed all of the previous boxes on HackTheBox, then `Fortune` should be pretty simple, as there is nothing particularly new introduced.
 The box starts with simple web enumeration to locate RCE found in the site's `db` variable, which occurs when a semi colon (;) is appended to the end of the `db`. Next, some files are located via the RCE that can be used to create a PKCS12 cert which permits access to port 443. From there, an SSH key is located to access the user called `nfsuser` and escalate to the user `charlie` by mounting a newly found nfs share. SSH keys for `charlie` are then used to access the user via SSH and enumerate further.
 Finally, there is a `pgadmin4` database running on the box which contains hashes for the root password. A file called `crypto.py` is utilized for `pgadmin4's` encoding/decoding process, and can be used here to decode the root password and ultimately grab the flag.
-<p><br></p>
-### TL;DR 
-This box is a fun ride! Let's get started with our `Nmap` scan!
-<p><br></p>
+
 ### Nmap Scan
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@rattLR:~/HTB-FORTUNE# nmap -sC -sV -A -Pn 10.10.10.127
