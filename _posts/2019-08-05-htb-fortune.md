@@ -46,7 +46,11 @@ There might not necessarily be anything "new" in this box if you've done all of 
 ### Overview
 
 The `Fortune` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/46317">AuxSarge</a>) is a retired 50 point OpenBSD machine with some pretty interesting parts to it. If you have completed all of the previous boxes on HackTheBox, then `Fortune` should be pretty simple, as there is nothing particularly new introduced.
+<p><br></p>
+
 The box starts with simple web enumeration to locate RCE found in the site's `db` variable, which occurs when a semi colon (;) is appended to the end of the `db`. Next, some files are located via the RCE that can be used to create a PKCS12 cert which permits access to port 443. From there, an SSH key is located to access the user called `nfsuser` and escalate to the user `charlie` by mounting a newly found nfs share. SSH keys for `charlie` are then used to access the user via SSH and enumerate further.
+<p><br></p>
+
 Finally, there is a `pgadmin4` database running on the box which contains hashes for the root password. A file called `crypto.py` is utilized for `pgadmin4's` encoding/decoding process, and can be used here to decode the root password and ultimately grab the flag.
 
 ### Nmap Scan
@@ -147,4 +151,20 @@ uid=512(_fortune) gid=512(_fortune) groups=512(_fortune)
 </body>
 ```
 
-Nice! We have code execution. Let's have a look around to see what else we can find.
+Nice! We have code execution. Let's have a look around to see what else we can find. 
+
+### Enumerating Users & User.txt
+
+(Shorted output for readability):
+
+```
+db=fortunes;cat /etc/passwd
+
+charlie:*:1000:1000:Charlie:/home/charlie:/bin/ksh
+bob:*:1001:1001::/home/bob:/bin/ksh
+nfsuser:*:1002:1002::/home/nfsuser:/usr/sbin/authpf
+```
+
+Well, well, well... It would appear we have three different users here. `charlie`, `bob`, and `nfsuser`. Immediately, `nfsuser` appeared interesting to me given the naming convention. The username `nfsuser` can easily be attribute to an `nfs share!` Now, this is great and all, but I still don't know how to access these users, nor am I able to add my own `ssh` keys..
+<p><br></p>
+
