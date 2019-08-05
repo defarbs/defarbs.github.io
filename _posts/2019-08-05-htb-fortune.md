@@ -76,7 +76,8 @@ PORT     STATE SERVICE VERSION
 |_ssl-date: TLS randomness does not represent time
 </code></pre></div></div>
 
-So, it appears port `443` is HTTPS (as expected), but it requires an SSL certificate to access it. I'll leave it alone for now because of this. However, port `80` proves to be quite interesting. 
+So, it appears port `443` is HTTPS (as expected), but it requires an SSL certificate to access it. I'll leave it alone for now because of this. However, port `80` proves to be quite interesting.
+<p><br></p>
 
 ### Web Enumeration
 
