@@ -46,9 +46,10 @@ The box starts with simple web enumeration to locate RCE found in the site's `db
 
 Finally, there is a `pgadmin4` database running on the box which contains hashes for the root password. A file called `crypto.py` is utilized for `pgadmin4's` encoding/decoding process, and can be used here to decode the root password and ultimately grab the flag.
 
-TL;DR, this box is a fun ride! Let's get started with our `Nmap` scan!
+## TL;DR 
+This box is a fun ride! Let's get started with our `Nmap` scan!
 
-###Nmap Scan
+### Nmap Scan
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@rattLR:~/HTB-FORTUNE# nmap -sC -sV -A -Pn 10.10.10.127
 
