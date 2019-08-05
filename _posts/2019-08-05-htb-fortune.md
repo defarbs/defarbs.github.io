@@ -76,7 +76,7 @@ So, it appears port `443` is HTTPS (as expected), but it requires an SSL certifi
 
 ### Web Enumeration
 
-Here's what I discovered upon navigating to `http://10.10.10.127` in my browser:
+Here's what I discovered upon navigating to `http://10.10.10.127/` in my browser:
 
 <img src="/assets/img/writeups/HTB-FORTUNE/fortune-homepage.PNG" class="fortune-img" alt="Hack The Box - Fortune Homepage">
 
