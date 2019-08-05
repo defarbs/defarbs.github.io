@@ -75,6 +75,6 @@ So, it appears port `443` is HTTPS (as expected), but it requires an SSL certifi
 
 <!--Include screenshot of web fortunes here-->
 
-Interesting... 
+Hmm... 
 
 Let's try capturing a request with `Burp Suite!`
