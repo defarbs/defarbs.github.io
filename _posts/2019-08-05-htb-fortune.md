@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Hack The Box: 'Help' Writeup"
+title:  "Hack The Box: 'Fortune' Writeup"
 image: ''
 date:   2019-08-05 00:09:53
 tags:
