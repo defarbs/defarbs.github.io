@@ -36,7 +36,7 @@ categories:
 	}
 </style>
 
-<img src="/assets/img/writeups/HTB-FORTUNE/HTB-FORTUNE-BADGE.png" class="fortune-img" alt="Hack The Box - Fortune">
+<img src="/assets/img/writeups/HTB-FORTUNE/HTB-FORTUNE-BADGE.PNG" class="fortune-img" alt="Hack The Box - Fortune">
 
 ### Overview
 
