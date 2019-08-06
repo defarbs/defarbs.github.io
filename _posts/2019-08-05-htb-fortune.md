@@ -36,6 +36,16 @@ categories:
 	}
 </style>
 
+<head>
+  <!-- add the button style & script -->
+  <link rel="stylesheet" href="/assets/css/applause-button.css" />
+  <script src="/assets/js/applause-button.js"></script>
+</head>
+<body>
+  <!-- add the button! -->
+  <applause-button style="width: 58px; height: 58px;"/>
+</body>
+
 <img src="/assets/img/writeups/HTB-FORTUNE/HTB-FORTUNE-BADGE.PNG" class="fortune-img" alt="Hack The Box - Fortune">
 
 <p><br></p>
