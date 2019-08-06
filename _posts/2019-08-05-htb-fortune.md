@@ -177,6 +177,13 @@ nfsuser:*:1002:1002::/home/nfsuser:/usr/sbin/authpf
 
 Well, well, well... It would appear we have three different users here. They are `charlie`, `bob`, and `nfsuser`. Immediately, `nfsuser` appears interesting to me given the naming convention. The username `nfsuser` can easily be attributed to an `nfs share`! Now, this is great and all, but I still don't know how to access these users, nor am I able to add my own `ssh` keys..
 <p><br></p>
+
+However, I did some snooping around and discovered some files in the user `bob`'s home directory (`/home/bob`). There was one cert file (`intermediate.cert.pem`) and one key file (`intermediate.key.pem`), which can be converted to a PKCS12 certificate. I used `openssl` to create the certificate, like so:
+
+```
+openssl pkcs12 -export -out fortune.htb.p12 -in intermediate.cert.pem -inkey intermediate.key.pem
+```
+I was then able to import the certificate with Firefox and access the (now unrestricted) `HTTPS` port, `443`.
 <div align="center">
 	<h3> Thanks for reading! </h3>
 </div>
