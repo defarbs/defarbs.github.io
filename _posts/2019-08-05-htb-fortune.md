@@ -158,7 +158,7 @@ Nice! We have code execution. Let's have a look around to see what else we can f
 
 ### Enumerating Users & Obtaining User.txt
 
-Shortened output for readability:
+(Shortened output for readability):
 
 ```
 db=fortunes;cat /etc/passwd
