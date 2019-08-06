@@ -187,10 +187,7 @@ I was then able to import the certificate with Firefox and access the (now unres
 
 The `HTTPS` homepage displayed this message upon my first visit:
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You will need to use the local authpf service to obtain 
-elevated network access. If you do not already have the appropriate
-SSH key pair, then you will need to <a href="https://10.10.10.127/generate">generate</a>
-one and configure your local system appropriately to proceed.
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You will need to use the local authpf service to obtain elevated network access. If you do not already have the appropriate SSH key pair, then you will need to <a href="https://10.10.10.127/generate">generate</a> one and configure your local system appropriately to proceed.
 </code></pre></div></div>
 
 I clicked on `generate` and it redirected me to a page that looked like this:
