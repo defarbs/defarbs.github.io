@@ -31,8 +31,8 @@ categories:
   background-color: #262626;
   color: white;
   cursor: pointer;
-  padding: 10px 15px 10px 15px;
-  border-radius: 1px;
+  padding: 10px 22px 10px 22px;
+  border-radius: 10px;
   font-family: 'Open Sans';
 }
 
@@ -62,7 +62,7 @@ applause-button {
 	}
 </style>
 
-<button onclick="topFunction()" id="myBtn" title="Go to top">Go to top</button>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 
 <script>
 // When the user scrolls down 20px from the top of the document, show the button
