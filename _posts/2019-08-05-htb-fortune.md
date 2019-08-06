@@ -35,16 +35,9 @@ categories:
 		display: block;
 	}
 </style>
-
-<head>
   <!-- add the button style & script -->
   <link rel="stylesheet" href="/assets/css/applause-button.css" />
   <script src="/assets/js/applause-button.js"></script>
-</head>
-<body>
-  <!-- add the button! -->
-  <applause-button style="width: 58px; height: 58px;"/>
-</body>
 
 <img src="/assets/img/writeups/HTB-FORTUNE/HTB-FORTUNE-BADGE.PNG" class="fortune-img" alt="Hack The Box - Fortune">
 
@@ -181,3 +174,7 @@ nfsuser:*:1002:1002::/home/nfsuser:/usr/sbin/authpf
 Well, well, well... It would appear we have three different users here. They are `charlie`, `bob`, and `nfsuser`. Immediately, `nfsuser` appears interesting to me given the naming convention. The username `nfsuser` can easily be attributed to an `nfs share`! Now, this is great and all, but I still don't know how to access these users, nor am I able to add my own `ssh` keys..
 <p><br></p>
 
+<footer>
+	<!-- add the button! -->
+	<applause-button style="width: 58px; height: 58px;"/>
+</footer>
