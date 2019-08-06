@@ -20,7 +20,6 @@ categories:
 <style>
 applause-button {
 		margin: auto;
-		overflow: hidden;
 	}
 
 	.header-site .site-title {

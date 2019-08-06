@@ -3,7 +3,6 @@ applause-button {
     cursor: pointer;
     align-content: center;
     margin: auto;
-    overflow: hidden;
 }
 
 applause-button .style-root {
@@ -84,7 +83,8 @@ applause-button .count-container {
 	top: -40%;
 	width: 100%;
 	color: gray;
-	user-select: none
+    user-select: none;
+    overflow: hidden;
 }
 
 applause-button .count-container .count {
