@@ -1,10 +1,11 @@
 applause-button {
 	position: relative;
-	cursor: pointer
+    cursor: pointer;
+    align-content: center;
 }
 
 applause-button .style-root {
-	position: center;
+	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
