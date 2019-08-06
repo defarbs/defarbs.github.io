@@ -688,7 +688,7 @@
                 key: "_updateRootColor",
                 value: function() {
                     if (this._styleRootElement) {
-                        var e = this.getAttribute("color") || "green",
+                        var e = this.getAttribute("color") || "#5d4d7a",
                             t = this._styleRootElement.style;
                         t.fill = e, t.stroke = e, t.color = e
                     }
