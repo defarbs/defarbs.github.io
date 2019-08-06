@@ -199,7 +199,7 @@ I clicked on `generate` and it redirected me to a page that looked like this:
 </div>
 <div align="center">
 <!-- add the button! -->
-<applause-button style="width: 58px; height: 58px;" color="#5d4d7a"/>
+<applause-button style="width: 58px; height: 58px;" color="#5d4d7a" url="defarbs.com/htb-fortune"/>
 </div>
 <div align="center">
 	<a href="https://www.hackthebox.eu/profile/39047">
