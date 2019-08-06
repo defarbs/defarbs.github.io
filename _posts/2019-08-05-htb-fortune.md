@@ -18,6 +18,11 @@ categories:
 ---
 
 <style>
+applause-button {
+		margin: auto;
+		overflow: hidden;
+	}
+
 	.header-site .site-title {
       	padding-top: 5px;
       	color: white;
@@ -173,5 +178,13 @@ nfsuser:*:1002:1002::/home/nfsuser:/usr/sbin/authpf
 
 Well, well, well... It would appear we have three different users here. They are `charlie`, `bob`, and `nfsuser`. Immediately, `nfsuser` appears interesting to me given the naming convention. The username `nfsuser` can easily be attributed to an `nfs share`! Now, this is great and all, but I still don't know how to access these users, nor am I able to add my own `ssh` keys..
 <p><br></p>
+<div align="center">
+	<h3> Thanks for reading! </h3>
+</div>
 <!-- add the button! -->
 <applause-button style="width: 58px; height: 58px;" color="#5d4d7a"/>
+<div align="center">
+	<a href="https://www.hackthebox.eu/profile/39047">
+		<img htb-logo="image" src="https://www.hackthebox.eu/badge/image/39047" alt="Hack The Box">
+	</a>
+</div>

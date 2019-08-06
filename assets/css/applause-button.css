@@ -3,6 +3,7 @@ applause-button {
     cursor: pointer;
     align-content: center;
     margin: auto;
+    overflow: hidden;
 }
 
 applause-button .style-root {
