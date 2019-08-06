@@ -2,6 +2,7 @@ applause-button {
 	position: relative;
     cursor: pointer;
     align-content: center;
+    margin: auto;
 }
 
 applause-button .style-root {
