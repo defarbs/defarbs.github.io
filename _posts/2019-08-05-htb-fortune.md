@@ -181,8 +181,10 @@ Well, well, well... It would appear we have three different users here. They are
 <div align="center">
 	<h3> Thanks for reading! </h3>
 </div>
+<div align="center">
 <!-- add the button! -->
 <applause-button style="width: 58px; height: 58px;" color="#5d4d7a"/>
+</div>
 <div align="center">
 	<a href="https://www.hackthebox.eu/profile/39047">
 		<img htb-logo="image" src="https://www.hackthebox.eu/badge/image/39047" alt="Hack The Box">
