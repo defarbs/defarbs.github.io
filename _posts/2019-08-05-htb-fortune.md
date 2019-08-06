@@ -184,6 +184,18 @@ However, I did some snooping around and discovered some files in the user `bob`'
 openssl pkcs12 -export -out fortune.htb.p12 -in intermediate.cert.pem -inkey intermediate.key.pem
 ```
 I was then able to import the certificate with Firefox and access the (now unrestricted) `HTTPS` port, `443`.
+
+The `HTTPS` homepage displayed this message upon my first visit:
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+You will need to use the local authpf service to obtain 
+elevated network access. If you do not already have the appropriate
+SSH key pair, then you will need to <a href="https://10.10.10.127/generate">generate</a>
+one and configure your local system appropriately to proceed.
+</code></pre></div></div>
+
+I clicked on `generate` and it redirected me to a page that looked like this:
+
 <div align="center">
 	<h3> Thanks for reading! </h3>
 </div>
