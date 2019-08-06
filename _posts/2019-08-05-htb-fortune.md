@@ -52,7 +52,7 @@ There might not necessarily be anything "new" in this box if you've done all of 
 
 ### Overview
 
-The `Fortune` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/46317">AuxSarge</a>) is a retired 50 point OpenBSD machine with some pretty interesting parts to it. If you have completed all of the previous boxes on HackTheBox, then `Fortune` should be pretty simple, as there is nothing particularly new introduced.
+The `Fortune` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/46317">AuxSarge</a>) is a retired 50 point OpenBSD machine with some pretty interesting parts to it. If you have completed all of the previous boxes on Hack The Box, then `Fortune` should be pretty simple, as there is nothing particularly new introduced.
 <p><br></p>
 
 The box starts with simple web enumeration to locate RCE found in the site's `db` variable, which occurs when a semi colon (;) is appended to the end of the `db`. Next, some files are located via the RCE that can be used to create a PKCS12 certificate which permits access to port 443. From there, an SSH key is located to access the user called `nfsuser` and escalate to the user `charlie` by mounting a newly found nfs share and using `su` to access `charlie` with a local user that has the same UID. SSH keys for `charlie` are then used to access the user via SSH and enumerate further.
