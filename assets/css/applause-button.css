@@ -8,7 +8,10 @@ applause-button .style-root {
 	top: 0;
 	left: 0;
 	right: 0;
-	bottom: 0
+    bottom: 0;
+    color: #5d4d7a;
+    stroke: #5d4d7a;
+    fill: #5d4d7a;
 }
 
 applause-button .style-root:after {
