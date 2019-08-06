@@ -163,7 +163,7 @@ uid=512(_fortune) gid=512(_fortune) groups=512(_fortune)
 Nice! We have code execution. Let's have a look around to see what else we can find. 
 <p><br></p>
 
-### Enumerating Users & Obtaining User.txt
+### File Enumeration & NFS Share Access
 
 (Shortened output for readability):
 
