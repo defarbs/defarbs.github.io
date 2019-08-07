@@ -107,7 +107,7 @@ Finally, there is a `pgadmin4` database running on the box which contains hashes
 
 ### Nmap Scan
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@rattLR:~/HTB-FORTUNE# nmap -sC -sV -A -Pn 10.10.10.127
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/HTB-FORTUNE# nmap -sC -sV -A -Pn 10.10.10.127
 
 Starting Nmap 7.70 ( https://nmap.org ) at 2019-07-24 11:27 EST
 Nmap scan report for 10.10.10.127
