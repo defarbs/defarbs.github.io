@@ -238,6 +238,8 @@ to <a href="https://10.10.10.127/generate">generate</a> one and configure your l
 
 I clicked on `generate` and it redirected me to a page that looked like this:
 
+## Writeup In Progress... Stay tuned!
+
 <div align="center">
 	<h3> Thanks for reading! </h3>
 </div>
