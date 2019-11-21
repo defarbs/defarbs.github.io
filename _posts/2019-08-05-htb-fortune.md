@@ -339,28 +339,28 @@ After a bit of digging, I found that the dba's password to the `PostgreSQL` data
 
 I looked up `pgadmin4` online and found the open source GitHub page for it. Upon sifting through some of the code, I found these lines around the line ~250 mark:
 
-```
+```python
   try:
-    password = decrypt(encpass, user.password)
-    # Handling of non ascii password (Python2)
-    if hasattr(str, 'decode'):
-      password = password.decode('utf-8').encode('utf-8')
-    # password is in bytes, for python3 we need it in string
-    elif isinstance(password, bytes):
-      password = password.decode()
+      password = decrypt(encpass, user.password)
+      # Handling of non ascii password (Python2)
+      if hasattr(str, 'decode'):
+          password = password.decode('utf-8').encode('utf-8')
+        # password is in bytes, for python3 we need it in string
+      elif isinstance(password, bytes):
+          password = password.decode()
 
   except Exception as e:
-    manager.stop_ssh_tunnel()
-    current_app.logger.exception(e)
-    return False, \
-      _(
-        "Failed to decrypt the saved password.\nError: {0}"
-      ).format(str(e))
+      manager.stop_ssh_tunnel()
+      current_app.logger.exception(e)
+      return False, \
+          _(
+              "Failed to decrypt the saved password.\nError: {0}"
+          ).format(str(e))
 ```
 
 At the top, I noticed that the decryption key is pulled from the `user.password`, which can actually already be found in the `pgadmin4.db` file. At this point, I wanted to understand how the `decrypt()` function was working. The code for it can be found here:
 
-```
+```python
 def decrypt(ciphertext, key):
     """
     Decrypt the AES encrypted string.
@@ -399,7 +399,7 @@ This is perfect, because all of the parameters are already found in the `pgadmin
 
 Once I opened the database with `sqlite3`, I ran `.tables` to check what tables existed in the database.
 
-```
+```sql
 sqlite> .tables
 alembic_version              roles_users                
 debugger_function_arguments  server                     
@@ -413,14 +413,14 @@ role
 
 I ended up determining that the `server` table contained the username and password contents for the database administrator:
 
-```
+```sql
 sqlite> select username,password from server;
 dba|utUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgESGz
 ```
 
 In addition, I could grab user password hashes as keys like so:
 
-```
+```sql
 sqlite> select email,password from user;
 charlie@fortune.htb|$pbkdf2-sha512$25000$3hvjXAshJKQUYgxhbA0BYA$iuBYZKTTtTO.cwSvMwPAYlhXRZw8aAn9gBtyNQW3Vge23gNUMe95KqiAyf37.v1lmCunWVkmfr93Wi6.W.UzaQ
 bob@fortune.htb|$pbkdf2-sha512$25000$z9nbm1Oq9Z5TytkbQ8h5Dw$Vtx9YWQsgwdXpBnsa8BtO5kLOdQGflIZOQysAy7JdTVcRbv/6csQHAJCAIJT9rLFBawClFyMKnqKNL5t3Le9vg
@@ -432,7 +432,7 @@ I added a couple lines at the bottom of the file that would create a variable ca
 
 Here is my finalized code for the `crypto.py` file:
 
-```
+```python
 import base64
 import hashlib
 
