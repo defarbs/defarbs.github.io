@@ -332,8 +332,30 @@ Cheers,
 
 Bob
 ```
+Looks like `Bob` decided to drop us a hint about the `pgadmin4` database! Bob appears to have set the database admin's password to the same thing as the `root` password. With this in mind, I started snooping around to see if I could find the `pgadmin4` database on the box in order to thusly attempt to read its contents.
 
+After a bit of digging, I found that the dba's password to the `PostgreSQL` database actually resides in an `SQLite3` database located at `/var/appsrv/pgadmin4/pgadmin4.db`.
 
+Once I opened the database with `sqlite3`, I ran `.tables` to check what tables existed in the database.
+
+```
+sqlite> .tables
+alembic_version              roles_users                
+debugger_function_arguments  server                     
+keys                         servergroup                
+module_preference            setting                    
+preference_category          user                       
+preferences                  user_preferences           
+process                      version                    
+role 
+```
+
+From here, I ended up determining that the `server` table contained the username and password contents for the database administrator:
+
+```
+sqlite> select username,password from server;
+dba|utUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgESGz
+```
 
 ## Writeup In Progress... Stay tuned!
 
