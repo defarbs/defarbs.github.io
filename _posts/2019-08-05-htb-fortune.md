@@ -229,6 +229,10 @@ openssl pkcs12 -export -out fortune.htb.p12 -in intermediate.cert.pem -inkey int
 ```
 I was then able to import the certificate with Firefox and access the (now unrestricted) `HTTPS` port, `443`.
 
+This is the prompt I received upon importing my certificate:
+
+<img src="/assets/img/writeups/HTB-FORTUNE/fortune-cert-prompt.PNG" class="fortune-img" alt="Hack The Box - Fortune Homepage">
+
 The `HTTPS` homepage displayed this message upon my first visit:
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You will need to use the local authpf service to obtain elevated network access. 
@@ -237,6 +241,12 @@ to <a href="https://10.10.10.127/generate">generate</a> one and configure your l
 </code></pre></div></div>
 
 I clicked on `generate` and it redirected me to a page that looked like this:
+
+<img src="/assets/img/writeups/HTB-FORTUNE/fortune-generate-page.PNG" class="fortune-img" alt="Hack The Box - Fortune Homepage">
+
+An SSH keypair appeared!
+
+
 
 ## Writeup In Progress... Stay tuned!
 
