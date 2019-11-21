@@ -264,7 +264,7 @@ So, there appears to be some interesting output here. After authenticating via S
 I ended up managing to mount `/home` locally by running the `mount` command like so:
 
 ```
-mount -t nfs -o rw,auto,noatime 10.10.10.127:/home home
+mount -t nfs 10.10.10.127:/home /temp -o nolock
 ```
 
 ## Writeup In Progress... Stay tuned!
