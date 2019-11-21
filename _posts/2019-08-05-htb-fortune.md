@@ -267,7 +267,7 @@ I ended up managing to mount `/home` locally by running the `mount` command like
 ```
 mount -t nfs 10.10.10.127:/home /temp -o nolock
 ```
-I already had the empty `/temp` directory created beforehand. Once the share is mounted, we can check to see what is there:
+I already had the empty `/temp` directory created beforehand. Once the share was mounted, I checked to see what was there:
 
 ```
 +[root@kali: temp]$ ls -al
