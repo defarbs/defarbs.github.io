@@ -288,7 +288,7 @@ farbs@kali:/temp/charlie$ wc -c user.txt
 ```
 And... we got `user.txt`!
 
-From here, I went ahead and generated my own ssh keypair and then added my public key to `charlie's` `authorized_keys` file so I could ssh in as `charlie`. 
+From here, I went ahead and generated my own ssh keypair and then added my public key to the `authorized_keys` file belonging to `charlie` so I could ssh in as `charlie`. 
 
 Once I had my ssh keypair generated, I added it to the `authorized_keys` file:
 
