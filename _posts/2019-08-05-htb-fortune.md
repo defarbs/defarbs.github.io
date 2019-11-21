@@ -245,6 +245,7 @@ I clicked on `generate` and it redirected me to a page that looked like this:
 <a href="https://defarbs.com/assets/img/writeups/HTB-FORTUNE/fortune-generate-page.PNG">
   <img src="/assets/img/writeups/HTB-FORTUNE/fortune-generate-page.PNG" class="fortune-img" alt="Hack The Box - Fortune Homepage">
 <a>
+
 Note: If the above image is too small, click it to expand!
 
 It looks like an SSH keypair appeared!
