@@ -242,11 +242,24 @@ to <a href="https://10.10.10.127/generate">generate</a> one and configure your l
 
 I clicked on `generate` and it redirected me to a page that looked like this:
 
-<img src="/assets/img/writeups/HTB-FORTUNE/fortune-generate-page.PNG" class="fortune-img" alt="Hack The Box - Fortune Homepage">
+<a href="https://defarbs.com/assets/img/writeups/HTB-FORTUNE/fortune-generate-page.PNG">
+  <img src="/assets/img/writeups/HTB-FORTUNE/fortune-generate-page.PNG" class="fortune-img" alt="Hack The Box - Fortune Homepage">
+<a>
+# Note: If the above image is too small, click it to expand!
 
-An SSH keypair appeared!
+It looks like an SSH keypair appeared!
 
+<img src="/assets/img/writeups/HTB-FORTUNE/surprised-pikachu.jpg" class="fortune-img" alt="Surprised Pikachu!">
 
+This is great, because it means we can now access a user account! I threw the newly found keypair into respective files (`nfsuser_rsa` and `nfsuser_rsa.pub`). After doing some digging around with the RCE mentioned earlier, I noticed that `authpf` was installed, which is why I thusly associated the keys with the `nfsuser` account. I then tried using the ssh keypair I found at `/generate` to log in via SSH, like so:
+
+```
++[root@kali: keys]$ ssh -i nfsuser_rsa nfsuser@10.10.10.127
+
+Hello nfsuser. You are authenticated from host "10.10.14.34"
+```
+
+So, there appears to be some interesting output here.
 
 ## Writeup In Progress... Stay tuned!
 
