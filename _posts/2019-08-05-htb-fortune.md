@@ -259,7 +259,13 @@ This is great, because it means we can now access a user account! I threw the ne
 Hello nfsuser. You are authenticated from host "10.10.14.34"
 ```
 
-So, there appears to be some interesting output here.
+So, there appears to be some interesting output here. After authenticating via SSH, I ran another nmap scan to see what was *really* happening here. It turns out, logging in via SSH as `nfsuser` allows us to mount the `/home` directory as anyone we want! During prior enumeration, I located two other users: `bob` and `charlie`. I have already accessed `bob's` directory, but have not been able to access `charlie`. 
+
+I ended up managing to mount `/home` locally by running the `mount` command like so:
+
+```
+mount -t nfs -o rw,auto,noatime 10.10.10.127:/home home
+```
 
 ## Writeup In Progress... Stay tuned!
 
