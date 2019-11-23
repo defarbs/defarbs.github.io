@@ -97,6 +97,96 @@ The `Chainsaw` machine on Hack The Box (created by <a href="https://www.hacktheb
 With all of that being said... Time to get crackin'! 
 <p><br></p>
 
+### Nmap Scan
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> nmap -p- -sCV -A -Pn 10.10.10.142 > nmap_scan_full_chainsaw.nmap
+Starting Nmap 7.80 ( https://nmap.org ) at 2019-11-23 13:36 EST
+Nmap scan report for 10.10.10.142
+Host is up (0.037s latency).
+
+PORT     STATE SERVICE VERSION
+21/tcp   open  ftp     vsftpd 3.0.3
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| -rw-r--r--    1 1001     1001        23828 Dec 05  2018 WeaponizedPing.json
+| -rw-r--r--    1 1001     1001          243 Dec 12  2018 WeaponizedPing.sol
+|_-rw-r--r--    1 1001     1001           44 Nov 23 17:17 address.txt
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to ::ffff:10.10.14.34
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 1
+|      vsFTPd 3.0.3 - secure, fast, stable
+|_End of status
+22/tcp   open  ssh     OpenSSH 7.7p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 02:dd:8a:5d:3c:78:d4:41:ff:bb:27:39:c1:a2:4f:eb (RSA)
+|   256 3d:71:ff:d7:29:d5:d4:b2:a6:4f:9d:eb:91:1b:70:9f (ECDSA)
+|_  256 7e:02:da:db:29:f9:d2:04:63:df:fc:91:fd:a2:5a:f2 (ED25519)
+9810/tcp open  unknown
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.1 400 Bad Request
+|     Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, User-Agent
+|     Access-Control-Allow-Origin: *
+|     Access-Control-Allow-Methods: *
+|     Content-Type: text/plain
+|     Date: Sat, 23 Nov 2019 18:37:25 GMT
+|     Connection: close
+|     Request
+|   GetRequest: 
+|     HTTP/1.1 400 Bad Request
+|     Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, User-Agent
+|     Access-Control-Allow-Origin: *
+|     Access-Control-Allow-Methods: *
+|     Content-Type: text/plain
+|     Date: Sat, 23 Nov 2019 18:37:24 GMT
+|     Connection: close
+|     Request
+|   HTTPOptions: 
+|     HTTP/1.1 200 OK
+|     Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, User-Agent
+|     Access-Control-Allow-Origin: *
+|     Access-Control-Allow-Methods: *
+|     Content-Type: text/plain
+|     Date: Sat, 23 Nov 2019 18:37:24 GMT
+|_    Connection: close
+</code></pre></div></div>
+
+I immediately notice there is an FTP server with `anonymous` login allowed, so I check that first using `ftp`:
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+[root@rattLR: HTB-CHAINSAW]$ ftp 10.10.10.142
+Connected to 10.10.10.142.
+220 (vsFTPd 3.0.3)
+Name (10.10.10.142:root): anonymous
+331 Please specify the password.
+Password:
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
++ftp> mget *
++mget WeaponizedPing.json? 
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for WeaponizedPing.json (23828 bytes).
+226 Transfer complete.
+23828 bytes received in 0.04 secs (526.2219 kB/s)
++mget WeaponizedPing.sol? 
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for WeaponizedPing.sol (243 bytes).
+226 Transfer complete.
+243 bytes received in 0.00 secs (2.3891 MB/s)
++mget address.txt? 
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for address.txt (44 bytes).
+226 Transfer complete.
+44 bytes received in 0.00 secs (343.7500 kB/s)
+</code></pre></div></div>
+
 <div align="center">
 	<h3> Thanks for reading! </h3>
 </div>
