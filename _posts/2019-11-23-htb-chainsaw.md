@@ -89,3 +89,16 @@ function topFunction() {
 <script src="/assets/js/applause-button.js"></script>
 
 <img src="/assets/img/writeups/HTB-CHAINSAW/HTB-CHAINSAW-BADGE.PNG" class="chainsaw-img" alt="Hack The Box - Chainsaw">
+
+<div align="center">
+	<h3> Thanks for reading! </h3>
+</div>
+<div align="center">
+<!-- add the button! -->
+<applause-button style="width: 58px; height: 58px;" color="#5d4d7a" url="https://defarbs.com/"/>
+</div>
+<div align="center">
+	<a href="https://www.hackthebox.eu/profile/39047">
+		<img htb-logo="image" src="https://www.hackthebox.eu/badge/image/39047" alt="Hack The Box">
+	</a>
+</div>
