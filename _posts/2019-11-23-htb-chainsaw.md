@@ -158,7 +158,7 @@ PORT     STATE SERVICE VERSION
 |_    Connection: close
 </code></pre></div></div>
 
-I immediately notice there is an FTP server with `anonymous` login allowed, so I check that first using `ftp`:
+I immediately notice there is an FTP server with `anonymous` login allowed, so I check that first using `ftp`. There are a few files there, so I go ahead and grab all of them.
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+[root@rattLR: HTB-CHAINSAW]$ ftp 10.10.10.142
 Connected to 10.10.10.142.
@@ -169,6 +169,13 @@ Password:
 230 Login successful.
 Remote system type is UNIX.
 Using binary mode to transfer files.
++ftp> dir
+200 PORT command successful. Consider using PASV.
+150 Here comes the directory listing.
+-rw-r--r--    1 1001     1001        23828 Dec 05  2018 WeaponizedPing.json
+-rw-r--r--    1 1001     1001          243 Dec 12  2018 WeaponizedPing.sol
+-rw-r--r--    1 1001     1001           44 Nov 23 17:17 address.txt
+226 Directory send OK.
 +ftp> mget *
 +mget WeaponizedPing.json? 
 200 PORT command successful. Consider using PASV.
