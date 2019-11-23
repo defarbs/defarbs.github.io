@@ -1,10 +1,11 @@
 ---
 layout: post
 title:  "Hack The Box: 'Fortune' Writeup"
-image: ''
+image: '/assets/img/writeups/HTB-FORTUNE/HTB-FORTUNE-BADGE.PNG'
 date:   2019-08-05 00:09:53
 tags:
 - hackthebox
+- open-bsd
 - pkcs12 certificate
 - RCE
 - nfs share
