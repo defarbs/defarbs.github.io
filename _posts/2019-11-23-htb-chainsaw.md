@@ -99,7 +99,7 @@ With all of that being said... Time to get crackin'!
 
 ### Nmap Scan
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> nmap -p- -sCV -A -Pn 10.10.10.142 > nmap_scan_full_chainsaw.nmap
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+[root@rattLR: HTB-CHAINSAW]$ nmap -p- -sCV -A -Pn 10.10.10.142 > nmap_scan_full_chainsaw.nmap
 Starting Nmap 7.80 ( https://nmap.org ) at 2019-11-23 13:36 EST
 Nmap scan report for 10.10.10.142
 Host is up (0.037s latency).
