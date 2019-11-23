@@ -97,6 +97,8 @@ The `Chainsaw` machine on Hack The Box (created by <a href="https://www.hacktheb
 With all of that being said... Time to get crackin'! 
 <p><br></p>
 
+As usual, I started with my initial `nmap` scan for general port discovery and service enumeration.
+
 ### Nmap Scan
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+[root@rattLR: HTB-CHAINSAW]$ nmap -p- -sCV -A -Pn 10.10.10.142 > nmap_scan_full_chainsaw.nmap
@@ -158,7 +160,7 @@ PORT     STATE SERVICE VERSION
 |_    Connection: close
 </code></pre></div></div>
 
-I immediately notice there is an FTP server with `anonymous` login allowed, so I check that first using `ftp`. There are a few files there, so I go ahead and grab all of them.
+I immediately noticed there was an FTP server with `anonymous` login allowed, so I checked that first using `ftp`. There were a few files there, so I went ahead and grabbed all of them.
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+[root@rattLR: HTB-CHAINSAW]$ ftp 10.10.10.142
 Connected to 10.10.10.142.
