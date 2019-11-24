@@ -163,7 +163,7 @@ PORT     STATE SERVICE VERSION
 
 I immediately noticed there was an FTP server with `anonymous` login allowed, so I checked that first using `ftp`. There were a few files there, so I went ahead and grabbed all of them.
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+[root@rattLR: HTB-CHAINSAW]$ ftp 10.10.10.142
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+[root@kali: HTB-CHAINSAW]$ ftp 10.10.10.142
 Connected to 10.10.10.142.
 220 (vsFTPd 3.0.3)
 Name (10.10.10.142:root): anonymous
