@@ -98,6 +98,7 @@ With all of that being said... Time to get crackin'!
 <p><br></p>
 
 As usual, I started with my initial `nmap` scan for general port discovery and service enumeration.
+<p><br></p>
 
 ### Nmap Scan
 
