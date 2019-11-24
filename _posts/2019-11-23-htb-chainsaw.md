@@ -161,6 +161,8 @@ PORT     STATE SERVICE VERSION
 |_    Connection: close
 </code></pre></div></div>
 
+### FTP Enumeration
+
 I immediately noticed there was an FTP server with `anonymous` login allowed, so I checked that first using `ftp`. There were a few files there, so I went ahead and grabbed all of them.
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+[root@kali: HTB-CHAINSAW]$ ftp 10.10.10.142
@@ -196,6 +198,132 @@ Using binary mode to transfer files.
 226 Transfer complete.
 44 bytes received in 0.00 secs (343.7500 kB/s)
 </code></pre></div></div>
+
+The contents of the files are as follows:
+
+`WeaponizedPing.json`:
+
+```json
++[root@kali: HTB-CHAINSAW]$ cat WeaponizedPing.json
+{
+  "contractName": "WeaponizedPing",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getDomain",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_value",
+          "type": "string"
+        }
+      ],
+      "name": "setDomain",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x60806040526040805190810160405280600a81526020017f676f6f676c652e636f6d000000000000000000000000000000000000000000008152506000908051906020019061004f929190610062565b5034801561005c57600080fd5b50610107565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106100a357805160ff19168380011785556100d1565b828001600101855582156100d1579182015b828111156100d05782518255916020019190600101906100b5565b5b5090506100de91906100e2565b5090565b61010491905b808211156101005760008160009055506001016100e8565b5090565b90565b6102d7806101166000396000f30060806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063b68d180914610051578063e5eab096146100e1575b600080fd5b34801561005d57600080fd5b5061006661014a565b6040518080602001828103825283818151815260200191508051906020019080838360005b838110156100a657808201518184015260208101905061008b565b50505050905090810190601f1680156100d35780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3480156100ed57600080fd5b50610148600480360381019080803590602001908201803590602001908080601f01602080910402602001604051908101604052809392919081815260200183838082843782019150505050505091929192905050506101ec565b005b606060008054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156101e25780601f106101b7576101008083540402835291602001916101e2565b820191906000526020600020905b8154815290600101906020018083116101c557829003601f168201915b5050505050905090565b8060009080519060200190610202929190610206565b5050565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061024757805160ff1916838001178555610275565b82800160010185558215610275579182015b82811115610274578251825591602001919060010190610259565b5b5090506102829190610286565b5090565b6102a891905b808211156102a457600081600090555060010161028c565b5090565b905600a165627a7a72305820d5d4d99bdb5542d8d65ef822d8a98c80911c2c3f15d609d10003ccf4227858660029",
+  "deployedBytecode": "0x60806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063b68d180914610051578063e5eab096146100e1575b600080fd5b34801561005d57600080fd5b5061006661014a565b6040518080602001828103825283818151815260200191508051906020019080838360005b838110156100a657808201518184015260208101905061008b565b50505050905090810190601f1680156100d35780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3480156100ed57600080fd5b50610148600480360381019080803590602001908201803590602001908080601f01602080910402602001604051908101604052809392919081815260200183838082843782019150505050505091929192905050506101ec565b005b606060008054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156101e25780601f106101b7576101008083540402835291602001916101e2565b820191906000526020600020905b8154815290600101906020018083116101c557829003601f168201915b5050505050905090565b8060009080519060200190610202929190610206565b5050565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061024757805160ff1916838001178555610275565b82800160010185558215610275579182015b82811115610274578251825591602001919060010190610259565b5b5090506102829190610286565b5090565b6102a891905b808211156102a457600081600090555060010161028c565b5090565b905600a165627a7a72305820d5d4d99bdb5542d8d65ef822d8a98c80911c2c3f15d609d10003ccf4227858660029",
+  "sourceMap": "27:210:1:-;;;56:27;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;27:210;8:9:-1;5:2;;;30:1;27;20:12;5:2;27:210:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;",
+  "deployedSourceMap": "27:210:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;88:75;;8:9:-1;5:2;;;30:1;27;20:12;5:2;88:75:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;88:75:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;166:68;;8:9:-1;5:2;;;30:1;27;20:12;5:2;166:68:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;88:75;130:6;153:5;146:12;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;88:75;:::o;166:68::-;223:6;215:5;:14;;;;;;;;;;;;:::i;:::-;;166:68;:::o;27:210::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity ^0.4.24;\n\n\ncontract WeaponizedPing {\n\n  string store = \"google.com\";\n\n  function getDomain() public view returns (string) {\n      return store;\n  }\n  function setDomain(string _value) public {\n      store = _value;\n  }\n\n}\n\n",
+  "sourcePath": "/opt/WeaponizedPing/WeaponizedPing.sol",
+  "ast": {
+    "absolutePath": "/opt/WeaponizedPing/WeaponizedPing.sol",
+    "exportedSymbols": {
+      "WeaponizedPing": [
+        80
+      ]
+    },
+----------
+ Redacted
+----------
+  "networks": {
+    "1543936419890": {
+      "events": {},
+      "links": {},
+      "address": "0xaf6ce61d342b48cc992820a154fe0f533e5e487c",
+      "transactionHash": "0x5e94c662f1048fca58c07e16506f1636391f757b07c1b6bb6fbb4380769e99e1"
+    }
+  },
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-12-04T15:24:57.205Z"
+}
+```
+
+`WeaponizedPing.sol`:
+
+```javascript
++[root@kali: HTB-CHAINSAW]$ cat WeaponizedPing.sol 
+pragma solidity ^0.4.24;
+
+contract WeaponizedPing 
+{
+  string store = "google.com";
+
+  function getDomain() public view returns (string) 
+  {
+      return store;
+  }
+
+  function setDomain(string _value) public 
+  {
+      store = _value;
+  }
+}
+```
+
+`address.txt`:
+
+```
+0x59573303cEe70289D95660564e6013F3BF55B10f
+```
+
+### WeaponizedPing File Contents & Analysis
+
+This appears to be exactly what is needed to produce a smart contract. These smart contracts are written in a language called Solidity -- most people tend to associate it with popular blockchain platforms, such as Ethereum. 
+<p><br></p>
+The smart contract `WeaponizedPing.sol` appears to have two interesting functions as well, both of which are returning the same value (`store`).
+<p><br></p>
+
+The first function is `getDomain()`. It returns the value of `store`, with the value of `store` set to `google.com`.
+
+```javascript
+contract WeaponizedPing 
+{
+  string store = "google.com";
+
+  function getDomain() public view returns (string) 
+  {
+      return store;
+  }
+```
+
+The second function is `setDomain`, which takes the input of *some string value* (`_value`) and changes the original value of `store` to the new *some string value* (`_value`):
+
+```javascript
+  function setDomain(string _value) public 
+  {
+      store = _value;
+  }
+```
+
+
 
 <div align="center">
 	<h3> Thanks for reading! </h3>
