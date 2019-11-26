@@ -363,7 +363,7 @@ Finally, I added a `print()` statement to make sure I was connecting properly, w
 True
 ```
 
-So now that `web3.isConnected()` returns `True`, I can begin attempting to exploit the service.
+So now that `web3.isConnected()` returned `True`, I began attempting to exploit the service.
 <p><br></p>
 
 <div align="center">
