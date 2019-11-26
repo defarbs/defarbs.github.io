@@ -328,7 +328,7 @@ So from here, I began writing my manual exploit to try and get an initial shell 
 I started by importing required modules with `python`. I initially had to install `web3` 
 prior to importing it with python, so I went ahead and did that first:
 
-```
+```python
 pip3 install web3
 ```
 
