@@ -332,7 +332,39 @@ prior to importing it with python, so I went ahead and did that first:
 pip3 install web3
 ```
 
-I then imported `web3` as it's a required module to interact with the smart contracts, as well as `HTTPProvider`, as I received quite a few HTTP response headers when I ran my initial `nmap` scan, so I figured it would be safe to include at this stage. I also imported `json` because it is necessary to import the application binary interface, which happens to be a `json` file (`WeaponizedPing.json`).
+I then imported `web3` as it's a required module to interact with the smart contracts, as well as `HTTPProvider`, as I received quite a few HTTP response headers when I ran my initial `nmap` scan, so I figured it would be safe to include at this stage:
+
+```python
+from web3 import Web3, HTTPProvider
+```
+
+I also imported `json` because it is necessary to import the application binary interface, which happens to be a `json` file (`WeaponizedPing.json`).
+
+```python
+import json
+```
+
+I then went ahead and specified my first variable, which is `url`. I set `url` to the machine IP with port `9810` appended to it, since this is the port we will be using to communicate with the Ethereum client on:
+
+```python
+url = "http://10.10.10.142:9810"
+```
+
+Next, I created a `web3` variable to initiate a web connection:
+
+```python
+web3 = Web3(Web3.HTTPProvider(url))
+```
+
+Finally, I added a `print()` statement to make sure I was connecting properly, which I later removed as it was no longer needed. This step is simply to ensure the connection is being made before moving forward:
+
+```python
++>>> print(web3.isConnected())
+True
+```
+
+So now that `web3.isConnected()` returns `True`, I can begin attempting to exploit the service.
+<p><br></p>
 
 <div align="center">
 	<h3> Thanks for reading! </h3>
