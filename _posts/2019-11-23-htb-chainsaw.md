@@ -323,7 +323,16 @@ The second function is `setDomain`, which takes the input of *some string value*
   }
 ```
 
+So from here, I began writing my manual exploit to try and get an initial shell from the smart contract code already provided.
+<p><br></p>
+I started by importing required modules with `python`. I initially had to install `web3` 
+prior to importing it with python, so I went ahead and did that first:
 
+```
+pip3 install web3
+```
+
+I then imported `web3` as it's a required module to interact with the smart contracts, as well as `HTTPProvider`, as I received quite a few HTTP response headers when I ran my initial `nmap` scan, so I figured it would be safe to include at this stage. I also imported `json` because it is necessary to import the application binary interface, which happens to be a `json` file (`WeaponizedPing.json`).
 
 <div align="center">
 	<h3> Thanks for reading! </h3>
