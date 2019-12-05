@@ -372,6 +372,8 @@ True
 So now that `web3.isConnected()` returned `True`, I began attempting to exploit the service.
 <p><br></p>
 
+### Writeup still in progress... Check back later for more!
+
 <div align="center">
 	<h3> Thanks for reading! </h3>
 </div>
