@@ -327,7 +327,7 @@ The second function is `setDomain`, which takes the input of *some string value*
   }
 ```
 
-### Smart Contract Exploitation
+### Smart Contract Exploit Verification
 
 So from here, I began writing my exploit to try and get an initial shell from the smart contract code already provided.
 <p><br></p>
@@ -371,6 +371,10 @@ True
 
 So now that `web3.isConnected()` returned `True`, I began attempting to exploit the service.
 <p><br></p>
+
+### Smart Contract Exploitation
+
+
 
 ### Writeup still in progress... Check back later for more!
 
