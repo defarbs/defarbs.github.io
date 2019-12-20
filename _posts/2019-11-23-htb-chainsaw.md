@@ -302,7 +302,7 @@ contract WeaponizedPing
 
 This appears to be exactly what is needed to produce a smart contract. These smart contracts are written in a language called Solidity -- most people tend to associate it with popular blockchain platforms, such as Ethereum. 
 <p><br></p>
-The smart contract `WeaponizedPing.sol` appears to have two interesting functions as well, both of which are returning the same value (`store`).
+The file `WeaponizedPing.sol` appears to have two interesting functions as well, both of which are returning the same value (`store`).
 <p><br></p>
 
 The first function is `getDomain()`. It returns the value of `store`, where the value of `store` is set to `google.com`.
