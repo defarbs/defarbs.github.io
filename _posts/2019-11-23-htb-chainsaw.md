@@ -710,6 +710,14 @@ QmegE6RZe59xf1TyDdhhcNnMrsevsfuJHUynLuRc4yf6V1 10083 laraaxelrod600-protonmail-2
 QmXwXzVYKgYZEXU1dgCKeejT87Knw9nydGcuUZrjwNb2Me 10092 wendyrhoades600-protonmail-2018-12-13T20_50_15+01_00.eml
 ```
 
+If you are searching for a more efficient way of locating the file, this one-liner is a simple way of running through each file quickly and determining its contents:
+
+```bash
+for i in $(ipfs refs local); do ipfs ls $i; done;
+```
+
+This will lead to the `.eml` files being displayed, similarly to the above example.
+
 I was only interested in the one belonging to `bobby` (for obvious reasons), so I used `ipfs get <hash>` in order to grab the file:
 
 ```python
@@ -925,6 +933,80 @@ Username: farbs
 Password: 
 [*] Wrong credentials!
 ```
+
+So it's looking a lot like there will be more smart contract exploitation here. Digging deeper, I decided to take a look at the `Chainsaw.sol` file to get an idea of the functions I was working with:
+<p><br></p>
+
+`ChainsawClub.sol`:
+
+```c++
+bobby@chainsaw:~/projects/ChainsawClub$ cat ChainsawClub.sol
+pragma solidity ^0.4.22;
+
+contract ChainsawClub {
+
+  string username = 'nobody';
+  string password = '7b455ca1ffcb9f3828cfdde4a396139e';
+  bool approve = false;
+  uint totalSupply = 1000;
+  uint userBalance = 0;
+
+  function getUsername() public view returns (string) {
+      return username;
+  }
+  function setUsername(string _value) public {
+      username = _value;
+  }
+  function getPassword() public view returns (string) {
+      return password;
+  }
+  function setPassword(string _value) public {
+      password = _value;
+  }
+  function getApprove() public view returns (bool) {
+      return approve;
+  }
+  function setApprove(bool _value) public {
+      approve = _value;
+  }
+  function getSupply() public view returns (uint) {
+      return totalSupply;
+  }
+  function getBalance() public view returns (uint) {
+      return userBalance;
+  }
+  function transfer(uint _value) public {
+      if (_value > 0 && _value <= totalSupply) {
+          totalSupply -= _value;
+          userBalance += _value;
+      }
+  }
+  function reset() public {
+      username = '';
+      password = '';
+      userBalance = 0;
+      totalSupply = 1000;
+      approve = false;
+  }
+}
+```
+
+So it looks like I can use the `setUsername()` and `setPassword()` functions to abuse account creation. It appears the password must also be in `md5` format, as displayed here:
+
+```c++
+string password = '7b455ca1ffcb9f3828cfdde4a396139e';
+```
+
+At this point, I also noticed the `setApprove()` function, which I imagined would need to be set from `false` to `true` as well as the `transfer()` function, which is likely used to transfer coins.
+<p><br></p>
+
+I initially tried bypassing the constraints with the provided username `nobody` and the password hash, but it didn't work. I also tried cracking the `md5` hash with Crackstation as well as with `john`, but that didn't work either. So, I created my own account called `farbs` to do some further testing.
+<p><br></p>
+
+Upon creating my user, I was now able to log in, but I received an error every time I tried to do anything:
+
+```c++
+
 
 ### Writeup still in progress... Check back later for more!
 
