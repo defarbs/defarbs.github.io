@@ -1029,7 +1029,7 @@ contract ChainsawClub {
 
 So it looks like I can use the `setUsername()` and `setPassword()` functions to abuse account creation. It appears the password must also be in `md5` format, as displayed here:
 
-```c++
+```bash
 string password = '7b455ca1ffcb9f3828cfdde4a396139e';
 ```
 
