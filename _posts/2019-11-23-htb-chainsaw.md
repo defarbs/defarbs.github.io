@@ -593,7 +593,8 @@ jsonData = json.loads(open("WeaponizedPing.json", "r").read()) # reads data from
 abi = jsonData['abi'] # sets abi from data
 
 # Web3 connection established to endpoint
-w3 = Web3(HTTPProvider('http://10.10.10.142:9810'))
+url = "http://10.10.10.142:9810"
+w3 = Web3(HTTPProvider(url))
 w3.eth.defaultAccount = w3.eth.accounts[0]
 
 # Specify contract values 
