@@ -329,7 +329,7 @@ The second function is `setDomain`, which takes the input of *some string value*
 
 ### Smart Contract Exploit Verification
 
-So from here, I began writing my exploit to try and get an initial shell from the smart contract code already provided.
+So from here, I began analyzing everything a bit further to get a better understanding of what all I was working with.
 <p><br></p>
 I started by importing required modules with `python`. I initially had to install `web3` 
 prior to importing it with python, so I went ahead and did that first:
