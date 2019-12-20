@@ -571,7 +571,88 @@ bash: no job control in this shell
 administrator@chainsaw:/opt/WeaponizedPing$
 ```
 
-I managed to obtain a shell as `administrator`!
+I managed to obtain a shell as `administrator`! I assumed I would be able to read `user.txt` at this point, but I was wrong... It appears there is a second user named `bobby`, which is likely the user with access to the `user.txt` file.
+<p><br></p>
+
+With this in mind, I decided I should probably start digging deeper... But I wanted a better shell first, so I generated my own ssh keypair to establish persistence as `administrator` prior to continuing with my enumeration.
+<p><br><p>
+
+### System Enumeration & User.txt
+
+Equipped with my new and improved SSH shell, I began sifting through directories to see what I could find.
+<p><br></p>
+
+Upon navigating to `/home/administrator`, I found an interesting folder called `maintain`:
+
+```python
+administrator@chainsaw:~$ ls -al
+total 112
+drwxr-x--- 10 administrator administrator  4096 Dec 20 00:48 .
+drwxr-xr-x  4 root          root           4096 Dec 12  2018 ..
+lrwxrwxrwx  1 administrator administrator     9 Dec 12  2018 .bash_history -> /dev/null
+-rw-r-----  1 administrator administrator   220 Dec 12  2018 .bash_logout
+-rw-r-----  1 administrator administrator  3771 Dec 12  2018 .bashrc
+drwx------  2 administrator administrator  4096 Dec 20 00:48 .cache
+-rw-r-----  1 administrator administrator   220 Dec 20  2018 chainsaw-emp.csv
+drwx------  3 administrator administrator  4096 Dec 20 00:48 .gnupg
+drwxrwxr-x  5 administrator administrator  4096 Jan 23  2019 .ipfs
+drwxr-x---  3 administrator administrator  4096 Dec 12  2018 .local
+drwxr-x---  3 administrator administrator  4096 Dec 13  2018 maintain <--- right here!
+drwxr-x---  2 administrator administrator  4096 Dec 12  2018 .ngrok2
+-rw-r-----  1 administrator administrator   807 Dec 12  2018 .profile
+drwxr-x---  2 administrator administrator  4096 Dec 20 00:48 .ssh
+drwxr-x---  2 administrator administrator  4096 Dec 12  2018 .swt
+-rw-r-----  1 administrator administrator  1739 Dec 12  2018 .tmux.conf
+-rw-r-----  1 administrator administrator 45152 Dec 12  2018 .zcompdump
+lrwxrwxrwx  1 administrator administrator     9 Dec 12  2018 .zsh_history -> /dev/null
+-rw-r-----  1 administrator administrator  1295 Dec 12  2018 .zshrc
+```
+
+Inside the `maintain` folder, there was another folder called `pub` and a file called `gen.py`:
+
+```python
+administrator@chainsaw:~/maintain$ ls -al
+total 16
+drwxr-x---  3 administrator administrator 4096 Dec 13  2018 .
+drwxr-x--- 10 administrator administrator 4096 Dec 20 00:48 ..
+-rwxr-x---  1 administrator administrator  649 Dec 13  2018 gen.py
+drwxrwxr-x  2 administrator administrator 4096 Dec 13  2018 pub
+```
+
+The contents of `gen.py` are as follows:
+
+```python
+#!/usr/bin/python
+from Crypto.PublicKey import RSA
+from os import chmod
+import getpass
+
+def generate(username,password):
+	key = RSA.generate(2048)
+	pubkey = key.publickey()
+
+	pub = pubkey.exportKey('OpenSSH')
+	priv = key.exportKey('PEM',password,pkcs=1)
+
+	filename = "{}.key".format(username)
+
+	with open(filename, 'w') as file:
+		chmod(filename, 0600)
+		file.write(priv)
+		file.close()
+
+	with open("{}.pub".format(filename), 'w') as file:
+		file.write(pub)
+		file.close()
+
+	# TODO: Distribute keys via ProtonMail
+
+if __name__ == "__main__":
+	while True:
+		username = raw_input("User: ")
+		password = getpass.getpass()
+		generate(username,password)
+```
 
 ### Writeup still in progress... Check back later for more!
 
