@@ -854,7 +854,7 @@ PT0KLS0tLS1FTkQgUlNBIFBSSVZBVEUgS0VZLS0tLS0=
 -----------------------d296272d7cb599bff2a1ddf6d6374d93--
 ```
 
-It appears to be an email thread containing an ssh keypair for `bobby`. However, the private key is `bobby.key.enc` and not `bobby.key` as expected. Simply looking at it though, it appears to be encoded in `base64`. This is a bit of an issue, but nothing to fret over. I decided I would attempt to decode it locally first:
+It appears to be an email thread containing an ssh keypair for `bobby`. However, the private key is `bobby.key.enc` and not `bobby.key` as expected. Simply looking at it though, it appears to be encoded in `base64`. I decided I would attempt to decode it locally first:
 
 ```python
 ➜  HTB-CHAINSAW cat bobby.key.enc.b64 |base64 -d
