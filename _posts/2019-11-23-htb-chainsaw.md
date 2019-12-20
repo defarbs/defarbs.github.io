@@ -672,7 +672,7 @@ This was interesting to me, so I continued my exploration. I found another direc
 
 <img src="/assets/img/writeups/HTB-CHAINSAW/IPFS.PNG" class="chainsaw-img" alt="Google - Interplanetary File System">
 
-After reading some further cli documentation on `IPFS` (located <a href="https://docs.ipfs.io/reference/api/cli/">`here`</a>), I found I could use the `ipfs refs local` command to list existing local references:
+After reading some further <a href="https://docs.ipfs.io/reference/api/cli/">`CLI documentation`</a> on `IPFS`, I found I could use the `ipfs refs local` command to list existing local references:
 
 ```python
 administrator@chainsaw:~/.ipfs$ ipfs refs local
