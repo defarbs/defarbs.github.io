@@ -917,7 +917,7 @@ Note: This format may emit false positives, so it will keep trying even after
 finding a possible candidate.
 Press 'q' or Ctrl-C to abort, almost any other key for status
 jackychain       (./bobby.key.enc)
-1g 0:00:00:12 DONE (2019-12-19 20:27) 0.08278g/s 1187Kp/s 1187Kc/s 1187KC/sa6_123..*7¡Vamos!
+1g 0:00:00:12 DONE (2019-11-21 20:27) 0.08278g/s 1187Kp/s 1187Kc/s 1187KC/sa6_123..*7¡Vamos!
 Session completed
 ```
 
