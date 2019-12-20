@@ -1041,9 +1041,6 @@ I initially tried bypassing the constraints with the provided username `nobody` 
 
 Upon creating my user, I was now able to log in, but I received an error every time I tried to do anything:
 
-```c++
-
-
 ### Writeup still in progress... Check back later for more!
 
 <div align="center">
