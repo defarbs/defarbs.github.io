@@ -903,7 +903,7 @@ Hold on a second, this looks familiar...
 
 I tried running the `file` command against the `ChainsawClub` file, and discovered it is a 64-bit ELF setuid binary. Here is what its output looks like when ran:
 
-```C
+```c++
 bobby@chainsaw:~/projects/ChainsawClub$ ./ChainsawClub
 
       _           _
