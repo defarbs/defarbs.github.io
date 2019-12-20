@@ -456,7 +456,7 @@ Looking good so far! Now I can try playing with the associated functions from `W
 'google.com'
 ```
 
-Cool! It gives me the output `google.com`, which is exactly what I would expect, as that was what was already defined in the original source code.
+Cool! It gives me the output `google.com`, which is exactly what I would expect, as that was already defined in the original source code.
 <p><br></p>
 
 So this got me thinking... Instead of using `getDomain()` to retrieve a domain, what if I were to use `setDomain` instead and try to ping myself? So that's exactly what I did.
