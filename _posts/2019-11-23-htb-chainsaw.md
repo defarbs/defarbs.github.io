@@ -587,7 +587,6 @@ from web3 import Web3, HTTPProvider
 import json
 
 # Basic configuration variables related to smart contract verification
-
 cAddress = '0xC727e70ded24b8D814627B53ce95cA4cF1d3e2C7' # address.txt
 jsonData = json.loads(open("WeaponizedPing.json", "r").read()) # reads data from .json file
 abi = jsonData['abi'] # sets abi from data
