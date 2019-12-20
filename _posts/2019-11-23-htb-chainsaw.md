@@ -875,7 +875,7 @@ Session completed
 
 I was then able to SSH as `bobby` and `cat user.txt`!
 
-```python
+```css
 ➜  HTB-CHAINSAW chmod 600 bobby.key.enc
 ➜  HTB-CHAINSAW ssh -i bobby.key.enc bobby@chainsaw.htb
 Enter passphrase for key 'bobby.key.enc': jackychain
