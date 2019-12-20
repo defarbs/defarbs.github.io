@@ -548,7 +548,6 @@ HexBytes('0x956acbf29a79038db60787bed29bcb808f03d68ec1c815852e9f5f88538c3d29')
 ```
 
 Et...
-<p><br></p>
 
 ```python
 ➜  www nc -lnvp 9001
