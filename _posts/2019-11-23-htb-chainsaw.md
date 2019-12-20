@@ -295,7 +295,7 @@ contract WeaponizedPing
 `address.txt`:
 
 ```
-0x59573303cEe70289D95660564e6013F3BF55B10f
+0xC727e70ded24b8D814627B53ce95cA4cF1d3e2C7
 ```
 
 ### WeaponizedPing File Contents & Analysis
