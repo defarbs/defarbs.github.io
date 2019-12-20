@@ -96,7 +96,7 @@ If you find anything in this writeup you feel is inaccurately depicted and/or ex
 
 ### Overview
 
-The `Chainsaw` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/41600">artikrh</a> and <a href="https://www.hackthebox.eu/home/users/profile/37317">absolutezero</a>) is a retired 40 point Linux machine. The initial steps require manual exploitation of smart contracts via a few files that can be found in an FTP share with `anonymous` login enabled. Once a shell has been obtained, there is a privilege escalation technique involving the InterPlanetary File System (`IPFS`) which leads to SSH key cracking (and eventually `user.txt`). For root, there is a `setuid elf` binary called `ChainsawClub` which can be exploited in a similar fashion to the first exploit.
+The `Chainsaw` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/41600">artikrh</a> and <a href="https://www.hackthebox.eu/home/users/profile/37317">absolutezero</a>) is a retired 40 point Linux machine. The initial steps require manual exploitation of smart contracts via a few files that can be found in an FTP share with `anonymous` login enabled. Once a shell has been obtained, there is a privilege escalation technique involving the InterPlanetary File System (`IPFS`) which leads to SSH key cracking (and eventually `user.txt`). For root, there is a 64-bit ELF setuid binary called `ChainsawClub` which can be exploited in a similar fashion to the first exploit.
 <p><br></p>
 With all of that being said... Time to get crackin'! 
 <p><br></p>
