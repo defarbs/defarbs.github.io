@@ -527,7 +527,7 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 19:22:46.491846 IP 10.10.14.34 > 10.10.10.142: ICMP echo reply, id 1845, seq 5, length 64
 ```
 
-I've broken them up to make it more apparent, but as you can see, there are clearly five (5) responses present here, exactly as I specified with my previous `ping` command.
+I've broken the responses up to make it more apparent, but as you can see, there are clearly five (5) responses present here, exactly as I specified with my previous `ping` command.
 
 ### Obtaining A Shell
 
