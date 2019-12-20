@@ -885,6 +885,47 @@ af8d9df991cc[REDACTED...]
 
 ### ChainsawClub File Analysis
 
+Upon achieving a shell as `bobby`, I immediately noticed a directory called `projects` with a sub-directory within it called `ChainsawClub`. The contents of the `ChainsawClub` directory are as follows:
+
+```python
+bobby@chainsaw:~/projects$ cd ChainsawClub && ls -al
+total 156
+drwxrwxr-x 2 bobby bobby   4096 Jan 23  2019 .
+drwxrwxr-x 3 bobby bobby   4096 Dec 20  2018 ..
+-rwsr-xr-x 1 root  root   16544 Jan 12  2019 ChainsawClub
+-rw-r--r-- 1 root  root  126388 Jan 23  2019 ChainsawClub.json
+-rw-r--r-- 1 root  root    1164 Jan 23  2019 ChainsawClub.sol
+```
+
+Hold on a second, this looks familiar...
+
+<img src="/assets/img/writeups/HTB-CHAINSAW/CONFUSED-SAMOYED.GIF" class="chainsaw-img" alt="GIPHY - Confused Samoyed">
+
+I tried running the `file` command against the `ChainsawClub` file, and discovered it is a 64-bit ELF setuid binary. Here is what its output looks like when ran:
+
+```C
+bobby@chainsaw:~/projects/ChainsawClub$ ./ChainsawClub
+
+      _           _
+     | |         (_)
+  ___| |__   __ _ _ _ __  ___  __ ___      __
+ / __| '_ \ / _` | | '_ \/ __|/ _` \ \ /\ / /
+| (__| | | | (_| | | | | \__ \ (_| |\ V  V /
+ \___|_| |_|\__,_|_|_| |_|___/\__,_| \_/\_/
+                                            club
+
+- Total supply: 1000
+- 1 CHC = 51.08 EUR
+- Market cap: 51080 (€)
+
+[*] Please sign up first and then log in!
+[*] Entry based on merit.
+
+Username: farbs
+Password: 
+[*] Wrong credentials!
+```
+
 ### Writeup still in progress... Check back later for more!
 
 <div align="center">
