@@ -305,7 +305,7 @@ This appears to be exactly what is needed to produce a smart contract. These sma
 The smart contract `WeaponizedPing.sol` appears to have two interesting functions as well, both of which are returning the same value (`store`).
 <p><br></p>
 
-The first function is `getDomain()`. It returns the value of `store`, where the value of `store`is set to `google.com`.
+The first function is `getDomain()`. It returns the value of `store`, where the value of `store` is set to `google.com`.
 
 ```javascript
 contract WeaponizedPing 
