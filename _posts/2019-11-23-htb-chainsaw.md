@@ -654,6 +654,25 @@ if __name__ == "__main__":
 		generate(username,password)
 ```
 
+The sub-directory called `pub` contains public keys belonging to some other users on the system, one of which is also `bobby`:
+
+```python
+administrator@chainsaw:~/maintain$ cd pub && ls -al
+total 28
+drwxrwxr-x 2 administrator administrator 4096 Dec 13  2018 .
+drwxr-x--- 3 administrator administrator 4096 Dec 13  2018 ..
+-rw-rw-r-- 1 administrator administrator  380 Dec 13  2018 arti.key.pub
+-rw-rw-r-- 1 administrator administrator  380 Dec 13  2018 bobby.key.pub
+-rw-rw-r-- 1 administrator administrator  380 Dec 13  2018 bryan.key.pub
+-rw-rw-r-- 1 administrator administrator  380 Dec 13  2018 lara.key.pub
+-rw-rw-r-- 1 administrator administrator  380 Dec 13  2018 wendy.key.pub
+```
+
+This was interesting to me, so I continued my exploration. I found another directory in `/home/administrator` called `.ipfs`. Curious as to what this was, I went ahead and Google'd it, and was immediately greeted with this information:
+
+<img src="/assets/img/writeups/HTB-CHAINSAW/IPFS.PNG" class="chainsaw-img" alt="Google - Interplanetary File System">
+
+
 ### Writeup still in progress... Check back later for more!
 
 <div align="center">
