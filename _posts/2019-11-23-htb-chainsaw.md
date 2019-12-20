@@ -397,7 +397,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 <web3.main.Web3 object at 0x7fd66445de90>
 ```
 
-From here, I can run `+>>> w3.eth.accounts` to achieve this output:
+From here, I can run `w3.eth.accounts` to achieve this output:
 
 ```python
 ['0x661739A860ca8b1325eA416be0E0342d1990B798', '0xE14A7540Dc365da93226e028f078201b95acbE95', '0x0F49c298997a03F7bf7666Bd05faBa483286F460', '0xC29A0F194b565D6bc20Cf58e5Ef5bB6dec58bF03', '0x5c0Fd628150215AC44eacA004FfB2AAb120035D4', '0x7Ed923F73D8C8b0C7382B871071a4b26F1542799', '0x3ef2DE965A8952e6FF5720458DA6FaDbe3210613', '0x9AA54F55b1510332b798F1cdf8EA7AECf4cB4c1D', '0x534C34980A4Fd8D3eC97850c1D5e7934786E477f', '0x8E267A00719B13a372c12946CF391B247AfB91FE']
