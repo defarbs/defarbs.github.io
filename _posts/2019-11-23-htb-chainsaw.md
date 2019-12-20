@@ -710,7 +710,7 @@ drwxr-x--- 3 administrator administrator 4096 Dec 13  2018 ..
 -rw-rw-r-- 1 administrator administrator  380 Dec 13  2018 wendy.key.pub
 ```
 
-This was interesting to me, so I continued my exploration. I found another directory in `/home/administrator` called `.ipfs`. Curious as to what this was, I went ahead and Google'd it, and was immediately greeted with this information:
+This was interesting to me, so I continued my exploration. I found another directory in `/home/administrator` called `.ipfs`. Curious as to what this was, I went ahead and Googled it, and was immediately greeted with this information:
 
 <img src="/assets/img/writeups/HTB-CHAINSAW/IPFS.PNG" class="chainsaw-img" alt="Google - Interplanetary File System">
 
