@@ -436,7 +436,7 @@ This is great and all, but I can't really *call* anything yet. However, this is 
 2) The `ABI`, or *Application Binary Interface* of the contract
 <p><br></p>
 
-This will essentially "load" the API and allow me to interact with it. I can do this by running this command in python:
+This will essentially "load" the API and allow me to interact with it. I can do this by running this command in `python`:
 
 ```python
 +>>> contract = w3.eth.contract(abi=abi, address=contract_address)
