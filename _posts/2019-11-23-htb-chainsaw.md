@@ -575,7 +575,7 @@ I managed to obtain a shell as `administrator`! I assumed I would be able to rea
 <p><br></p>
 
 With this in mind, I decided I should probably start digging deeper... But I wanted a better shell first, so I generated my own ssh keypair to establish persistence as `administrator` prior to continuing with my enumeration.
-<p><br><p>
+<p><br></p>
 
 ### System Enumeration & User.txt
 
