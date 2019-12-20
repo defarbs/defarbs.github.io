@@ -344,7 +344,14 @@ I then imported `web3` as it's a required module to interact with the smart cont
 from web3 import Web3, HTTPProvider
 ```
 
-I also imported `json` because it is necessary to import the application binary interface, which happens to be a `json` file (`WeaponizedPing.json`).
+After checking the Solidity documentation, I noticed I needed two things to interact with smart contracts:
+<p><br></p>
+
+1) The address of the contract (which I already found in `WeaponizedPing.json`)<br>
+2) The `ABI`, or *Application Binary Interface* of the contract
+<p><br></p>
+
+I imported `json` because it is necessary to import the application binary interface as previously mentioned, which happens to be the `json` file (`WeaponizedPing.json`).
 
 ```python
 import json
@@ -429,12 +436,7 @@ You get the point. From here, I went ahead and set my `defaultAccount` to the ve
 Nice – So now, every time I perform a transaction, the address located at `w3.eth.accounts[0]` will be applied as the default sending address (aka, this address --> `0x661739A860ca8b1325eA416be0E0342d1990B798`)
 <p><br></p>
 
-This is great and all, but I can't really *call* anything yet. However, this is why I created the `abi` variable. After checking the Solidity documentation, I noticed I needed two things to interact with smart contracts:
-<p><br></p>
-
-1) The address of the contract (which I already found in `WeaponizedPing.json`)<br>
-2) The `ABI`, or *Application Binary Interface* of the contract
-<p><br></p>
+This is great and all, but I can't really *call* anything yet. However, this is why I created the `abi` variable.
 
 This will essentially "load" the API and allow me to interact with it. I can do this by running this command in `python`:
 
