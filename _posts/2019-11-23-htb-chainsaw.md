@@ -432,7 +432,7 @@ Nice – So now, every time I perform a transaction, the address located at `w3.
 This is great and all, but I can't really *call* anything yet. However, this is why I created the `abi` variable. After checking the Solidity documentation, I noticed I needed two things to interact with smart contracts:
 <p><br></p>
 
-1) The address of the contract (which I already found in `WeaponizedPing.json`)
+1) The address of the contract (which I already found in `WeaponizedPing.json`)<br>
 2) The `ABI`, or *Application Binary Interface* of the contract
 <p><br></p>
 
