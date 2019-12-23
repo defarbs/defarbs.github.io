@@ -1042,7 +1042,7 @@ string password = '7b455ca1ffcb9f3828cfdde4a396139e';
 At this point, I also noticed the `setApprove()` function, which I imagined would need to be set from `false` to `true` as well as the `transfer()` function, which is likely used to transfer coins.
 <p><br></p>
 
-I initially tried bypassing the constraints with the provided username `nobody` and the password hash, but it didn't work. I also tried cracking the `md5` hash with Crackstation as well as with `john`, but that didn't work either. So, I created my own account called `farbs` to do some further testing.
+I initially tried bypassing the constraints with the provided username `nobody` and the password hash, but it didn't work. I also tried cracking the `md5` hash with Crackstation as well as with `john`, but that didn't work either. I noticed an `address.txt` file was generated after running the `ChainsawClub` binary as well. So, I created my own account called `farbs` to do some further testing.
 <p><br></p>
 
 Upon creating my user, I was now able to log in, but I received an error every time I tried to do anything:
