@@ -53,7 +53,7 @@ applause-button {
       	padding-left: 19px;
 	}
 	
-	.fortune-img {
+	.chainsaw-img {
 		max-width: 75%;
 	}
 
