@@ -12,6 +12,8 @@ tags:
 - solidity
 - web3
 - manual-exploit
+- 64-bit binary
+- setuid
 
 description: ''
 categories:
