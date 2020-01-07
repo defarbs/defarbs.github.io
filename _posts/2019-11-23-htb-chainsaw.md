@@ -978,7 +978,7 @@ Password:
 [*] Wrong credentials!
 ```
 
-So it's looking a lot like there will be more smart contract exploitation here. Digging deeper, I decided to take a look at the `Chainsaw.sol` file to get an idea of the functions I was working with:
+Looks like we're going to be doing some more smart contract exploitation! Digging deeper, I decided to take a look at the `Chainsaw.sol` file to get an idea of the functions I was working with:
 <p><br></p>
 
 `ChainsawClub.sol`:
