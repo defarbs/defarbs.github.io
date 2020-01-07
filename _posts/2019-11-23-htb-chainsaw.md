@@ -951,7 +951,7 @@ drwxrwxr-x 3 bobby bobby   4096 Dec 20  2018 ..
 
 Hold on a second, this looks familiar...
 
-<img src="/assets/img/writeups/HTB-CHAINSAW/CONFUSED-SAMOYED.GIF" class="chainsaw-img" alt="GIPHY - Confused Samoyed">
+<img src="/assets/img/writeups/HTB-CHAINSAW/CONFUSED_WOLF.GIF" class="chainsaw-img" alt="GIPHY - Confused Wolf">
 
 I tried running the `file` command against the `ChainsawClub` file, and discovered it is a 64-bit ELF setuid binary. Here is what its output looks like when ran:
 
