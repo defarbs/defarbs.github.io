@@ -897,7 +897,7 @@ UvJiY40u2nmVb6Qqpiy2zr/aMlhpupZPk/xt8oKhKC+l9mgOTsAXYjCbTmLXzVrX
 As expected, the private key was decoded with `base64` without any problems. However, it still appears to be encrypted, which is a bit of an issue. I decided I would combat this by utilizing `ssh2john` to obtain the hash of the key in a format recognizable by `john the ripper`, which I would then be able to crack accordingly with `rockyou.txt`.
 <p><br></p>
 
-I start with the hash conversion:
+I started the hash conversion:
 
 ```python
 ➜  HTB-CHAINSAW /usr/share/john/ssh2john.py ./bobby.key.enc > bobby.key.enc.hash
