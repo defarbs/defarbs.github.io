@@ -1047,7 +1047,7 @@ At this point, I also noticed the `setApprove()` function, which I imagined woul
 I initially tried bypassing the constraints with the provided username `nobody` and the password hash, but it didn't work. I also tried cracking the `md5` hash with Crackstation as well as with `john`, but that didn't work either. I noticed an `address.txt` file was generated after running the `ChainsawClub` binary as well. So, I created my own account called `farbs` to do some further testing.
 <p><br></p>
 
-Upon creating my user, I was now able to log in, but I received an error every time I tried to do anything:
+Upon creating my user, I was able to log in, but I received an error every time I tried to do anything:
 
 ### Writeup still in progress... Check back later for more!
 
