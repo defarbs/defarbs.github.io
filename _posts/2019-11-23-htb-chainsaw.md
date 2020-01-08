@@ -937,7 +937,7 @@ af8d9df991cc[REDACTED...]
 
 ### ChainsawClub File Analysis
 
-Upon achieving a shell as `bobby`, I immediately noticed a directory called `projects` with a sub-directory within it called `ChainsawClub`. The contents of the `ChainsawClub` directory are as follows:
+Upon achieving a shell as `bobby`, I immediately noticed a directory called `projects` containing a sub-directory called `ChainsawClub`. The contents of the `ChainsawClub` directory are as follows:
 
 ```python
 bobby@chainsaw:~/projects$ cd ChainsawClub && ls -al
