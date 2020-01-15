@@ -499,7 +499,7 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 I knew I could get a response, but I wanted to verify this one step further.
 <p><br></p>
 
-I wanted to know if I could get command execution in a similar fashion. I attempted to do this by `ping`ing myself directly with a similar command. I achieved this by running the same `tcpdump` command, but by changing my original smart contract command to this:
+I wanted to know if I could get command execution in a similar fashion. I attempted to do this by pinging myself directly with a similar command. I achieved this by running the same `tcpdump` command, but by changing my original smart contract command to this:
 
 ```python
 +>>> contract.functions.setDomain("10.10.14.34; ping -c 5 10.10.14.34").transact()
