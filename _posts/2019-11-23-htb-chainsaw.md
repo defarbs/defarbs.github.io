@@ -507,7 +507,7 @@ I wanted to know if I could get command execution in a similar fashion. I attemp
 
 With this command, my `tcpdump` achieved this response:
 
-```python
+```bash
 ➜  www tcpdump -i tun0 icmp -n
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
