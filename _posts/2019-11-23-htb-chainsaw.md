@@ -946,7 +946,7 @@ Session completed
 I was then able to SSH as `bobby` and `cat user.txt`!
 
 ```css
-➜HTB-CHAINSAW chmod 600 bobby.key.enc
+➜htb-chainsawchmod600 bobby.key.enc
 ➜  HTB-CHAINSAW ssh -i bobby.key.enc bobby@chainsaw.htb
 Enter passphrase for key 'bobby.key.enc': jackychain bobby @chainsaw:~$ cat /
   home/bobby/user.txt af8d9df991cc[REDACTED...];
@@ -967,8 +967,6 @@ drwxrwxr-x 3 bobby bobby   4096 Dec 20  2018 ..
 ```
 
 Hold on a second, this looks familiar...
-
-<img src="/assets/img/writeups/HTB-CHAINSAW/CONFUSED_WOLF.GIF" class="chainsaw-img" alt="GIPHY - Confused Wolf">
 
 I tried running the `file` command against the `ChainsawClub` file, and discovered it is a 64-bit ELF setuid binary. Here is what its output looks like when ran:
 
