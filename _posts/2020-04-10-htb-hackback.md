@@ -301,7 +301,7 @@ Checking out the source, it appeared to be a bunch of obfuscated JavaScript...
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-PRIVATEJS.PNG" class="hackback-img" alt="Hackback - private.js file">
 
-Further examination of the `private.js` file reveals it is actually encoded with ROT13. I initially determined this by noticing the first line:
+Further examination of the `private.js` file revealed it is actually encoded with ROT13. I initially determined this by noticing the first line:
 
 ```javascript
 ine n =
