@@ -195,7 +195,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 
 ### Enumerating Port 6666
 
-Moving on, I checked out port 6666. It appears to be running Microsoft HTTPAPI 2.0, so I run `gobuster` again to see if I can find anything useful.
+Moving on, I checked out port 6666. It appears to be running Microsoft HTTPAPI 2.0, so I ran `gobuster` again to see if I could find anything useful.
 
 ```bash
 ➜  HACKBACK gobuster dir -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-large-words-lowercase.txt -u http://hackback.htb:6666/ -x php,aspx,txt,ini,png,jpg
