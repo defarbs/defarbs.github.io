@@ -310,7 +310,7 @@ I attributed it to being
 ```javascript
 var a =
 ```
-I also had to decipher the remainder with a `Caesar cipher`. This was the output was once I had everything decoded and beautified:
+I also had to decipher the remainder with a `Caesar cipher`. This was the output once I had everything decoded and beautified:
 ```javascript
 var a = [
   'WxIjwr7DusO8GsKvRwB+wq3DuMKrwrLDgcOiwrY1KEEgG8KCwq7Dl8K3',
