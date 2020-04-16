@@ -837,7 +837,7 @@ Access to the path 'C:\util\scripts\dellog.ps1' is denied.
 But, I was promptly denied...
 <p><br></p>
 
-At this point, all hope seemed lost... That is, until I realized `simple` was a member of the `project-managers` group – a group which was able to write to the `clean.ini` file.
+At this point, I felt as though I had enumerated everything... Nothing was particularly sticking out. That is, until I realized `simple` was a member of the `project-managers` group – a group which was able to write to the `clean.ini` file.
 
 ```bash
 PS hackback\simple@HACKBACK > whoami /groups
