@@ -7,7 +7,7 @@ url: ""
 username: farbs
 user_title: farbs - Penetration Tester
 email: df1s1337@gmail.com
-twitter_username: auxFarbs
+twitter_username: 0xFarbs
 github_username:  defarbs
 
 # Build settings
@@ -44,7 +44,7 @@ links:
       key_trigger: g
     - title: twitter
       new_tab: true
-      url: https://www.twitter.com/auxFarbs
+      url: https://www.twitter.com/0xFarbs
       key_trigger: t
     - title: hackthebox
       new_tab: true
