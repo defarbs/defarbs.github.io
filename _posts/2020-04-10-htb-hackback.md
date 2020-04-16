@@ -861,7 +861,7 @@ clean.ini NT AUTHORITY\SYSTEM:(F)
 ```
 At this point, a teammate of mine discovered the `LogFile` parameter in the `clean.ini` file was vulnerable to command injection. The `powershell` script called `dellog.ps1` was used to wipe the log file, but used the `LogFile` parameter to pipe output. This leaves it vulnerable to arbitrary command injection after writing.
 
-At this point, the `winrm` shell by `alamot` was running a bit too slow for my taste, so I upgraded to an <a href="https://github.com/Hackplayers/evil-winrm">evil-winrm</a> shell instead. This shell is created by another fellow Hack The Box member, and offers upload/download capabilities as well as some other cool usability features.
+At this point, the `winrm` shell by `alamot` was running a bit too slow for my taste, so I upgraded to an <a href="https://github.com/Hackplayers/evil-winrm">evil-winrm</a> shell instead. This shell was created by another fellow Hack The Box member, and offers upload/download capabilities as well as some other cool usability features.
 
 ```bash
 ➜  HACKBACK proxychains evil-winrm -u simple -p 'ZonoProprioZomaro:-(' -i 127.0.0.1
