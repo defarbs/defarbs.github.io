@@ -977,7 +977,7 @@ cd C:\Users\hacker\Desktop & type user.txt
 
 ### Enumerating as `hacker`
 
-Now that I was operating as `hacker`, I referred to some of the services running on the machine to determine what I may be able to control. Running `grep` for `user` helped me locate a couple interesting ones. A service called `UserLogger` as well as another called `UserManager`. 
+Now that I was operating as `hacker`, I referred to some of the services running on the machine to determine what I may be able to control. Running `grep` for `user` helped me locate a couple interesting ones; a service called `UserLogger` as well as another called `UserManager`. 
 
 ```bash
 ➜  www curl -s http://10.10.10.128:6666/services > ../services.txt
