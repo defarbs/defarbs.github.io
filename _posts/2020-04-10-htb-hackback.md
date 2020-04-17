@@ -993,7 +993,7 @@ Now that I was operating as `hacker`, I referred to some of the services running
         "displayname":  "User Manager"
 ```
 
-Maintaining the theme of `logs`, I determined `UserLogger` might be a solid one to check out first. I queried the service to check its current status first.
+Maintaining the theme of `logs`, I determined `UserLogger` might be a solid one to check out first. I queried the service to check its current status.
 
 ```bash
 C:\Users\hacker\Desktop>cmd /c "sc qc userlogger"
