@@ -171,7 +171,7 @@ At this stage I additionally added `hackback.htb` to my `/etc/hosts` file. The f
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-WP-DONKEY.PNG" class="hackback-img" alt="Hackback - Front Page Donkey">
 
-I decided to run a `gobuster` scan as well, but didn't manage to come up with anything useful.
+I ran a `gobuster` scan as well, but didn't manage to come up with anything useful.
 
 ```bash
 ➜  gobuster gobuster dir -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-large-words-lowercase.txt -u http://hackback.htb -x php,aspx,txt,ini,png,jpg
@@ -232,7 +232,7 @@ Unfortunately, none of the commands appeared to be useful, and I wasn't getting 
 
 ### Enumerating Port 64831
 
-After spending a while messing with the commands on port 6666, I decided to peruse port 64831. I had already been running passive recon on this port while attempting code injection on port 6666. This enabled me to quickly discover a GoPhish login page over HTTPS. I went ahead and checked the SSL certificate first to make sure there wasn't any additional helpful information there.
+After spending a while messing with the commands on port 6666, I began to peruse port 64831. I had already been running passive recon on this port while attempting code injection on port 6666. This enabled me to quickly discover a GoPhish login page over HTTPS. I went ahead and checked the SSL certificate first to make sure there wasn't any additional helpful information there.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GOPHISH-SSL.PNG" class="hackback-img" alt="Hackback - GoPhish SSL Certificate">
 
@@ -240,7 +240,7 @@ I didn't find anything this time, but I always like to check just to be sure.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GOPHISH-LOGIN.PNG" class="hackback-img" alt="Hackback - GoPhish Login">
 
-I then decided to start off simple and look up the default credentials for a GoPhish `admin` account. A brief Google search did the trick.
+I started off simple and look up the default credentials for a GoPhish `admin` account. A brief Google search did the trick.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GP-ADMIN-CREDS.PNG" class="hackback-img" alt="Hackback - GoPhish Login Credential Search">
 
@@ -274,7 +274,7 @@ However, after checking `admin.hackback.htb/js/.js`, I was met with a 404 error.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-JS-ERROR.PNG" class="hackback-img" alt="Hackback - GoPhish JavaScript File Error">
 
-So, I decided to fire up another `gobuster` scan and specify `.js` as the only extension.
+So, I fired up another `gobuster` scan and specify `.js` as the only extension.
 
 ```bash
 ➜  HACKBACK gobuster dir -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-large-words-lowercase.txt -u http://admin.hackback.htb/js/ -x js
@@ -439,7 +439,7 @@ It appeared there was a secret path at `/2bb6916122f1da34dcd916421e531578`. Howe
 <head><title>Document Moved</title></head>
 <body><h1>Object Moved</h1>This document may be found <a HREF="http://admin.hackback.htb/2bb6916122f1da34dcd916421e531578/">here</a></body>
 ```
-As a result of this, I decided to FUZZ the endpoint for additional files.
+As a result of this, I fuzzed the endpoint for additional files.
 
 ```bash
 ➜  HACKBACK wfuzz -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-files-lowercase.txt --hc 404 -t 15 http://admin.hackback.htb/2bb6916122f1da34dcd916421e531578/FUZZ 
@@ -603,7 +603,7 @@ Equipped with my new session ID, I was now able to utilize the `action=show` par
 ➜  HACKBACK curl -X GET 'http://admin.hackback.htb/2bb6916122f1da34dcd916421e531578/WebAdmin.php?action=show&site=hackthebox&password=12345678&session=972d14b51c047ebff05b7eb1d1acff3d5989bac8407b45e28013a3584834270b'
 [15 April 2020, 08:07:44 PM] 10.10.14.37 - Username: farbs@hackback.htb, Password: ilovehacking!
 ```
-I discovered the log file contains `POST` parameters that are sent to `www.hackthebox.htb`. This is interesting, as it led me to assume I could perform a log poisoning attack if I injected PHP code into the `.log` file for my IP address. I decided to enter a PHP payload into both the `username` and `password` fields of the fake Hack The Box login page and check the `.log` file after for evidence of code injection.
+I discovered the log file contains `POST` parameters that are sent to `www.hackthebox.htb`. This is interesting, as it led me to assume I could perform a log poisoning attack if I injected PHP code into the `.log` file for my IP address. I entered a PHP payload into both the `username` and `password` fields of the fake Hack The Box login page and check the `.log` file after for evidence of code injection.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-HTB-LOGIN-INJECTION.PNG" class="hackback-img" alt="Hackback - HTB Login PHP Injection">
 
@@ -680,7 +680,7 @@ I wasn't able to use the credentials yet, but I had a feeling they might come in
 
 ### Tunneling with reGeorg
 
-Armed with the ability to write files to the system via PHP log poisoning, and considering I still didn't have access to any `shell_exec` or `exec` functions in general, I decided to utilize <a href="https://github.com/sensepost/reGeorg">reGeorg</a> for pivoting. This tool enabled me to create a local SOCKS proxy bound to a remote `.aspx` file running on the target machine.
+Armed with the ability to write files to the system via PHP log poisoning, and considering I still didn't have access to any `shell_exec` or `exec` functions in general, I utilized <a href="https://github.com/sensepost/reGeorg">reGeorg</a> for pivoting. This tool enabled me to create a local SOCKS proxy bound to a remote `.aspx` file running on the target machine.
 <p><br></p>
 
 I had initially tried to upload a bind shell, but wasn't able to get it working properly. Either way, to get `reGeorg` running I first had to upload the `tunnel.aspx` file that can be found in the `reGeorg` GitHub repository. I used a simple `file_put_contents()` command with the PHP injection to do this.
@@ -977,7 +977,7 @@ cd C:\Users\hacker\Desktop & type user.txt
 
 ### Enumerating as `hacker`
 
-Now that I was operating as `hacker`, I decided to refer to some of the services running on the machine to determine what I may be able to control. Running `grep` for `user` helped me locate a couple interesting ones. A service called `UserLogger` as well as another called `UserManager`. 
+Now that I was operating as `hacker`, I referred to some of the services running on the machine to determine what I may be able to control. Running `grep` for `user` helped me locate a couple interesting ones. A service called `UserLogger` as well as another called `UserManager`. 
 
 ```bash
 ➜  www curl -s http://10.10.10.128:6666/services > ../services.txt
@@ -993,7 +993,7 @@ Now that I was operating as `hacker`, I decided to refer to some of the services
         "displayname":  "User Manager"
 ```
 
-Maintaining the theme of `logs`, I decided `UserLogger` might be an interesting service to check out first. I queried the service to check its current status first.
+Maintaining the theme of `logs`, I determined `UserLogger` might be an interesting service to check out first. I queried the service to check its current status first.
 
 ```bash
 C:\Users\hacker\Desktop>cmd /c "sc qc userlogger"
@@ -1055,7 +1055,7 @@ Site                :
 Container           :
 ```
 
-I decided to download the `userlogger.exe` binary using the `evil-winrm` shell so I could reverse it and fully understand what it was doing.
+I downloaded the `userlogger.exe` binary using the `evil-winrm` shell so I could reverse it and fully understand what it was doing.
 
 ```bash
 +*Evil-WinRM* PS C:\Windows\System32> download userlogger.exe
@@ -1074,7 +1074,7 @@ drwxr-xr-x 5 root root  4096 Apr 17 10:08 ..
 ➜  www 
 ```
 
-I decided to be lazy first and check the binary's contents with `strings`. I notice third and fourth lines include `UPX0` and `UPX1`, which refers to UPX file packing.
+I chose to be lazy first and check the binary's contents with `strings`. I notice third and fourth lines include `UPX0` and `UPX1`, which refers to UPX file packing.
 
 ```bash
 ➜  www strings userlogger.exe
@@ -1124,7 +1124,7 @@ SetFilePointerEx
 WriteConsoleW
 ```
 
-I decided to import the unpacked binary into Ghidra to further reverse the functions.
+I imported the unpacked binary into Ghidra to further reverse the functions.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-UL-GHIDRA-IMPORT.PNG" class="hackback-img" alt="Hackback - UserLogger.exe Ghidra Import">
 
@@ -1265,7 +1265,7 @@ cat c:\users\administrator\desktop\root.txt
 PS C:\Users\Administrator> 
 ```
 
-But hold up... That's <b> definitely </b> not an MD5 hash. The creators of the machine are on a team called "Donkeys", so I imagined this was just a prank by the creators... NTFS file systems are capable of storing information in alternate data streams (ADS) however, so I decided to check ADS contents with Powershell.
+But hold up... That's <b> definitely </b> not an MD5 hash. The creators of the machine are on a team called "Donkeys", so I imagined this was just a prank by the creators... NTFS file systems are capable of storing information in alternate data streams (ADS) however, so I checked ADS contents with Powershell.
 
 ```bash
 PS C:\Users\Administrator\Desktop> Get-Item -Force -Path root.txt -Stream *
