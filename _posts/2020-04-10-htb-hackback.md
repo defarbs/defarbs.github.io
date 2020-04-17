@@ -1074,7 +1074,7 @@ drwxr-xr-x 5 root root  4096 Apr 17 10:08 ..
 ➜  www 
 ```
 
-I chose to be lazy first and check the binary's contents with `strings`. I notice third and fourth lines include `UPX0` and `UPX1`, which refers to UPX file packing.
+I chose to be lazy first and check the binary's contents with `strings`. I noticed the third and fourth lines included `UPX0` and `UPX1`, which refers to UPX file packing.
 
 ```bash
 ➜  www strings userlogger.exe
@@ -1084,7 +1084,7 @@ UPX0
 UPX1
 ```
 
-I can utilize `upx` for linux with the `-d` flag to decompress the UPX packed binary.
+I utilized `upx` for linux with the `-d` flag to decompress the UPX packed binary.
 
 ```bash
 ➜  www upx -d userlogger.exe -o userlogger.upx.exe
