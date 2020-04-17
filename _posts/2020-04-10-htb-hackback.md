@@ -256,7 +256,7 @@ After doing some browsing, I discovered the `Email Templates` panel contained qu
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GP-EMAIL-TEMPLATES.PNG" class="hackback-img" alt="Hackback - GoPhish Email Templates">
 
-The `Admin` template appeared to contain information for the `admin` sub domain at `admin.hackback.htb`.
+The `Admin` template appeared to contain information for the `admin` sub domain at `admin.hackback.htb`. I added `admin.hackback.htb` to my `/etc/hosts` file. I also noticed the `HackTheBox` template contained the URL `www.hackthebox.htb`, so I added that to my `/etc/hosts` file as well.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-ADMIN-TEMPLATE.PNG" class="hackback-img" alt="Hackback - GoPhish Admin Template">
 
