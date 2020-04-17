@@ -856,7 +856,7 @@ del /q C:\util\scripts\spool\%%i
 )
 ```
 
-The script appears to execute `dellog.ps1` first and then append the resulting output to `batch.log`. After that it runs the contents of the `spool` folder. By the looks of it though, I don't have permission to view this folder.
+The script appeared to execute `dellog.ps1` first and then append the resulting output to `batch.log`. After that it ran the contents of the `spool` folder. By the looks of it though, I didn't have permission to view the folder.
 <p><br></p>
 
 I then realized `simple` was a member of the `project-managers` group – a group which was able to write to the `clean.ini` file.
