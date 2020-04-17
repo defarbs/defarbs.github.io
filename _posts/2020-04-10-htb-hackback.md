@@ -1012,7 +1012,7 @@ SERVICE_NAME: userlogger
         SERVICE_START_NAME : LocalSystem
 ```
 
-Now I have verified the path of the binary as well: `c:\windows\system32\UserLogger.exe` I also ran `sdshow` to determine that the user `hacker` is able to start/stop the service.
+Now I had verified the path of the binary as well: `c:\windows\system32\UserLogger.exe` I also ran `sdshow` to determine that the user `hacker` is able to start/stop the service.
 
 ```bash
 C:\Users\hacker\Desktop>cmd /c "sc sdshow userlogger"
