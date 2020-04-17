@@ -1136,7 +1136,7 @@ After doing some further analysis, I determined the binary accepted an argument.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-BINARY-ARGUMENT.PNG" class="hackback-img" alt="Hackback - UserLogger.exe Takes Argument">
 
-Further examination revealed a `.log` file is generated with the same name as our argument.
+Further examination revealed a `.log` file is generated with the same name as the argument.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-LOGFILE-GENERATED.PNG" class="hackback-img" alt="Hack The Box - Hackback">
 
