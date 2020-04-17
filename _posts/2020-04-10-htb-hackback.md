@@ -693,7 +693,7 @@ This was my final PHP payload for sending the `tunnel.aspx` file. The base64 inc
 ```
 The output appeared to be normal when checking the logs as well:
 ```bash
-[16 April 2020, 07:12:33 PM] 10.10.14.37 - Username: everything is probably fine...?, Password: 4everything is probably fine...?
+[16 April 2020, 07:12:33 PM] 10.10.14.37 - Username: everything is probably fine...?, Password: everything is probably fine...?
 ```
 I then started up the local instance of `reGeorg` after configuring `proxychains` to utilize port `1337` for the connection:
 
