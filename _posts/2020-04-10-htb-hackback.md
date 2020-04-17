@@ -603,7 +603,7 @@ Equipped with my new session ID, I was now able to utilize the `action=show` par
 ➜  HACKBACK curl -X GET 'http://admin.hackback.htb/2bb6916122f1da34dcd916421e531578/WebAdmin.php?action=show&site=hackthebox&password=12345678&session=972d14b51c047ebff05b7eb1d1acff3d5989bac8407b45e28013a3584834270b'
 [15 April 2020, 08:07:44 PM] 10.10.14.37 - Username: farbs@hackback.htb, Password: ilovehacking!
 ```
-I discovered the log file contains `POST` parameters that are sent to `www.hackthebox.htb`. This is interesting, as it led me to assume I could perform a log poisoning attack if I injected PHP code into the `.log` file for my IP address. I entered a PHP payload into both the `username` and `password` fields of the fake Hack The Box login page and check the `.log` file after for evidence of code injection.
+I discovered the log file contains `POST` parameters that are sent to `www.hackthebox.htb`. This is interesting, as it led me to assume I could perform a log poisoning attack if I injected PHP code into the `.log` file for my IP address. I entered a PHP payload into both the `username` and `password` fields of the fake Hack The Box login page and checked the `.log` file after for evidence of code injection.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-HTB-LOGIN-INJECTION.PNG" class="hackback-img" alt="Hackback - HTB Login PHP Injection">
 
