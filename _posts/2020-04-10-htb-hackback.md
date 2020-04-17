@@ -1203,7 +1203,7 @@ SERVICE_NAME: userlogger
         WAIT_HINT          : 0x0
 ```
 
-I was able to adjust permissions on the `root.txt` file with Powershell by appending the path of `root.txt` to the first `UserLogger` argument parameter. I additionally appended a colon `:` to the end of `root.txt` so the `.log` extension would no longer be appended, but the file permissions associated with it would remain in tact.
+I was able to adjust permissions on the `root.txt` file with Powershell by appending the path of `root.txt` to the first `UserLogger` argument parameter. I additionally appended a colon `:` to the end of `root.txt` so the `.log` extension would no longer be appended, but the file permissions associated with it would remain intact.
 
 ```bash
 PS C:\Users\Administrator> sc.exe start userlogger "c:\users\administrator\desktop\root.txt:"
