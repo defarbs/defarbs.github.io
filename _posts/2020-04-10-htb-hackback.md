@@ -92,7 +92,7 @@ function topFunction() {
 
 ### Preface
 
-If you find anything in this writeup you feel is inaccurately depicted and/or explained, please reach out to me and let me know! I am always willing to make corrections in order to provide the most accurate information possible, while also taking the opportunity to learn and grow. Thanks!
+If you find anything in this writeup you feel is inaccurately depicted and/or explained, please reach out to me and let me know! `Hackback` is currently rated as the most difficult machine on the website <a href="https://www.hackthebox.eu/">Hack The Box</a>. It includes some interesting techniques such as log poisoning, SOCKS proxy tunneling and alternate data streams!
 
 <p><br></p>
 
