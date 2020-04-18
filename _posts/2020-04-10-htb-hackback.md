@@ -240,7 +240,7 @@ I didn't find anything this time, but I always like to check just to be sure.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GOPHISH-LOGIN.PNG" class="hackback-img" alt="Hackback - GoPhish Login">
 
-I started off simple and look up the default credentials for a GoPhish `admin` account. A brief Google search did the trick.
+I started off simple and looked up the default credentials for a GoPhish `admin` account. A brief Google search did the trick.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GP-ADMIN-CREDS.PNG" class="hackback-img" alt="Hackback - GoPhish Login Credential Search">
 
