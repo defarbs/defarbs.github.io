@@ -260,7 +260,7 @@ After doing some browsing, we also discover the `Email Templates` panel which co
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-GP-EMAIL-TEMPLATES.PNG" class="hackback-img" alt="Hackback - GoPhish Email Templates">
 
-The `Admin` template appears to contain information for the `admin` sub domain at `admin.hackback.htb`. We should add `admin.hackback.htb` to our `/etc/hosts` file at this point so the DNS entry resolves properly. We can additionally observe the `HackTheBox` template containing the URL `www.hackthebox.htb`, so let's added that to our `/etc/hosts` file as well.
+The `Admin` template appears to contain information for the `admin` sub domain at `admin.hackback.htb`. We should add `admin.hackback.htb` to our `/etc/hosts` file at this point so the DNS entry resolves properly. We can additionally observe the `HackTheBox` template containing the URL `www.hackthebox.htb`, so let's add that to our `/etc/hosts` file as well.
 
 <img src="/assets/img/writeups/HTB-HACKBACK/HACKBACK-ADMIN-TEMPLATE.PNG" class="hackback-img" alt="Hackback - GoPhish Admin Template">
 
