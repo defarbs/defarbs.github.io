@@ -132,7 +132,7 @@ Here is a list of every helpful blog post, tool and script I utilized when prepa
 More information regarding buffer overflow practice (as well as my personal notes) are included below as well.
 <p><br></p>
 ### Key Technical Skills to Pass
-Cutting straight to the chase, there are only five key technical skills you're really going to need to pass the OSCP exam. While it is recommended you focus heavily on these skills for the exam, it is absolutely still recommended that you practice machines in the PWK labs as well as other platforms in order to hone a wide variety of penetration testing techniques. That being side, the following five skills will likely be the most useful for passing the exam:
+Cutting straight to the chase, there are only five key technical skills you're really going to need to pass the OSCP exam. While it is recommended you focus heavily on these skills for the exam, it is absolutely still recommended that you practice machines in the PWK labs as well as other platforms in order to hone a wide variety of penetration testing techniques. That being said, the following five skills will likely be the most useful for passing the exam:
 <p><br></p>
 ```bash
 1) Windows x86 Buffer Overflows 
