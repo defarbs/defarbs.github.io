@@ -379,7 +379,7 @@ Keep in mind the "Easy-Hard" ratings are subjective to the OSCP exam difficulty,
 </div>
 <div align="center">
 <!-- add the button! -->
-<applause-button style="width: 58px; height: 58px;" color="#5d4d7a" url="https://defarbs.com/"/>
+<applause-button style="width: 58px; height: 58px;" color="#5d4d7a" url="https://defarbs.com/oscp-review"/>
 </div>
 <div align="center">
 	<a href="https://www.hackthebox.eu/profile/39047">
