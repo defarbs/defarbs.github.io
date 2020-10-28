@@ -290,7 +290,8 @@ print()
 From here, we can generate a new byte array with our now modified script. We will continue to update the byte array as needed until "unmodified" is shown in Immunity for the bad characters. With that said, we can repeat the same process with replacing the bad characters in our script as well as generating a new byte array with `!mona!` and comparing.
 <p><br></p>
 
-1) Update proof of concept with new bad characters
+1) Update proof of concept with new bad characters.
+<br>
 2) Crash program and update byte array with `!mona`:
 ```bash
 !mona bytearray -b "\x00\<bad_chars>..\..\x\x"
