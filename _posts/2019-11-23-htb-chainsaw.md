@@ -1074,7 +1074,7 @@ Upon creating my user, I was able to log in, but I received an error every time 
 </div>
 <div align="center">
 <!-- add the button! -->
-<applause-button style="width: 58px; height: 58px;" color="#5d4d7a" url="https://defarbs.com/"/>
+<applause-button style="width: 58px; height: 58px;" color="#5d4d7a" url="https://defarbs.com/htb-chainsaw"/>
 </div>
 <div align="center">
 	<a href="https://www.hackthebox.eu/profile/39047">

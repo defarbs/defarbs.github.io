@@ -1323,7 +1323,7 @@ Get-Content -Force -Path root.txt -Stream flag.txt
 </div>
 <div align="center">
 <!-- add the button! -->
-<applause-button style="width: 58px; height: 58px;" color="#5d4d7a" url="https://defarbs.com/"/>
+<applause-button style="width: 58px; height: 58px;" color="#5d4d7a" url="https://defarbs.com/htb-hackback"/>
 </div>
 <div align="center">
 	<a href="https://www.hackthebox.eu/profile/39047">
