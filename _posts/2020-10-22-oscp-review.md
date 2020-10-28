@@ -6,12 +6,12 @@ date: 2020-10-28 00:01:39
 tags:
   - oscp
   - offensive security
-  - review
+  - reviews
   - resources
 
 description: ""
 categories:
-  - Review
+  - Reviews
 ---
 
 <!-- add the button style & script -->
