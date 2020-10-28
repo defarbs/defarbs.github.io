@@ -97,20 +97,35 @@ This is an informal technical review of the Offensive Security Certified Profess
 Cutting straight to the chase, here is a list of every helpful blog post, tool and script I utilized when preparing for and taking my OSCP exam.
 <p><br></p>
 <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a> - Automates nmap scans to run in the background with different degrees of depth when scanning.
+<br>
 <a href="https://gtfobins.github.io/">GTFOBins</a> - Great for finding quick and easy privilege escalation vulnerabilities in default Linux binaries and some other installed applications.
+<br>
 <a href="https://guif.re/windowseop">Windows EOP Cheat Sheet</a> - Contains everything you'll need for Windows privilege escalation techniques.
+<br>
 <a href="https://github.com/Tib3rius/Pentest-Cheatsheets/blob/master/privilege-escalation/windows/windows-examples.rst">More Windows EOP Stuff</a>
+<br>
 <a href="https://noobsec.net/privesc-windows/">And MORE Windows EOP Stuff</a>
+<br>
 <a href="https://cas.vancooten.com/posts/2020/05/oscp-cheat-sheet-and-command-reference/#sql-injection">OSCP Cheat Sheet & Command Reference Guide</a> - Contains all the basic commands and techniques associated with the OSCP exam.
+<br>
 <a href="https://noobsec.net/oscp-cheatsheet/">OSCP Cheat Sheet #2 (NoobSec)</a> - Another great OSCP cheat sheet with similar commands and techniques as the previously mentioned link.
+<br>
 <a href="https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/">RopNop's Guide to Upgrading Shells</a> - Everything you'll need to break out of a restricted shell or upgrade your TTY.
+<br>
 <a href="https://ippsec.rocks/?#">Ippsec's Blog</a> - Contains all Hack The Box and related videos uploaded by the popular security Youtuber "Ippsec".
+<br>
 <a href="https://perspectiverisk.com/mssql-practical-injection-cheat-sheet/">MSSQL SQLi Cheat Sheet</a> - An abundance of SQLi payloads.
+<br>
 <a href="https://book.hacktricks.xyz/windows/windows-local-privilege-escalation/jaws">JAWS.ps1</a> - Powershell script for enumerating common Windows privilege escalation vectors.
+<br>
 <a href="winPEAS - https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS">winPEAS</a> - Windows Privilege Escalation Awesome Suite. Works similarly to JAWS.
+<br>
 <a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS">linPEAS</a> - Linux Privilege Escalation Awesome Suite.
+<br>
 <a href="https://tryhackme.com/room/bufferoverflowprep">TryHackMe Buffer Overflow Preparation</a> - Requires an account on the TryHackMe website, but provides a great (and accurate) buffer overflow resource for what to expect on the OSCP exam.
+<br>
 <a href="https://github.com/0x4D31/awesome-oscp">Awesome-OSCP</a> - A curated list of "awesome OSCP resources". Includes guides, cheat sheets, and additional scripts.
+<br>
 <a href="https://github.com/chrispetrou/shellback">Shellback</a> - Standalone python script for generating reverse shells on the fly.
 <p><br></p>
 More information regarding buffer overflow practice (as well as my personal notes) are included below as well.
