@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "OSCP Certification - Passed: Resources, Buffer Overflow Practice & Review"
+title: "OSCP Certification - Resources, Buffer Overflow Practice & Review"
 image: ""
 date: 2020-10-28 00:01:39
 tags:
