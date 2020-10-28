@@ -316,7 +316,7 @@ Or:
 ```bash
 !mona find -s 'jmp esp' -type instr -cm aslr=false,rebase=false,nx=false -cpb "\x00\<bad_chars>..\..\etc"
 ```
-Upon determining the address, we must convert it to Little Endian formatting by writing it in reverse (i.e. 0x62011af becomes \xaf\x11\x50\x62). We can then update the return (`retn`) value in our proof of concept to reflect the newly discovered address.
+Upon determining the address, we must convert it to Little Endian format by writing it in reverse (i.e. 0x62011af becomes \xaf\x11\x50\x62). We can then update the return (`retn`) value in our proof of concept to reflect the newly discovered address.
 
 ```python
 retn = "<address_from_jmpesp_command>"
