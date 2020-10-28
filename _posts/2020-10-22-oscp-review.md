@@ -158,9 +158,12 @@ While I was performing the buffer overflow, I ran `nmapAutomator` in the backgro
 The following is how I personally approached the buffer overflow machine on my second exam attempt. However, the rest of this post will delve deeper into my experience with the exam and my afterthoughts.
 
 ## Windows x86 Buffer Overflow Practice
-Alright, so buffer overflows ~~can be~~ are totally intimidating. However, based on the TryHackMe - Buffer Overflow Prep room provided above, I've created a collection of notes that helped me pass my exam buffer overflow with ease.
+Alright, so buffer overflows can be totally intimidating. However, based on the TryHackMe - Buffer Overflow Prep room provided above, I've created a collection of notes that helped me pass my exam buffer overflow with ease.
+
 <p><br></p>
+
 Note: Fuzzing is not required for the OSCP exam, so it is not covered in this post. However, the aforementioned TryHackMe room contains a great script for fuzzing a remote application.
+
 <p><br></p>
 
 ### Crash Replication 
