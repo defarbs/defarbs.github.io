@@ -172,7 +172,7 @@ Note: Fuzzing is not required for the OSCP exam, so it is not covered in this po
 <p><br></p>
 
 ### Crash Replication 
-When performing crash replication, we first can run our existing proof of concept exploit against the vulnerable application. Upon verifying the application crashes as expected, we create a pattern of characters with the `pattern_create.rb` script from the Metasploit framework. Our pattern must be the same length as the payload that was used to cause the crash. This pattern will replace `pattern_create` in the code below. The `<buffer_string>` will also be replaced by the string belonging to the field we entered data into (i.e. `OVERFLOW1: <data_here>`, where `OVERFLOW1 = <buffer_string>`).
+When performing crash replication, we first can run our existing proof of concept exploit against the vulnerable application. Upon verifying the application crashes as expected, we create a pattern of characters with the `pattern_create.rb` script from the Metasploit framework. Our pattern must be the same length as the payload that was used to cause the crash. This pattern will replace `<pattern_create>` in the code below. The `<buffer_string>` will also be replaced by the string belonging to the field we entered data into (i.e. `OVERFLOW1: <data_here>`, where `OVERFLOW1 = <buffer_string>`).
 <p><br></p>
 
 Pattern create:
