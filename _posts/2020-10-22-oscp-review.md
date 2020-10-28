@@ -88,7 +88,7 @@ function topFunction() {
 
 ## Overview
 
-This is an informal technical review of the Offensive Security Certified Professional (OSCP) certification. Tools and blogs used while practicing for my exam(s) are included here for anyone to use. This will also include technical information regarding how to pass the exam buffer overflow, as well as common pentesting strategies and techniques you should also learn to prepare. I've decided to write this review in order to help others succeed in their OSCP journeys while also providing valuable feedback and test-taking tips that will hopefully help people succeed on their exam attempts! And for those who are curious, I successfully passed my OSCP exam after two attempts. I failed my first attempt with a total of 65 points, and passed my second attempt with a total of 95 points. Further details regarding those attempts will be included in this review as well!
+This is an informal technical review of the Offensive Security Certified Professional (OSCP) certification. Tools and blogs used while practicing for my exam(s) are included here for anyone to use. This will also include technical information regarding how to pass the exam buffer overflow, as well as common pentesting strategies and techniques you should also learn to prepare. I've decided to write this review in order to help others succeed in their OSCP journeys while also providing valuable feedback and test-taking tips that will hopefully help people succeed on their exam attempts! And for those who are curious, I successfully passed my OSCP exam after two attempts. I failed my first attempt with a total of 65 points, and passed my second attempt with a total of 95 points.
 
 <p><br></p>
 
