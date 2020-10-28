@@ -130,11 +130,13 @@ The exam itself can be intimidating at the start. Your heart may be racing with 
 <p><br><p>
 On my passing attempt, I attacked the machines in this order (granted, I received one machine from my first exam so I was able to get user on it immediately):
 
-`1) 25 Point Machine (Buffer Overflow)`
-`2) 20 Point Machine` 
-`3) 25 Point Machine`
-`4) 20 Point Machine`
-`5) 10 Point Machine`
+```bash
+1) 25 Point Machine (Buffer Overflow)
+2) 20 Point Machine
+3) 25 Point Machine
+4) 20 Point Machine
+5) 10 Point Machine
+```
 
 While I was performing the buffer overflow, I ran `nmapAutomator` in the background against all of the machines on timed intervals. I ran the first two scans against a 20 point machine and the 25 point machine at the start of the buffer overflow. Towards the end (around the time I was testing my final exploit), I ran the final two nmapAutomator scans on the remaining hosts. This left me with two detailed scans to review after completing my buffer overflow machine. With them, I was able to quickly navigate my attack vectors for these machines instead of waiting for their port scans to finish.
 
