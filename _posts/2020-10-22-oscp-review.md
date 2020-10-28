@@ -301,6 +301,7 @@ From here, we can generate a new byte array with our now modified script. We wil
 !mona compare -f C:\mona\<appname>\bytearray.bin -a <ESP_address>
 ```
 4) Verify "Unmodified" is displayed. If so, move on to getting jmp esp!
+<br>
 5) If not, repeat steps until complete, insane, or completely insane.
 <p><br></p>
 ### Getting jmp esp
