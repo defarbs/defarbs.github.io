@@ -258,7 +258,7 @@ badchars = "\x01\x02\x03\x04\x05...\xfb\xfc\xfd\xfe\xff"
 
 payload = badchars + "C" * (<crash_length> - <offset_length> - 4 - 255) 
 ```
-Once the application has been crashed again, the following `!mona` commands can be ran to generate the same byte array that was previously generated in order to cross-compare bad characters in the aplication with the previously generated array.
+Once the application has been crashed again, the following `!mona` commands can be ran to generate the same byte array that was previously generated in order to cross-compare bad characters in the application with the previously generated array.
 <p><br></p>
 
 Set `!mona` configuration to use current working directory (this will be set to the name of the application, so if the application is `oscp_server.exe` the folder path will be `c:\mona\oscp_server.exe\<restofpath>`):
