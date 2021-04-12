@@ -546,7 +546,7 @@ aside #topmenu ul li {
 }
 
 aside #topmenu ul li:first-child {
-	background: #efb102;
+	background: #ab67ab;
 	padding: 4px 10px 4px 20px;
 	margin-left: -10px;
 }
@@ -557,7 +557,7 @@ aside #topmenu ul li:first-child span {
 	height: 20px;
 	text-align: center;
 	background-color: #000;
-	color: #efb102;
+	color: #ab67ab;
 	font-weight: 300
 }
 
