@@ -595,7 +595,9 @@ Array
     [3] => e691d0d9c19785cf4c5ab50375c10d83130f175f7f89ebd1899eee6a7aab0dd7.log
 )
 ```
-We can verify the hash of the new log file by checking the SHA-256 sum of our IP address.`972d14b51c047ebff05b7eb1d1acff3d5989bac8407b45e28013a3584834270b`
+We can verify the hash of the new log file by checking the SHA-256 sum of our IP address.
+<br>
+`972d14b51c047ebff05b7eb1d1acff3d5989bac8407b45e28013a3584834270b`
 <p><br></p>
 
 ### Log Poisoning Discovery & Enumeration
